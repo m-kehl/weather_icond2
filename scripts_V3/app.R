@@ -8,7 +8,6 @@ library(waiter)
 
 rm(list = ls())
 #todo: change so that path lies in input.R
-path <- "/Users/Manuela/Documents/tubingen/"
 
 ##load required libraries
 library(rdwd)
@@ -20,8 +19,8 @@ library(lubridate)
 options(encoding = "latin1")
 
 #todo: source.all withouth miceadds library
-source.all(paste0(path,"scripts_V3/functions/"))
-source(paste0(path,"scripts_V3/input.R"))
+source.all(paste0(getwd(),"/scripts_V3/functions/"))
+source(paste0(getwd(),"/scripts_V3/input.R"))
 
 
 ui <- fluidPage(
