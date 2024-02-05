@@ -16,8 +16,10 @@ library(terra)
 library(miceadds)
 library(lubridate)
 library(RCurl)
+library(curl)
 library(R.utils)
 library(dplyr)
+library(r2symbols)
 
 #Sys.setlocale("LC_TIME", "de")
 options(encoding = "latin1")
@@ -76,6 +78,7 @@ ui <- fluidPage(
                               numericInput("free_lat",label = "latitude", value = 48.52266,
                                            step = NA, width = "50%"),
                           ),
+                          p("Datenbasis: ", symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)" ),
                           # tabsetPanel(
                           #   id = "free_coord",
                           #   type = "hidden",
@@ -103,8 +106,7 @@ ui <- fluidPage(
                           )),
                    column(4,
                           plotOutput("bar_out"),
-                          textOutput("forecast_time"),
-                          textOutput("test"))
+                          textOutput("forecast_time"))
           
 
   ),
@@ -127,20 +129,29 @@ ui <- fluidPage(
                choiceNames = phenology_phases$phase,
                choiceValues = phenology_phases$phase_id,
                selected = character(0)
+             ),selectInput(
+               inputId = "bl_plant",
+               label = "Bundesland",
+               choices = unique(meta_plant_data$Bundesland),
+               multiple = FALSE
              ),
+             
              selectInput(
                inputId = "station_name",
                label = "Stationsname",
-               choices = meta_plant_data$Stationsname,
+               choices = c(""),
                multiple = FALSE
-             )),
+             ),
+             p("Datenbasis: ", symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)" )
+             ),
             column(9,
-                   plotOutput("plant_out")
+                   plotOutput("plant_out"),
+                   textOutput("plant_text")
                    ),
              
 
           ),
-          tabPanel("panel 3", "three")
+          tabPanel("panel 3", p("hello", symbol("copyright")))
         )))
       
 
@@ -217,9 +228,27 @@ server <- function(input, output, session) {
     # }
   })
 # Tabset 2 ----------------------------------------------------------------
-
-  plant_data <- reactive(f_read_plants(input$pflanzen))
-                               
+  
+    plant_data <- reactive(
+      if (input$pflanzen != ""){
+        f_read_plants(input$pflanzen)
+        }
+      )
+  update_pheno_phases <- reactive(phenology_phases[phenology_phases$phase_id %in% unique(plant_data()$Phase_id),])
+  
+  observe({
+    updateRadioButtons(session, "phase",
+                       choiceNames = update_pheno_phases()$phase,
+                       choiceValues = update_pheno_phases()$phase_id,
+                       selected = c(5))
+  })
+  
+  bl_meta <- reactive(meta_plant_data$Stationsname[meta_plant_data$Bundesland == input$bl_plant])
+  observe({
+    updateSelectInput(session,"station_name",
+                      choices = c(bl_meta()))
+  })
+                           
   #observeEvent(input$phase, {print(plant_data())})
   
   plant_data_processed <- reactive(
@@ -228,9 +257,25 @@ server <- function(input, output, session) {
   #observeEvent(input$phase, {print(plant_data_processed())})
   observeEvent(input$phase, {
     output$plant_out <- renderPlot(
-      f_plot_plants(plant_data_processed())
+      if (input$pflanzen == ""){
+        plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
+        
+        text(x = 0.5, y = 0.5, paste("Please select your input\n"), 
+             cex = 1.6, col = "black")
+      }else{
+        f_plot_plants(plant_data_processed())
+      }
     )
   })
-  #reactive(print(input$tabset$Wildpflanzen))
+  
+  end_data <- reactive(meta_plant_data$`Datum Stationsaufloesung`[meta_plant_data$Stationsname==input$station_name][1])
+  observeEvent(input$station_name,{
+    #if (nchar(end_data()) > 2){
+      output$plant_text <- renderText(paste0("Stationsaufloesung: ",end_data()))
+    # }else{
+    #   output$plant_text <- renderText("")
+    # }
+    })
+
 }
 shinyApp(ui, server)
