@@ -255,27 +255,34 @@ server <- function(input, output, session) {
     f_process_plants(plant_data(),input$phase,input$station_name,meta_plant_data)
     )
   #observeEvent(input$phase, {print(plant_data_processed())})
-  observeEvent(input$phase, {
-    output$plant_out <- renderPlot(
+  observe({
+    
       if (input$pflanzen == ""){
-        plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
-        
-        text(x = 0.5, y = 0.5, paste("Please select your input\n"), 
-             cex = 1.6, col = "black")
+        output$plant_out <- renderPlot(f_plot_plants_spaceholder())
       }else{
-        f_plot_plants(plant_data_processed())
+        output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()))
+        end_data <- meta_plant_data$`Datum Stationsaufloesung`[meta_plant_data$Stationsname==input$station_name][1]
+        end_data <- ifelse(is.na(end_data),"",end_data)
+        print(end_data)
+        if (end_data == ""){
+          output$plant_text <- renderText("")
+        }else{
+          output$plant_text <- renderText(paste0("Stationsaufloesung: ",end_data))
+        }
       }
-    )
+    
   })
   
-  end_data <- reactive(meta_plant_data$`Datum Stationsaufloesung`[meta_plant_data$Stationsname==input$station_name][1])
-  observeEvent(input$station_name,{
-    #if (nchar(end_data()) > 2){
-      output$plant_text <- renderText(paste0("Stationsaufloesung: ",end_data()))
+  # observe({
+  #   
+  # })
+  # observeEvent(input$station_name,{
+  #   #if (nchar(end_data()) > 2){
+  #     v
     # }else{
     #   output$plant_text <- renderText("")
     # }
-    })
+    # })
 
 }
 shinyApp(ui, server)
