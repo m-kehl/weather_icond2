@@ -43,11 +43,7 @@ phenology_phases <- data.frame(phase = c("Beginn der Bluete","Blattfall (Herbst)
 
 phenology_phases <- arrange(phenology_phases,phase)
 
-phenology_base <- "https://opendata.dwd.de/climate_environment/CDC/observations_germany/phenology/annual_reporters/wild/historical/"
-meta_plant_data <- data.table::fread(paste0(phenology_base,
-                                      "PH_Beschreibung_Phaenologie_Stationen_Jahresmelder.txt"),
-                               encoding = "Latin-1")
-meta_plant_data <- arrange(meta_plant_data,Stationsname)
+
 
 #copy_right
 # text_copy_right <- paste0(symbol("copyright"), "hello")

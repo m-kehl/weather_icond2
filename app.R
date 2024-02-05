@@ -121,7 +121,7 @@ ui <- fluidPage(
              ),selectInput(
                inputId = "bl_plant",
                label = "Bundesland",
-               choices = unique(meta_plant_data$Bundesland),
+               choices = c(""),
                multiple = FALSE
              ),
              
@@ -177,7 +177,7 @@ server <- function(input, output, session) {
   observe({
     if (length(input$parameter) == 0){
       output$map_out <- renderPlot(
-        f_map_icond2_start()
+        f_plot_spaceholder()
       )
     } else{
       output$map_out <- renderPlot(
@@ -207,10 +207,15 @@ server <- function(input, output, session) {
 
   })
 # Tabset 2 ----------------------------------------------------------------
+  plant_meta <- f_read_plants_meta()
   
     plant_data <- reactive(
       if (input$pflanzen != ""){
         f_read_plants(input$pflanzen)
+      }else{
+        updateSelectInput(session,"bl_plant",
+                            choices = unique(plant_meta$Bundesland)
+                              )
         }
       )
   update_pheno_phases <- reactive(phenology_phases[phenology_phases$phase_id %in% unique(plant_data()$Phase_id),])
@@ -222,23 +227,24 @@ server <- function(input, output, session) {
                        selected = c(5))
   })
   
-  bl_meta <- reactive(meta_plant_data$Stationsname[meta_plant_data$Bundesland == input$bl_plant])
+  
+  bl_meta <- reactive(plant_meta$Stationsname[plant_meta$Bundesland == input$bl_plant])
   observe({
     updateSelectInput(session,"station_name",
                       choices = c(bl_meta()))
   })
   
   plant_data_processed <- reactive(
-    f_process_plants(plant_data(),input$phase,input$station_name,meta_plant_data)
+    f_process_plants(plant_data(),input$phase,input$station_name,plant_meta)
     )
   
   observe({
     
       if (input$pflanzen == ""){
-        output$plant_out <- renderPlot(f_plot_plants_spaceholder())
+        output$plant_out <- renderPlot(f_plot_spaceholder())
       }else{
         output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()))
-        end_data <- meta_plant_data$`Datum Stationsaufloesung`[meta_plant_data$Stationsname==input$station_name][1]
+        end_data <- plant_meta$`Datum Stationsaufloesung`[plant_meta$Stationsname==input$station_name][1]
         end_data <- ifelse(is.na(end_data),"",end_data)
         print(end_data)
         if (end_data == ""){
