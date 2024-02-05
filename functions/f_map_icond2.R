@@ -1,4 +1,4 @@
-f_map <- function(input_time,diff_forecasts,parameter,point_coord,point_forecast){
+f_map_icond2 <- function(input_time,diff_forecasts,parameter,point_coord,point_forecast){
   # waiter_show( # show the waiter
   #   html = tagList(
   #     spin_fading_circles(),

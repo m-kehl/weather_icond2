@@ -1,6 +1,6 @@
 # library(shiny)
 # library(waiter)
-f_process_data <- function(nwp_data,parameter){
+f_process_icond2 <- function(nwp_data,parameter){
   # 3. process data ---------------------------------------------------------
 
   nwp_subset <- lapply(nwp_data,terra::subset,subset = c(1))

@@ -1,6 +1,6 @@
 #library(shiny)
 #library(waiter)
-f_read_data <- function(forecast_time,parameter){
+f_read_icond2 <- function(forecast_time,parameter){
   ##read forecast data
   #---- forecast_time:  time for last created forecast
   #---- parameter:      icon d2 abbreviation for parameters like rain, snow, etc.

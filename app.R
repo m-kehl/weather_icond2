@@ -157,13 +157,13 @@ server <- function(input, output, session) {
 # Tabset 1 ----------------------------------------------------------------
 
   
-  nwp_data <- reactive(f_read_data(f_forecast_time(),input$parameter))
+  nwp_data <- reactive(f_read_icond2(f_forecast_time(),input$parameter))
 
 
 
   square_coord <- reactive(f_square_coord(input$bundesland))
 
-  whole_forecast <- reactive(f_process_data(nwp_data(),input$parameter))
+  whole_forecast <- reactive(f_process_icond2(nwp_data(),input$parameter))
   state_forecast <- reactive(f_state_forecast(whole_forecast(),square_coord()))
 
   point_coord <- reactive(f_point_coord(input$bundesland, input$point_forecast,
@@ -177,22 +177,22 @@ server <- function(input, output, session) {
   observe({
     if (length(input$parameter) == 0){
       output$map_out <- renderPlot(
-        f_map_start()
+        f_map_icond2_start()
       )
     } else{
       output$map_out <- renderPlot(
-        f_map(input$slider_time,state_forecast(),input$parameter,
+        f_map_icond2(input$slider_time,state_forecast(),input$parameter,
               point_coord()[[2]], input$point_forecast)
       )
 
       if (!is.na(input$free_lon) && !is.na(input$free_lat)){
         output$bar_out <- renderPlot(
 
-          f_barplot(point_forecast(),input$slider_time,input$parameter)
+          f_barplot_icond2(point_forecast(),input$slider_time,input$parameter)
         )
       } else{
         output$bar_out <- renderPlot(
-          f_barplot_placeholder()
+          f_barplot_icond2_placeholder()
         )
       }
 

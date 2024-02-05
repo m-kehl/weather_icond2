@@ -1,4 +1,4 @@
-f_barplot <- function(point_forecast,input_time,parameter){
+f_barplot_icond2 <- function(point_forecast,input_time,parameter){
 
   converter <- f_time_converter()
   ii <- converter[[parameter]][converter$time == input_time]
@@ -14,7 +14,7 @@ f_barplot <- function(point_forecast,input_time,parameter){
       color <- rep("blue",ncol(point_forecast))
       color[ii] <- "cadetblue"
       barplot(point_forecast[1,], col = color, axis.lty = 1, las = 2,
-              names.arg = format(converter$time[2:49],format ="%a %H:%M" ),
+              names.arg = format(converter$time[2:nrow(converter)],format ="%a %H:%M" ),
               ylab = "[mm / h]", ylim = c(0,max(2,point_forecast[1,])))
       #axis.POSIXct(1,converter$time[2:49],format ="%a %H:%M")
     } else{
