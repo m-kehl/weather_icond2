@@ -24,7 +24,8 @@ f_read_data <- function(forecast_time,parameter){
                               format(forecast_time, '%H'),"/",parameter,"/")
   nwp_urls <- indexFTP("", base=nwp_base_rain_gsp, dir=tempdir())
   nwp_urls <- nwp_urls[grepl("lat-lon",nwp_urls)]
-  #nwp_urls <- nwp_urls[6:12]
+  nwp_urls <- nwp_urls[as.numeric(ceiling_date(Sys.time(),unit = "hour") - forecast_time):
+                         (as.numeric(ceiling_date(Sys.time(),unit = "hour") - forecast_time) + 7)]
   
   #todo: make own altorithm with only terra, not rDWD?
   #downlaod

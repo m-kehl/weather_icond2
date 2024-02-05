@@ -79,25 +79,14 @@ ui <- fluidPage(
                                            step = NA, width = "50%"),
                           ),
                           p("Datenbasis: ", symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)" ),
-                          # tabsetPanel(
-                          #   id = "free_coord",
-                          #   type = "hidden",
-                          #   tabPanel(numericInput("free_lon",label = "longitude", value = 9.05222,
-                          #                         step = NA, width = "50%")),
-                          #   tabPanel(numericInput("free_lat",label = "latitude", value = 48.52266,
-                          #                         step = NA, width = "50%")),
-                          # 
-                          # ),
-                          # numericInput("time", label = "Please enter the timestep", min = 1,
-                          #              max = 48, step = 1,
-                          #              value = 5)
+
                    ),
                    column(5, 
                           plotOutput("map_out"),
                           sliderInput("slider_time", 
                                       "Zeit", 
-                                      min = f_forecast_time(),
-                                      max = f_forecast_time() + 48 * 60 * 60,
+                                      min = ceiling_date(Sys.time(),unit = "hour"),
+                                      max = ceiling_date(Sys.time(),unit = "hour") + 6 * 60 * 60,
                                       step = 3600,
                                       value = c(ceiling_date(Sys.time(),unit = "hour")),
                                       timeFormat = "%a %H:%M", ticks = T, animate = T,
@@ -159,6 +148,10 @@ ui <- fluidPage(
 #todo: terra::extract for point_forecast -> take point from whole germany instead of only square_coord -> how much
 #more time does this take?
 #todo: point_coordinate -> barplot only for landeshauptstadt
+
+# server ------------------------------------------------------------------
+
+
 server <- function(input, output, session) {
 
 # Tabset 1 ----------------------------------------------------------------
@@ -169,7 +162,6 @@ server <- function(input, output, session) {
 
 
   square_coord <- reactive(f_square_coord(input$bundesland))
-  #diff_forecasts <- reactive(f_process_data(nwp_data(),square_coord(),input$parameter))
 
   whole_forecast <- reactive(f_process_data(nwp_data(),input$parameter))
   state_forecast <- reactive(f_state_forecast(whole_forecast(),square_coord()))
@@ -181,10 +173,6 @@ server <- function(input, output, session) {
     )
 
   output$forecast_time <- renderText(paste0("Forecast time is: ", f_forecast_time()))
-
-  # observeEvent(input$parameter,{
-  #
-  # })
 
   observe({
     if (length(input$parameter) == 0){
@@ -216,16 +204,7 @@ server <- function(input, output, session) {
 
   observeEvent(input$point_forecast,{
     shinyjs::toggle("box_free_coord")
-    # if (input$point_forecast == "free"){
-    #   updateTabsetPanel(session,
-    #     inputId = "free_coord")
-    # 
-    # } else{
-    #   updateTabsetPanel(session,
-    #                     inputId = "free_coord")
-    # 
-    #   
-    # }
+
   })
 # Tabset 2 ----------------------------------------------------------------
   
@@ -248,13 +227,11 @@ server <- function(input, output, session) {
     updateSelectInput(session,"station_name",
                       choices = c(bl_meta()))
   })
-                           
-  #observeEvent(input$phase, {print(plant_data())})
   
   plant_data_processed <- reactive(
     f_process_plants(plant_data(),input$phase,input$station_name,meta_plant_data)
     )
-  #observeEvent(input$phase, {print(plant_data_processed())})
+  
   observe({
     
       if (input$pflanzen == ""){
@@ -272,17 +249,6 @@ server <- function(input, output, session) {
       }
     
   })
-  
-  # observe({
-  #   
-  # })
-  # observeEvent(input$station_name,{
-  #   #if (nchar(end_data()) > 2){
-  #     v
-    # }else{
-    #   output$plant_text <- renderText("")
-    # }
-    # })
 
 }
 shinyApp(ui, server)
