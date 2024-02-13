@@ -16,7 +16,7 @@ f_plot_mess_prec <- function(mess_data,names){
          mess_data$RWS_10[mess_data$STATIONS_ID == station_ids[count]],
          axes = FALSE, type = "h", col = colours[count], 
          xlim <- c(min(mess_data$MESS_DATUM),max(mess_data$MESS_DATUM)),
-         ylim = c(0,1),xlab = "Messzeit",ylab = "")
+         ylim = c(0,1),xlab = "Messzeit (UTC)",ylab = "")
     axis(side=4, col = "black", ylim = c(0,1))
     mtext("Niederschlag [mm]", side = 4, line = 3)   
     par(new= TRUE)

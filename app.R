@@ -51,7 +51,7 @@ ui <- fluidPage(
         tabsetPanel(
           id = "main_tabsets",
           
-          # tabPanel 1 --------------------------------------------------------------
+# tabPanel 1 --------------------------------------------------------------
           tabPanel("Vorhersage ICON d2",
                    value = "icond2",
                    
@@ -71,7 +71,7 @@ ui <- fluidPage(
                           ),
                           radioButtons(
                             inputId = "point_forecast",
-                            label = "point forecast",
+                            label = "Punktvorhersage",
                             choiceNames = c("Landeshauptstadt","freie Koordinatenwahl"),
                             choiceValues = c("bhs","free")
                           ),
@@ -237,7 +237,9 @@ server <- function(input, output, session) {
       if (!is.na(input$free_lon) && !is.na(input$free_lat)){
         output$bar_out <- renderPlot(
 
-          f_barplot_icond2(point_forecast(),input$slider_time,input$parameter)
+          f_barplot_icond2(point_forecast(),input$slider_time,input$parameter,
+                           input$point_forecast,
+                           bundeslaender_coord$landeshauptstadt[bundeslaender_coord$bundesland == input$bundesland])
         )
       } else{
         output$bar_out <- renderPlot(
@@ -292,13 +294,13 @@ server <- function(input, output, session) {
       if (input$pflanzen == ""){
         output$plant_out <- renderPlot(f_plot_spaceholder())
       }else{
-        output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()))
+        output$plant_out <- renderPlot(f_plot_plants(plant_data_processed(),input$pflanzen))
         end_data <- plant_meta$`Datum Stationsaufloesung`[plant_meta$Stationsname==input$station_name][1]
         end_data <- ifelse(is.na(end_data),"",end_data)
         if (end_data == ""){
           output$plant_text <- renderText("")
         }else{
-          output$plant_text <- renderText(paste0("Stationsaufloesung: ",end_data))
+          output$plant_text <- renderText(paste0("Stationsauflösung: ",end_data))
         }
       }
     

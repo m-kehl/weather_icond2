@@ -16,11 +16,12 @@ f_plot_mess <- function(mess_data,names){
          mess_data$TT_10[mess_data$STATIONS_ID == station_ids[count]],
          pch = 16,type = "b",xlim <- c(min(mess_data$MESS_DATUM),max(mess_data$MESS_DATUM)),
          ylim <- c(min(mess_data$TT_10),max(mess_data$TT_10)),
-         col = colours[count], xlab = "Messzeit", ylab = "Temperatur")
+         col = colours[count], xlab = "Messzeit (UTC)", ylab = "Temperatur [\u00B0C]")
     par(new = TRUE)
     more_plots <- ifelse(count < length(names),TRUE,FALSE)
     count <- count + 1
   }
   legend(x="bottomleft",legend = names, col = c(1:length(names)),
           pch = 16)
+  title(format(mess_data$MESS_DATUM[1],"%d.%m.%y"), adj = 0)
 }

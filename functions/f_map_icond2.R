@@ -10,14 +10,19 @@ f_map_icond2 <- function(input_time,diff_forecasts,parameter,point_coord,point_f
   converter <- f_time_converter()
   ii <- converter[[parameter]][converter$time == input_time]
   if (parameter %in% c("rain_gsp", "snow_gsp")){
+    if (parameter == "rain_gsp"){
+      title_name = "Regen"
+    }else{
+      title_name = "Schnee"
+    }
     df_col <- data.frame(from = c(0.3,1,2,4,8,15,30,60), to = c(1,2,4,8,15,30,60,120), color = c("peachpuff1","pink","plum3","maroon1","red","red4","gold","lawngreen"))
 
-    terra::plot(x = subset(diff_forecasts, c(ii)), main = paste0("precip forecast - ",time(subset(diff_forecasts, c(ii)), format= "")),
+    terra::plot(x = subset(diff_forecasts, c(ii)), main = paste0(title_name," [mm/h]"),
                 col = df_col)
   } else{
     #df_col <- data.frame(from = c(-10,-5,0,5,10,15,20,25), to = c(-5,0,5,10,15,20,25,30), color = c("darkblue","dodgerblue","lightblue","salmon","tomato","red","darkorange","gold"))
     
-    terra::plot(x = subset(diff_forecasts, c(ii)), main = paste0("T2m forecast - ",time(subset(diff_forecasts, c(ii)), format= "")),
+    terra::plot(x = subset(diff_forecasts, c(ii)), main = "Temperatur [\u00B0C]",
                  range = c(min(minmax(diff_forecasts)),max(minmax(diff_forecasts))))
 
   }

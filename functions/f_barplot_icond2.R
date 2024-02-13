@@ -1,5 +1,12 @@
-f_barplot_icond2 <- function(point_forecast,input_time,parameter){
+f_barplot_icond2 <- function(point_forecast,input_time,parameter,
+                             input_pf,bl){
 
+  if (input_pf == "free"){
+    title_help = "nach Koord."
+  }else{
+    title_help = bl
+  }
+  
   converter <- f_time_converter()
   ii <- converter[[parameter]][converter$time == input_time]
   
@@ -16,6 +23,7 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter){
       barplot(point_forecast[1,], col = color, axis.lty = 1, las = 2,
               names.arg = format(converter$time[2:nrow(converter)],format ="%a %H:%M" ),
               ylab = "[mm / h]", ylim = c(0,max(2,point_forecast[1,])))
+      title(paste0("Punktvorhersage: ",title_help))
       #axis.POSIXct(1,converter$time[2:49],format ="%a %H:%M")
     } else{
       color <- rep("violet",ncol(point_forecast))
@@ -26,6 +34,7 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter){
                               col='gray', border=NA),
            ylab = "Temperatur [\u00B0C]", xlab = "", type = "b")
       axis.POSIXct(1,converter$time,format ="%a %H:%M")
+      title(paste0("Punktvorhersage: ",title_help))
     }
   }
   # point_forecast_rain <- terra::extract(diff_forecasts_rain, point_coord, raw = TRUE, ID = FALSE)
