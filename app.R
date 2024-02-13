@@ -33,7 +33,9 @@ source(paste0(getwd(),"/input.R"),local = TRUE)
 ui <- fluidPage(
   tags$head(
     tags$style(HTML(
-      ".tabbable ul li:nth-child(1) { float: right;}
+      ".tabbable > .nav > li                 > a  {font-weight: bold; background-color: aquamarine;  color:black}
+      .tabbable > .nav > li[class=active]    > a {background-color: HoneyDew; color:black}
+      .tabbable ul li:nth-child(1) { float: right; }
       .tabbable ul li:nth-child(2) { float: right; }
       .tabbable ul li:nth-child(3) { float: right; }"
       # .tabbable ul li:nth-child(4) { float: left; }
@@ -202,10 +204,10 @@ ui <- fluidPage(
 
 
 server <- function(input, output, session) {
-
+# 
 # Tabset 1 ----------------------------------------------------------------
 
-  
+
   nwp_data <- reactive(f_read_icond2(f_forecast_time(),input$parameter))
 
 
@@ -259,7 +261,7 @@ server <- function(input, output, session) {
   })
 # Tabset 2 ----------------------------------------------------------------
   plant_meta <- f_read_plants_meta()
-  
+
     plant_data <- reactive(
       if (input$pflanzen != ""){
         f_read_plants(input$pflanzen)
@@ -270,27 +272,27 @@ server <- function(input, output, session) {
         }
       )
   update_pheno_phases <- reactive(phenology_phases[phenology_phases$phase_id %in% unique(plant_data()$Phase_id),])
-  
+
   observe({
     updateRadioButtons(session, "phase",
                        choiceNames = update_pheno_phases()$phase,
                        choiceValues = update_pheno_phases()$phase_id,
                        selected = c(5))
   })
-  
-  
+
+
   bl_meta <- reactive(plant_meta$Stationsname[plant_meta$Bundesland == input$bl_plant])
   observe({
     updateSelectInput(session,"station_name",
                       choices = c(bl_meta()))
   })
-  
+
   plant_data_processed <- reactive(
     f_process_plants(plant_data(),input$phase,input$station_name,plant_meta)
     )
-  
+
   observe({
-    
+
       if (input$pflanzen == ""){
         output$plant_out <- renderPlot(f_plot_spaceholder())
       }else{
@@ -303,15 +305,15 @@ server <- function(input, output, session) {
           output$plant_text <- renderText(paste0("Stationsauflösung: ",end_data))
         }
       }
-    
+
   })
 
 # tabset 3 ----------------------------------------------------------------
-  observe({ if (input$mess_tabsets == "now"){
-      print("monthly")
-    }
-  })
-  
+  # observe({ if (input$mess_tabsets == "now"){
+  #     print("monthly")
+  #   }
+  # })
+
   mess_meta <- f_read_mess_meta()
   updateSelectizeInput(session,"mess_name",
                     choices = base::unique(mess_meta$Stationsname),
@@ -319,7 +321,7 @@ server <- function(input, output, session) {
   )
   mess_data <- reactive(f_read_mess(input$mess_name,mess_meta))
   #availability <- reactive(f_check_data_availability(input$mess_name,mess_meta))
-  
+
   observe({
     if (length(input$mess_name) == 0){
       output$mess_plot <- f_plot_spaceholder()
@@ -336,6 +338,8 @@ server <- function(input, output, session) {
       output$mess_text <- renderText("")
     }
   })
+
+
 
 }
 shinyApp(ui, server)
