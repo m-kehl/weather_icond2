@@ -1,5 +1,6 @@
 f_forecast_time <- function(){
   #get UTC hour/time of most recent forecast generation
+  Sys.setenv(TZ="CET")
   current_hour <- as.integer(format(Sys.time(), "%H"))
   # forecast_time <- ifelse(current_hour %% 3 == 2, current_hour - 5, ifelse(
   #   current_hour %% 3 == 1, current_hour - 4, current_hour - 3))

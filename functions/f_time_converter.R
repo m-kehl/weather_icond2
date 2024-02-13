@@ -1,6 +1,6 @@
 f_time_converter <- function(){
   
-  
+  Sys.setenv(TZ="CET")
   start <- ceiling_date(Sys.time(),unit = "hour") - 1 * 60 * 60
   interval <- 1 * 60 * 60
   end <- ceiling_date(Sys.time(),unit = "hour") + 6 * 60 * 60
