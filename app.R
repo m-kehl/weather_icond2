@@ -171,6 +171,7 @@ ui <- fluidPage(
                           tabsetPanel(id = "mess_tabsets",
                             tabPanel("aktuelle Messungen",
                                      value = "now",
+                                     #textOutput("mess_text"),
                                      plotOutput("mess_plot"),
                                      plotOutput("mess_plot_prec")
                                      ),
@@ -304,10 +305,10 @@ server <- function(input, output, session) {
   })
 
 # tabset 3 ----------------------------------------------------------------
-  # observe({ if (input$mess_tabsets == "daily"){
-  #     print("monthly")
-  #   }
-  # })
+  observe({ if (input$mess_tabsets == "now"){
+      print("monthly")
+    }
+  })
   
   mess_meta <- f_read_mess_meta()
   updateSelectizeInput(session,"mess_name",
@@ -315,15 +316,22 @@ server <- function(input, output, session) {
                     options = list(maxItems = 5)
   )
   mess_data <- reactive(f_read_mess(input$mess_name,mess_meta))
+  #availability <- reactive(f_check_data_availability(input$mess_name,mess_meta))
   
   observe({
     if (length(input$mess_name) == 0){
       output$mess_plot <- f_plot_spaceholder()
       output$mess_plot_prec <- f_plot_spaceholder()
-    } else{
+    }
+    # else if(length(availability()) > 0){
+    #   output$mess_plot <- f_plot_spaceholder()
+    #   output$mess_plot_prec <- f_plot_spaceholder()
+    #   output$mess_text <- renderText(paste0("Keine Daten für ",availability()," vorhanden"))
+    # }
+    else{
       output$mess_plot <- renderPlot(f_plot_mess(mess_data(),input$mess_name))
       output$mess_plot_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_name))
-      
+      output$mess_text <- renderText("")
     }
   })
 
