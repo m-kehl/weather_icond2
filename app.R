@@ -36,6 +36,9 @@ ui <- fluidPage(
       ".tabbable ul li:nth-child(1) { float: right;}
       .tabbable ul li:nth-child(2) { float: right; }
       .tabbable ul li:nth-child(3) { float: right; }"
+      # .tabbable ul li:nth-child(4) { float: left; }
+      # .tabbable ul li:nth-child(5) { float: left; }
+      # .tabbable ul li:nth-child(6) { float: left; }"
     ))
   ),
   useWaiter(), # dependencies
@@ -46,11 +49,11 @@ ui <- fluidPage(
     mainPanel(
       useShinyjs(),
         tabsetPanel(
-          id = "tabset",
-          tabPanel("ICON d2 forecast", 
-
-# tabPanel 1 --------------------------------------------------------------
-
+          id = "main_tabsets",
+          
+          # tabPanel 1 --------------------------------------------------------------
+          tabPanel("Vorhersage ICON d2",
+                   value = "icond2",
                    
                    column(3, 
                           radioButtons(
@@ -102,12 +105,12 @@ ui <- fluidPage(
 
 # TabPanel 2 --------------------------------------------------------------
 
-
-          tabPanel("Wildpflanzen",     
+          tabPanel("Phänologie", 
+                   value = "pheno",
             column(3, 
                    selectInput(
                 inputId = "pflanzen",
-                label = "Wildpflanzen",
+                label = "Pflanzenart",
                 choices = pflanzen_arten,
                 multiple = FALSE
              ),
@@ -140,7 +143,52 @@ ui <- fluidPage(
              
 
           ),
-          tabPanel("panel 3", p("hello", symbol("copyright")))
+
+# tabpanel 3 --------------------------------------------------------------
+
+
+          tabPanel("Messdaten",
+                   value = "mess",
+                   column(3, 
+                          selectizeInput(
+                            inputId = "mess_name",
+                            label = "Stationsname",
+                            choices = c(""),
+                            multiple = TRUE,
+                            options = list(maxItems = 2)
+                          ),    
+                          
+                          p("Datenbasis: ", symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)" )
+                   ),
+                   column(9,
+                          # tags$head(
+                          #   tags$style(HTML(
+                          #     ".tabbable ul li:nth-child(1) { float: left;}
+                          #     .tabbable ul li:nth-child(2) { float: left; }
+                          #     .tabbable ul li:nth-child(3) { float: left; }"
+                          #   ))
+                          # ),
+                          tabsetPanel(id = "mess_tabsets",
+                            tabPanel("aktuelle Messungen",
+                                     value = "now",
+                                     plotOutput("mess_plot"),
+                                     plotOutput("mess_plot_prec")
+                                     ),
+                            tabPanel("Tageswerte",
+                                     value = "daily",
+                                     p("in Bearbeitung..")),
+                            tabPanel("Monatswerte",
+                                     value = "monthly",
+                                     p("in Bearbeitung.."))
+                          )
+                          
+                   ),
+                   
+                   
+          
+
+                   
+                   )
         )))
       
 
@@ -246,7 +294,6 @@ server <- function(input, output, session) {
         output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()))
         end_data <- plant_meta$`Datum Stationsaufloesung`[plant_meta$Stationsname==input$station_name][1]
         end_data <- ifelse(is.na(end_data),"",end_data)
-        print(end_data)
         if (end_data == ""){
           output$plant_text <- renderText("")
         }else{
@@ -254,6 +301,30 @@ server <- function(input, output, session) {
         }
       }
     
+  })
+
+# tabset 3 ----------------------------------------------------------------
+  # observe({ if (input$mess_tabsets == "daily"){
+  #     print("monthly")
+  #   }
+  # })
+  
+  mess_meta <- f_read_mess_meta()
+  updateSelectizeInput(session,"mess_name",
+                    choices = base::unique(mess_meta$Stationsname),
+                    options = list(maxItems = 5)
+  )
+  mess_data <- reactive(f_read_mess(input$mess_name,mess_meta))
+  
+  observe({
+    if (length(input$mess_name) == 0){
+      output$mess_plot <- f_plot_spaceholder()
+      output$mess_plot_prec <- f_plot_spaceholder()
+    } else{
+      output$mess_plot <- renderPlot(f_plot_mess(mess_data(),input$mess_name))
+      output$mess_plot_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_name))
+      
+    }
   })
 
 }
