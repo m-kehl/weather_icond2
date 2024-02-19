@@ -1,7 +1,18 @@
-f_read_mess <- function(name, mess_meta){
-  mess_base_temp <- "ftp://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/now/"
-  mess_base_prec <- "ftp://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/10_minutes/precipitation/now/"
-  print(length(name))
+f_read_mess <- function(name, mess_meta,panel){
+  url_base <- "ftp://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/"
+  
+  if (panel == "now"){
+    mess_base <- "10_minutes/air_temperature/now/10minutenwerte_TU_"
+    mess_base_prec <- "10_minutes/precipitation/now/10minutenwerte_TU_"
+    mess_end <- "now"
+  } else if (panel == "daily"){
+    mess_base <- paste0(panel,"/kl/recent/tageswerte_KL_")
+    mess_end <- "akt"
+  } else if (panel == "monthly"){
+    mess_base <- paste0(panel,"/kl/recent/monatswerte_KL_")
+    mess_end <- "akt"
+  }
+  
   data_mess_all <- NULL
   
   for (ii in c(1:length(name))){

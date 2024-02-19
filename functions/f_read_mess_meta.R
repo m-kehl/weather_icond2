@@ -13,7 +13,7 @@ f_read_mess_meta <- function(){
   # write(x, "tmp_file.txt", append = TRUE)
   # 
   # 
-  mess_meta <- dataDWD(paste0(mess_base,"zehn_now_tu_Beschreibung_Stationen.txt"),read = T)
+  mess_meta <- dataDWD(paste0(mess_base,"zehn_now_tu_Beschreibung_Stationen.txt"),read = T,quiet = T)
   mess_meta <- arrange(mess_meta,Stationsname)
   mess_meta$Stations_id <- sprintf("%0*d", 5, mess_meta$Stations_id)
   return(mess_meta)
