@@ -157,10 +157,10 @@ ui <- fluidPage(
                    column(3, 
                           selectizeInput(
                             inputId = "mess_name",
-                            label = "Stationsname",
+                            label = "Stationsname/n (max. 5)",
                             choices = c(""),
                             multiple = TRUE,
-                            options = list(maxItems = 2)
+                            options = list(maxItems = 5)
                           ),    
                           
                           p("Datenbasis: ", symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)" )
@@ -186,6 +186,7 @@ ui <- fluidPage(
                                      ),
                             tabPanel("Monatswerte",
                                      value = "monthly",
+                                     plotOutput("mess_plot_monthly"),
                                      p("in Bearbeitung.."))
                           )
                           
@@ -321,33 +322,30 @@ server <- function(input, output, session) {
   mess_meta <- f_read_mess_meta()
   updateSelectizeInput(session,"mess_name",
                     choices = base::unique(mess_meta$Stationsname),
-                    options = list(maxItems = 5)
-  )
-  mess_data <- reactive(f_read_mess(input$mess_name,mess_meta))
+                    options = list(maxItems = 5))
+  
+  mess_data <- reactive(f_read_mess_new(input$mess_name,mess_meta,input$mess_tabsets))
   #availability <- reactive(f_check_data_availability(input$mess_name,mess_meta))
 
   observe({
     if (length(input$mess_name) == 0){
       output$mess_plot <- f_plot_spaceholder()
       output$mess_plot_prec <- f_plot_spaceholder()
+      output$mess_plot_daily <- f_plot_spaceholder()
+      print("first")
     }
-    # else if(length(availability()) > 0){
-    #   output$mess_plot <- f_plot_spaceholder()
-    #   output$mess_plot_prec <- f_plot_spaceholder()
-    #   output$mess_text <- renderText(paste0("Keine Daten für ",availability()," vorhanden"))
-    # }
-    else{
-      output$mess_plot <- renderPlot(f_plot_mess(mess_data(),input$mess_name))
+    else if (input$mess_tabsets == "now"){
+      print("now")
+      output$mess_plot <- renderPlot(f_plot_mess_new(mess_data(),input$mess_tabsets))
       output$mess_plot_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_name))
       output$mess_text <- renderText("")
+    } else if (input$mess_tabsets == "daily"){
+      #print("hello")
+      output$mess_plot_daily <- renderPlot(f_plot_mess_new(mess_data(),input$mess_tabsets))
+    } else if (input$mess_tabsets == "monthly"){
+      #print("hello month")
+      output$mess_plot_monthly <- renderPlot(f_plot_mess_new(mess_data(),input$mess_tabsets))
     }
-  })
-
-  observe({if (input$mess_tabsets == "daily"){
-    print("hello")
-    output$mess_plot_daily <- renderPlot(f_plot_mess_daily(input$mess_name, mess_meta))
-  }
-
   })
 
 
