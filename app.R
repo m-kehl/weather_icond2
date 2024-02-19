@@ -38,6 +38,7 @@ ui <- fluidPage(
       .tabbable ul li:nth-child(1) { float: right; }
       .tabbable ul li:nth-child(2) { float: right; }
       .tabbable ul li:nth-child(3) { float: right; }
+      .tabbable ul li:nth-child(4) { float: right; }
       .skin-black .main-sidebar  {color: #FFFFFF; background-color: #9A373C;}"
       # .tabbable ul li:nth-child(4) { float: left; }
       # .tabbable ul li:nth-child(5) { float: left; }
@@ -54,60 +55,12 @@ ui <- fluidPage(
       useShinyjs(),
         tabsetPanel(
           id = "main_tabsets",
-          
-# tabPanel 1 --------------------------------------------------------------
-          tabPanel("Vorhersage ICON d2",
-                   value = "icond2",
-                   
-                   column(3, 
-                          radioButtons(
-                            inputId = "parameter",
-                            label = "Parameter",
-                            selected = character(0),
-                            choiceNames = c("Regen","Schnee","Temperatur"),
-                            choiceValues = c("rain_gsp","snow_gsp","t_2m")
-                          ),
-                          selectInput(
-                            inputId = "bundesland",
-                            label = "Bundesland",
-                            choices = bundeslaender_coord$bundesland,
-                            multiple = FALSE
-                          ),
-                          radioButtons(
-                            inputId = "point_forecast",
-                            label = "Punktvorhersage",
-                            choiceNames = c("Landeshauptstadt","freie Koordinatenwahl"),
-                            choiceValues = c("bhs","free")
-                          ),
-                          box(id = "box_free_coord", width = '800px',
-                              numericInput("free_lon",label = "longitude", value = 9.05222,
-                                           step = NA, width = "50%"),
-                              numericInput("free_lat",label = "latitude", value = 48.52266,
-                                           step = NA, width = "50%"),
-                          ),
-                          p("Datenbasis: ", symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)" ),
-                          style = "background-color: darkturquoise;",
+          selected = "icond2",
 
-                   ),
-                   column(5,style = "background-color: Azure;",
-                          plotOutput("map_out"),
-                          sliderInput("slider_time", 
-                                      "Zeit", 
-                                      min = ceiling_date(Sys.time(),unit = "hour"),
-                                      max = ceiling_date(Sys.time(),unit = "hour") + 6 * 60 * 60,
-                                      step = 3600,
-                                      value = c(ceiling_date(Sys.time(),unit = "hour")),
-                                      timeFormat = "%a %H:%M", ticks = T, animate = T,
-                                      # loop = T, interval = 1,
-                                      width = "95%"
-                          )),
-                   column(4, style = "background-color: Azure;",
-                          plotOutput("bar_out"),
-                          textOutput("forecast_time"))
-          
-
-  ),
-
+# TabPanel1 ---------------------------------------------------------------
+          tabPanel("Impressum",
+                   value = "impressum",
+          p("in Bearbeitung")),
 # TabPanel 2 --------------------------------------------------------------
 
           tabPanel("Phänologie", 
@@ -192,13 +145,63 @@ ui <- fluidPage(
                                      p("in Bearbeitung.."))
                           )
                           
+                   ) #column
+                   
                    ),
-                   
-                   
-          
+# tabPanel 4 --------------------------------------------------------------
+tabPanel("Vorhersage ICON d2",
+         value = "icond2",
+         
+         column(3, 
+                radioButtons(
+                  inputId = "parameter",
+                  label = "Parameter",
+                  selected = character(0),
+                  choiceNames = c("Regen","Schnee","Temperatur"),
+                  choiceValues = c("rain_gsp","snow_gsp","t_2m")
+                ),
+                selectInput(
+                  inputId = "bundesland",
+                  label = "Bundesland",
+                  choices = bundeslaender_coord$bundesland,
+                  multiple = FALSE
+                ),
+                radioButtons(
+                  inputId = "point_forecast",
+                  label = "Punktvorhersage",
+                  choiceNames = c("Landeshauptstadt","freie Koordinatenwahl"),
+                  choiceValues = c("bhs","free")
+                ),
+                box(id = "box_free_coord", width = '800px',
+                    numericInput("free_lon",label = "longitude", value = 9.05222,
+                                 step = NA, width = "50%"),
+                    numericInput("free_lat",label = "latitude", value = 48.52266,
+                                 step = NA, width = "50%"),
+                ),
+                p("Datenbasis: ", symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)" ),
+                style = "background-color: darkturquoise;",
+                
+         ),
+         column(5,style = "background-color: Azure;",
+                plotOutput("map_out"),
+                sliderInput("slider_time", 
+                            "Zeit", 
+                            min = ceiling_date(Sys.time(),unit = "hour"),
+                            max = ceiling_date(Sys.time(),unit = "hour") + 6 * 60 * 60,
+                            step = 3600,
+                            value = c(ceiling_date(Sys.time(),unit = "hour")),
+                            timeFormat = "%a %H:%M", ticks = T, animate = T,
+                            # loop = T, interval = 1,
+                            width = "95%"
+                )),
+         column(4, style = "background-color: Azure;",
+                plotOutput("bar_out"),
+                textOutput("forecast_time"))
+         
+         
+),
 
-                   
-                   )
+
         )))
       
 
@@ -208,8 +211,12 @@ ui <- fluidPage(
 
 
 server <- function(input, output, session) {
+  # updateTabsetPanel(session,
+  #   "main_tabsets",
+  #   selected = "icond2"
+  # )
 # 
-# Tabset 1 ----------------------------------------------------------------
+# Tabset 4 ----------------------------------------------------------------
 
 
   nwp_data <- reactive(f_read_icond2(f_forecast_time(),input$parameter))
