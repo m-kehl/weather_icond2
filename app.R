@@ -37,7 +37,8 @@ ui <- fluidPage(
       .tabbable > .nav > li[class=active]    > a {background-color: HoneyDew; color:black}
       .tabbable ul li:nth-child(1) { float: right; }
       .tabbable ul li:nth-child(2) { float: right; }
-      .tabbable ul li:nth-child(3) { float: right; }"
+      .tabbable ul li:nth-child(3) { float: right; }
+      .skin-black .main-sidebar  {color: #FFFFFF; background-color: #9A373C;}"
       # .tabbable ul li:nth-child(4) { float: left; }
       # .tabbable ul li:nth-child(5) { float: left; }
       # .tabbable ul li:nth-child(6) { float: left; }"
@@ -47,6 +48,7 @@ ui <- fluidPage(
   #autoWaiter("map_out"),
   #waiterShowOnLoad(spin_fading_circles()),
   titlePanel(title = "ICON D2 forecast", windowTitle = "ICON-D2"),
+  #style = "background-color: darkturquoise;",
   fluidRow(
     mainPanel(
       useShinyjs(),
@@ -84,9 +86,10 @@ ui <- fluidPage(
                                            step = NA, width = "50%"),
                           ),
                           p("Datenbasis: ", symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)" ),
+                          style = "background-color: darkturquoise;",
 
                    ),
-                   column(5, 
+                   column(5,style = "background-color: Azure;",
                           plotOutput("map_out"),
                           sliderInput("slider_time", 
                                       "Zeit", 
@@ -98,7 +101,7 @@ ui <- fluidPage(
                                       # loop = T, interval = 1,
                                       width = "95%"
                           )),
-                   column(4,
+                   column(4, style = "background-color: Azure;",
                           plotOutput("bar_out"),
                           textOutput("forecast_time"))
           
@@ -179,7 +182,8 @@ ui <- fluidPage(
                                      ),
                             tabPanel("Tageswerte",
                                      value = "daily",
-                                     p("in Bearbeitung..")),
+                                     plotOutput("mess_plot_daily")
+                                     ),
                             tabPanel("Monatswerte",
                                      value = "monthly",
                                      p("in Bearbeitung.."))
@@ -339,6 +343,12 @@ server <- function(input, output, session) {
     }
   })
 
+  observe({if (input$mess_tabsets == "daily"){
+    print("hello")
+    output$mess_plot_daily <- renderPlot(f_plot_mess_daily(input$mess_name, mess_meta))
+  }
+
+  })
 
 
 }
