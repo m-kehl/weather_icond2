@@ -1,13 +1,12 @@
-f_plot_mess <- function(mess_data,panel,anzahl = 30){
+f_plot_mess <- function(mess_data,panel,timespan = c(-999,999)){
   par(mar = c(5, 5, 4, 6))
-  
   station_ids <- base::unique(mess_data$STATIONS_ID)
   station_names <- base::unique(mess_data$station_name)
   colours <- c("black","red","green","blue","cyan")
-  
-  plot_start <- nrow(mess_data) - anzahl + 1
-  plot_end <- nrow(mess_data)
-  
+  # 
+  # plot_start <- nrow(mess_data) - anzahl + 1
+  # plot_end <- nrow(mess_data)
+  # 
   more_plots <- TRUE
   count <- 1
   
@@ -26,11 +25,12 @@ f_plot_mess <- function(mess_data,panel,anzahl = 30){
            pch = 16)
     title(format(mess_data$MESS_DATUM[1],"%d.%m.%y"), adj = 0)
   } else if (panel == "daily"){
+    mess_data <- mess_data[mess_data$MESS_DATUM>=timespan[1] & mess_data$MESS_DATUM<=timespan[2],]
     while(more_plots){
-      plot(tail(mess_data$MESS_DATUM[mess_data$STATIONS_ID == station_ids[count]],anzahl),
-           tail(mess_data$TMK.Lufttemperatur[mess_data$STATIONS_ID == station_ids[count]],anzahl),
-           pch = 16,type = "b",xlim <- c(min(tail(mess_data$MESS_DATUM,anzahl)),max(tail(mess_data$MESS_DATUM,anzahl))),
-           ylim <- c(min(tail(mess_data$TMK.Lufttemperatur,anzahl)),max(tail(mess_data$TMK.Lufttemperatur,anzahl))),
+      plot(mess_data$MESS_DATUM[mess_data$STATIONS_ID == station_ids[count]],
+           mess_data$TMK.Lufttemperatur[mess_data$STATIONS_ID == station_ids[count]],
+           pch = 16,type = "b",xlim <- c(min(mess_data$MESS_DATUM),max(mess_data$MESS_DATUM)),
+           ylim <- c(min(mess_data$TMK.Lufttemperatur),max(mess_data$TMK.Lufttemperatur)),
            col = colours[count], xlab = "Messdatum", ylab = "Temperatur [\u00B0C]")
       par(new = TRUE)
       more_plots <- ifelse(count < length(station_names),TRUE,FALSE)

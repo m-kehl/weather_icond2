@@ -161,22 +161,22 @@ ui <- fluidPage(
                             choices = c(""),
                             multiple = TRUE,
                             options = list(maxItems = 5)
-                          ),    
+                          ),
+                          box(id = "box_sincetill", width = '800px',
+                              sliderInput("sincetill",
+                                          "Zeitspanne für Plot",
+                                          min = Sys.Date()-61,
+                                          max = Sys.Date(),
+                                          value = c(Sys.Date()-60,Sys.Date()-1),
+                                          step = 1),
+                          ),
                           
                           p("Datenbasis: ", symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)" )
                    ),
                    column(9,
-                          # tags$head(
-                          #   tags$style(HTML(
-                          #     ".tabbable ul li:nth-child(1) { float: left;}
-                          #     .tabbable ul li:nth-child(2) { float: left; }
-                          #     .tabbable ul li:nth-child(3) { float: left; }"
-                          #   ))
-                          # ),
                           tabsetPanel(id = "mess_tabsets",
                             tabPanel("aktuelle Messungen",
                                      value = "now",
-                                     #textOutput("mess_text"),
                                      plotOutput("mess_plot"),
                                      plotOutput("mess_plot_prec")
                                      ),
@@ -203,9 +203,6 @@ ui <- fluidPage(
       
 
 )
-#todo: terra::extract for point_forecast -> take point from whole germany instead of only square_coord -> how much
-#more time does this take?
-#todo: point_coordinate -> barplot only for landeshauptstadt
 
 # server ------------------------------------------------------------------
 
@@ -316,11 +313,7 @@ server <- function(input, output, session) {
   })
 
 # tabset 3 ----------------------------------------------------------------
-  # observe({ if (input$mess_tabsets == "now"){
-  #     print("monthly")
-  #   }
-  # })
-
+  shinyjs::hideElement("box_sincetill")
   mess_meta <- f_read_mess_meta()
   updateSelectizeInput(session,"mess_name",
                     choices = base::unique(mess_meta$Stationsname),
@@ -334,23 +327,35 @@ server <- function(input, output, session) {
       output$mess_plot <- f_plot_spaceholder()
       output$mess_plot_prec <- f_plot_spaceholder()
       #output$mess_plot_daily <- f_plot_spaceholder()
-      print("first")
+      #print("first")
     }
     else if (input$mess_tabsets == "now"){
-      print("now")
+      #print("now")
       output$mess_plot <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets))
       output$mess_plot_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_tabsets))
+      shinyjs::hideElement("box_sincetill")
       #output$mess_text <- renderText("")
     } else if (input$mess_tabsets == "daily"){
       #print("hello")
-      output$mess_plot_daily <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets))
-      output$mess_plot_daily_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_tabsets))
+      updateSliderInput(session,"sincetill",
+                        min = mess_data()$MESS_DATUM[1],
+                        max = mess_data()$MESS_DATUM[nrow(mess_data())],
+                        #value = c(mess_data()$MESS_DATUM[nrow(mess_data())-59],
+                        #value = c(input$sincetill[1],input$sincetill[2]),
+                        #mess_data()$MESS_DATUM[nrow(mess_data())]),
+                        timeFormat = "%d.%m.%Y")
+      output$mess_plot_daily <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$sincetill))
+      output$mess_plot_daily_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_tabsets,input$sincetill))
+      shinyjs::showElement("box_sincetill")
+      
       } else if (input$mess_tabsets == "monthly"){
       #print("hello month")
       output$mess_plot_monthly <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets))
       output$mess_plot_monthly_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_tabsets))
+      shinyjs::hideElement("box_sincetill")
       }
   })
+  
 
 
 }
