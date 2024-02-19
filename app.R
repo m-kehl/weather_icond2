@@ -182,11 +182,13 @@ ui <- fluidPage(
                                      ),
                             tabPanel("Tageswerte",
                                      value = "daily",
-                                     plotOutput("mess_plot_daily")
+                                     plotOutput("mess_plot_daily"),
+                                     plotOutput("mess_plot_daily_prec")
                                      ),
                             tabPanel("Monatswerte",
                                      value = "monthly",
                                      plotOutput("mess_plot_monthly"),
+                                     plotOutput("mess_plot_monthly_prec"),
                                      p("in Bearbeitung.."))
                           )
                           
@@ -331,21 +333,23 @@ server <- function(input, output, session) {
     if (length(input$mess_name) == 0){
       output$mess_plot <- f_plot_spaceholder()
       output$mess_plot_prec <- f_plot_spaceholder()
-      output$mess_plot_daily <- f_plot_spaceholder()
+      #output$mess_plot_daily <- f_plot_spaceholder()
       print("first")
     }
     else if (input$mess_tabsets == "now"){
       print("now")
       output$mess_plot <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets))
-      output$mess_plot_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_name))
-      output$mess_text <- renderText("")
+      output$mess_plot_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_tabsets))
+      #output$mess_text <- renderText("")
     } else if (input$mess_tabsets == "daily"){
       #print("hello")
       output$mess_plot_daily <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets))
-    } else if (input$mess_tabsets == "monthly"){
+      output$mess_plot_daily_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_tabsets))
+      } else if (input$mess_tabsets == "monthly"){
       #print("hello month")
       output$mess_plot_monthly <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets))
-    }
+      output$mess_plot_monthly_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_tabsets))
+      }
   })
 
 

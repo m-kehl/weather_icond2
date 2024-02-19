@@ -38,42 +38,6 @@ f_read_mess <- function(name, mess_meta,panel){
     data_mess <- arrange(data_mess,MESS_DATUM)
     data_mess_all <- rbind(data_mess_all,data_mess)
   }
-  
-  #print(nrow(data_temp_all))
-  
-  # 
-  # data_mess <- merge(data_temp_all,data_prec_all)
-  
   return(data_mess_all)
   
-  
-  
-  
-  
-  
-  
-  
-  
-  # data.table::fread(paste0(mess_base,"tageswerte_KL_00294_akt.zip")) 
-  # 
-  # 
-  # read.table(unzip(zipfile = paste0(mess_base,"tageswerte_KL_00294_akt.zip"), list = TRUE))
-  # 
-  # oo <- dataDWD(url = paste0(mess_base,"tageswerte_KL_00294_akt.zip"),
-  #               read = TRUE)
-  # 
-  # 
-  # myfile <- paste0(mess_base,"tageswerte_KL_00294_akt.zip")
-  # temp <- tempfile()
-  # download.file(myfile,temp, mode="wb")
-  # unzip(temp)
-  
 }
-# 
-# link <- selectDWD("Potsdam", res="daily", var="kl", per="recent")
-# zz <- dataDWD(link, force=NA, varnames=TRUE)
-# 
-# 
-# 
-# 
-# produkt_klima_tag_20220806_20240206_00259.txt
