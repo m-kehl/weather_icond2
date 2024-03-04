@@ -49,7 +49,7 @@ ui <- fluidPage(
   ## Shiny waiter
   useWaiter(),
   ## Title
-  titlePanel(title = "ICON D2 forecast", windowTitle = "ICON-D2"),# style="background-color:red"),
+  titlePanel(title=div(img(src="laubfrosch.png",width = 100,height = 100), "My Title"), windowTitle = "ICON-D2"),# style="background-color:red"),
 
   ## Main Panel
   fluidRow(
@@ -63,9 +63,15 @@ ui <- fluidPage(
 ## -- B.1 --  TabPanel 1: Impressum ---------------------------------------------------------------
           tabPanel("Impressum",
                    value = "impressum",
+            list(tags$head(tags$style()), 
+                        HTML('<img src="laubfrosch_blau.jpg", height="250px"    
+                        style="float:right"/>','<p style="color:black"></p>')),
             h3("Kontakt"),
             h4("M. Kehl"),
             h4("mkehl.frosch@gmail.com"),
+
+            
+            #img(src="laubfrosch.jpg"),
             h4("Quellcode auf", tags$a(href="https://github.com/m-kehl/weather_icond2", "GitHub")),
             h3("Haftungsausschluss"),
             h4("Der Autor übernimmt keine Gewähr für die Richtigkeit, Genauigkeit, Aktualität, Zuverlässigkeit und Vollständigkeit der Informationen.
