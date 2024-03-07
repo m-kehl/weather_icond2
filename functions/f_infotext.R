@@ -13,12 +13,12 @@ f_infotext <- function(tabset){
                      Organisazion). Weiter Informationen finden Sie ", tags$a(href="https://www.dwd.de/DE/derdwd/messnetz/bodenbeobachtung/_functions/Teasergroup/bodenmessnetz.html?nn=452720", "hier.")
                      ,duration = NULL)
   } else if (tabset == "pheno"){
-    showNotification("Das Phänologische Messnetz des Deutschen Wetterdienst erfasst
+    showNotification(tags$p("Das Phänologische Messnetz des Deutschen Wetterdienst erfasst
                      die Entwicklungsstufen einiger Pflanzenarten und stellt diese
-                     öffentlich zur Verfügung. Weiter Informationen finden Sie ", tags$a(href="https://www.dwd.de/DE/klimaumwelt/klimaueberwachung/phaenologie/phaenologie_node.html", "hier.")#,
-                     #"oder", tags$a(href="https://www.dwd.de/DE/klimaumwelt/klimaueberwachung/phaenologie/phaenologie_node.html", "hier.")
+                     öffentlich zur Verfügung. Weiter Informationen finden Sie ", tags$a(href="https://www.dwd.de/DE/klimaumwelt/klimaueberwachung/phaenologie/phaenologie_node.html", "hier"),
+                     "oder", tags$a(href="https://www.dwd.de/DE/derdwd/messnetz/bodenbeobachtung/_functions/Teasergroup/phaenologie.html;jsessionid=E0C5A71A618B415EB6FE934E7E579586.live21062?nn=452720", "hier.")),
                      
-                     ,duration = NULL)
+                     duration = NULL)
   }
 
   
