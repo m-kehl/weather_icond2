@@ -73,9 +73,10 @@ ui <- fluidPage(
 ## -- B.1 --  TabPanel 1: Impressum ---------------------------------------------------------------
           tabPanel("Impressum",
                    value = "impressum",
-            list(tags$head(tags$style()), 
-                        HTML('<img src="laubfrosch_blau.jpg", height="250px"    
-                        style="float:right"/>','<p style="color:black"></p>')),
+            uiOutput("laubfrosch",style="float:right"),
+            # list(tags$head(tags$style()), 
+            #             HTML('<img src="laubfrosch_blau.jpg", height="250px"    
+            #             style="float:right"/>','<p style="color:black"></p>')),
             h3("Kontakt"),
             h4("M. Kehl"),
             h4("mkehl.laubfrosch@gmx.ch"),
@@ -196,7 +197,7 @@ ui <- fluidPage(
               )
             )
           ),
-## -- B.4 --  TabPanel 4: ICON d2 --------------------------------------------------------------
+## -- B.4 --  TabPanel 4: ICON D2 --------------------------------------------------------------
           tabPanel("Modell ICON-D2",
                    value = "icond2",
             column(3, 
@@ -230,9 +231,9 @@ ui <- fluidPage(
               box(id = "box_free_coord",
                   width = '800px',
                   numericInput("free_lon",label = "longitude", value = 9.05222,
-                                 step = NA, width = "50%"),
+                                 step = 0.5, width = "50%"),
                   numericInput("free_lat",label = "latitude", value = 48.52266,
-                                 step = NA, width = "50%")),
+                                 step = 0.5, width = "50%")),
               p("Datenbasis: ", symbol("copyright"),
                 "Deutscher Wetterdienst (opendata.dwd.de)"),
 
@@ -264,7 +265,22 @@ ui <- fluidPage(
 server <- function(input, output, session) {
 
 ## -- C.1 --  TabPanel 1: Impressum -------------------------------------
-  #coming soon
+  
+  # picture of laubfrosch
+  output$laubfrosch <- renderUI({
+        tags$img(src="laubfrosch_blau.jpg", height=250)
+  })
+  
+  onclick(
+    "laubfrosch", 
+    {#showNotification(h4("Aua!"), duration = 1,closeButton = FALSE, type = "warning")
+      
+      # Update picture of laubfrosch on click -> changing color
+      output$laubfrosch <- renderUI({
+            tags$img(src="laubfrosch_rot.jpg", height=250)
+      })
+    }
+  )
 ## -- C.2 --  TabPanel 2: phenology  ----------------------------------------------------------------
   ## read and process phenology data
   # read meta data
