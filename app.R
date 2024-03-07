@@ -43,13 +43,23 @@ ui <- fluidPage(
       .tabbable ul li:nth-child(1) { float: right; }
       .tabbable ul li:nth-child(2) { float: right; }
       .tabbable ul li:nth-child(3) { float: right; }
-      .tabbable ul li:nth-child(4) { float: right; }"
+      .tabbable ul li:nth-child(4) { float: right; }
+      .shiny-notification {
+        position:fixed;
+        top: calc(13%);
+        left: calc(18%);
+        max-width: 450px;
+        background-color: HoneyDew;
+        color: black;
+        border-color: aquamarine
+      }
+      "
     ))
   ),
   ## Shiny waiter
   useWaiter(),
   ## Title
-  titlePanel(title=div(img(src="laubfrosch.png",width = 100,height = 100), "My Title"), windowTitle = "ICON-D2"),# style="background-color:red"),
+  titlePanel(title=div(img(src="laubfrosch.png",width = 100,height = 100), "Prognose- und Messdaten"), windowTitle = "ICON-D2"),# style="background-color:red"),
 
   ## Main Panel
   fluidRow(
@@ -68,7 +78,7 @@ ui <- fluidPage(
                         style="float:right"/>','<p style="color:black"></p>')),
             h3("Kontakt"),
             h4("M. Kehl"),
-            h4("mkehl.frosch@gmail.com"),
+            h4("mkehl.laubfrosch@gmx.ch"),
 
             
             #img(src="laubfrosch.jpg"),
@@ -90,6 +100,17 @@ ui <- fluidPage(
           tabPanel("Phänologie", 
                    value = "pheno",
             column(3, 
+                   br(),
+                   column(1,
+                          
+                    actionButton("info_pheno", label = NULL, icon = icon("info"),# class = "btn-secondary",
+                                       style="color: black; background-color: HoneyDew; border-color: aquamarine",
+                                       widht = "10%")),
+                   column(10,h4("Phänologie",width = "90%")),
+                   
+                   br(),
+                   br(),
+                   hr(),
                selectInput(
                 inputId = "pflanzen",
                 label = "Pflanzenart",
@@ -126,6 +147,18 @@ ui <- fluidPage(
           tabPanel("Messdaten",
                    value = "mess",
             column(3, 
+                   br(),
+                   column(1,
+                          
+                    actionButton("info_mess", label = NULL, icon = icon("info"),# class = "btn-secondary",
+                                 style="color: black; background-color: HoneyDew; border-color: aquamarine",
+                                 widht = "10%")),
+                   column(10,h4("Messdaten",width = "90%")),
+                   
+                   br(),
+                   br(),
+                   hr(),
+                   
               selectizeInput(
                inputId = "mess_name",
                label = "Stationsname/n (max. 5)",
@@ -164,9 +197,20 @@ ui <- fluidPage(
             )
           ),
 ## -- B.4 --  TabPanel 4: ICON d2 --------------------------------------------------------------
-          tabPanel("Vorhersage ICON d2",
+          tabPanel("Modell ICON-D2",
                    value = "icond2",
             column(3, 
+                   br(),
+                  column(1,
+                          
+                   actionButton("info_icond2", label = NULL, icon = icon("info"),# class = "btn-secondary",
+                                       style="color: black; background-color: HoneyDew; border-color: aquamarine",
+                                       widht = "10%")),
+                   column(10,h4("Regionalmodell ICON-D2",width = "90%")),
+
+                  br(),
+                  br(),
+                  hr(),
               radioButtons(
                inputId = "parameter",
                label = "Parameter",
@@ -253,6 +297,11 @@ server <- function(input, output, session) {
   plant_data_processed <- reactive(
     f_process_plants(plant_data(),input$phase,input$station_name,plant_meta)
     )
+
+  ## show information box
+  observeEvent(input$info_pheno, {
+    f_infotext(input$main_tabsets)
+  })
   
   ## plot phenology data
   observe({
@@ -277,7 +326,7 @@ server <- function(input, output, session) {
 ## -- C.3 --  TabPanel 3: measurement data ----------------------------------------------------------------
   # update UI
   shinyjs::hideElement("box_sincetill")
-  
+
   ## read and process measurement data
   # read meta data
   mess_meta <- f_read_mess_meta()
@@ -288,6 +337,11 @@ server <- function(input, output, session) {
   # read measurement data
   mess_data <- reactive(f_read_mess(input$mess_name,mess_meta,input$mess_tabsets))
 
+  ## show information box
+  observeEvent(input$info_mess, {
+    f_infotext(input$main_tabsets)
+  })
+  
   ## plot measurement data
   observe({
     # text-plot if no station is chosen in UI
@@ -317,8 +371,8 @@ server <- function(input, output, session) {
       shinyjs::hideElement("box_sincetill")
     }
   })
-  
-  
+
+
 ## -- C.4 --  TabPanel 4: ICON d2  ----------------------------------------------------------------
   ## read and process forecast data
   # read icon d2 forecast data
@@ -338,7 +392,12 @@ server <- function(input, output, session) {
   )
   # specify when forecast data was calculated
   output$forecast_time <- renderText(paste0("Forecast time is: ", f_forecast_time()))
-  
+
+  ## show information box
+  observeEvent(input$info_icond2, {
+    f_infotext(input$main_tabsets)
+  })
+
   ## plot forecast data
   observe({
     # text-plot if no parameter is chosen in UI
@@ -364,15 +423,15 @@ server <- function(input, output, session) {
           f_barplot_icond2_placeholder()
         )
       }
-      
+
     }
   })
-  
+
   ## adapt UI if user wishes free coordinates
   observeEvent(input$point_forecast,{
     shinyjs::toggle("box_free_coord")
-    
+
   })
-  
+
 }
 shinyApp(ui, server)
