@@ -22,7 +22,7 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
       color[ii] <- "cadetblue"
       barplot(point_forecast[1,], col = color, axis.lty = 1, las = 2,
               names.arg = format(converter$time[2:nrow(converter)],format ="%a %H:%M" ),
-              ylab = "[mm / h]", ylim = c(0,max(2,point_forecast[1,])))
+              ylab = "[mm / h]", ylim = c(0,max(2,point_forecast[1,]+0.5)))
       title(paste0("Punktvorhersage: ",title_help))
       #axis.POSIXct(1,converter$time[2:49],format ="%a %H:%M")
     } else{
