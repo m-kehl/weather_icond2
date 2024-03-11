@@ -323,7 +323,7 @@ server <- function(input, output, session) {
   observe({
     #text-plot if no species is chosen in UI
     if (input$pflanzen == ""){
-      output$plant_out <- renderPlot(f_plot_spaceholder())
+      output$plant_out <- renderPlot(f_plot_placeholder())
       #plot phenology data for species chosen in UI
     }else{
       output$plant_out <- renderPlot(f_plot_plants(plant_data_processed(),input$pflanzen))
@@ -362,8 +362,8 @@ server <- function(input, output, session) {
   observe({
     # text-plot if no station is chosen in UI
     if (length(input$mess_name) == 0){
-      output$mess_plot <- f_plot_spaceholder()
-      output$mess_plot_prec <- f_plot_spaceholder()
+      output$mess_plot <- renderPlot(f_plot_placeholder())
+      output$mess_plot_prec <- renderPlot(f_barplot_icond2_placeholder())
       # plot measurement data for recent measurements
     } else if (input$mess_tabsets == "now"){
       output$mess_plot <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets))
@@ -419,7 +419,7 @@ server <- function(input, output, session) {
     # text-plot if no parameter is chosen in UI
     if (length(input$parameter) == 0){
       output$map_out <- renderPlot(
-        f_plot_spaceholder()
+        f_plot_placeholder()
       )
       # plot parameter chosen in UI on map
     } else{
