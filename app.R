@@ -1,7 +1,7 @@
 #ShinyApp to visualise measurement and forecast weather data provided
-#to the public by DWD (opendata.dwd.de)
+#to the public by DWD (Deutscher Wetterdienst; opendata.dwd.de)
 #
-#20.02.2024 - ShinyApp created by m-kehl (rudolfsinger36@gmail.com)
+#20.02.2024 - ShinyApp created by m-kehl (mkehl.laubfrosch@gmx.ch)
 
 
 ## -- A -- Preparation -----------------------------------------------------
@@ -15,7 +15,6 @@ library(waiter)
 
 library(rdwd)
 library(terra)
-library(miceadds)
 library(lubridate)
 library(RCurl)
 library(curl)
@@ -23,19 +22,17 @@ library(R.utils)
 library(dplyr)
 library(r2symbols)
 
-## options
-#options(encoding = "latin1")
-
 ## source functions and input
-source.all(paste0(getwd(),"/functions/"))
+file.sources = paste0(getwd(),"/functions/",
+                      list.files(paste0(getwd(),"/functions/"),pattern="*.R"))
+sapply(file.sources,source,.GlobalEnv)
 source(paste0(getwd(),"/input.R"),local = TRUE)
 
+##set local system
 Sys.setlocale("LC_TIME", "German")
 
 
-## -- B -- User Inferface --------------------------------------------------
-
-
+## -- B -- User Interface --------------------------------------------------
 ui <- fluidPage(
   tags$head(
     ## define color and position for tabsets
@@ -365,7 +362,9 @@ server <- function(input, output, session) {
     # text-plot if no station is chosen in UI
     if (length(input$mess_name) == 0){
       output$mess_plot <- renderPlot(f_plot_placeholder())
-      output$mess_plot_prec <- renderPlot(f_barplot_icond2_placeholder())
+      output$mess_plot_daily <- renderPlot(f_plot_placeholder())
+      output$mess_plot_monthly <- renderPlot(f_plot_placeholder())
+      #output$mess_plot_prec <- renderPlot(f_plot_placeholder())
       # plot measurement data for recent measurements
     } else if (input$mess_tabsets == "now"){
       output$mess_plot <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets))
