@@ -30,6 +30,8 @@ library(r2symbols)
 source.all(paste0(getwd(),"/functions/"))
 source(paste0(getwd(),"/input.R"),local = TRUE)
 
+Sys.setlocale("LC_TIME", "German")
+
 
 ## -- B -- User Inferface --------------------------------------------------
 
