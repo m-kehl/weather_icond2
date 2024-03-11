@@ -24,7 +24,7 @@ library(dplyr)
 library(r2symbols)
 
 ## options
-options(encoding = "latin1")
+#options(encoding = "latin1")
 
 ## source functions and input
 source.all(paste0(getwd(),"/functions/"))
@@ -51,7 +51,7 @@ ui <- fluidPage(
         max-width: 450px;
         background-color: HoneyDew;
         color: black;
-        border-color: aquamarine
+        border-color: aquamarine;
       }
       "
     ))
@@ -59,7 +59,7 @@ ui <- fluidPage(
   ## Shiny waiter
   useWaiter(),
   ## Title
-  titlePanel(title=div(img(src="laubfrosch.png",width = 100,height = 100), "Prognose- und Messdaten"), windowTitle = "ICON-D2"),# style="background-color:red"),
+  titlePanel(title=div(img(src="laubfrosch.jpg",width = 100,height = 100), "Prognose- und Messdaten"), windowTitle = "ICON-D2"),# style="background-color:red"),
 
   ## Main Panel
   fluidRow(
