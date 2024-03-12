@@ -24,7 +24,7 @@ f_plot_mess <- function(mess_data,resolution,timespan = c(-999,999)){
       plot(mess_data$MESS_DATUM[mess_data$STATIONS_ID == station_ids[count]],
            mess_data$TT_10[mess_data$STATIONS_ID == station_ids[count]],
            pch = 16,type = "b",xlim <- c(min(mess_data$MESS_DATUM),max(mess_data$MESS_DATUM)),
-           ylim <- c(min(mess_data$TT_10),max(mess_data$TT_10)),
+           ylim <- c(min(mess_data$TT_10,na.rm = T),max(mess_data$TT_10,na.rm = T)),
            col = colours[count], xlab = "Messzeit (UTC)", ylab = "Temperatur [\u00B0C]")
       par(new = TRUE)
       more_plots <- ifelse(count < length(station_names),TRUE,FALSE)
@@ -39,7 +39,7 @@ f_plot_mess <- function(mess_data,resolution,timespan = c(-999,999)){
       plot(mess_data$MESS_DATUM[mess_data$STATIONS_ID == station_ids[count]],
            mess_data$TMK.Lufttemperatur[mess_data$STATIONS_ID == station_ids[count]],
            pch = 16,type = "b",xlim <- c(min(mess_data$MESS_DATUM),max(mess_data$MESS_DATUM)),
-           ylim <- c(min(mess_data$TMK.Lufttemperatur),max(mess_data$TMK.Lufttemperatur)),
+           ylim <- c(min(mess_data$TMK.Lufttemperatur,na.rm = T),max(mess_data$TMK.Lufttemperatur,na.rm=T)),
            col = colours[count], xlab = "Messdatum", ylab = "Temperatur [\u00B0C]")
       par(new = TRUE)
       more_plots <- ifelse(count < length(station_names),TRUE,FALSE)
@@ -53,7 +53,7 @@ f_plot_mess <- function(mess_data,resolution,timespan = c(-999,999)){
       plot(mess_data$MESS_DATUM[mess_data$STATIONS_ID == station_ids[count]],
            mess_data$MO_TT.Lufttemperatur[mess_data$STATIONS_ID == station_ids[count]],
            pch = 16,type = "b",xlim <- c(min(mess_data$MESS_DATUM),max(mess_data$MESS_DATUM)),
-           ylim <- c(min(mess_data$MO_TT.Lufttemperatur),max(mess_data$MO_TT.Lufttemperatur)),
+           ylim <- c(min(mess_data$MO_TT.Lufttemperatur,na.rm = T),max(mess_data$MO_TT.Lufttemperatur,na.rm = T)),
            col = colours[count], xlab = "Messmonat", ylab = "Temperatur [\u00B0C]")
       par(new = TRUE)
       more_plots <- ifelse(count < length(station_names),TRUE,FALSE)

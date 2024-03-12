@@ -24,7 +24,7 @@ f_plot_mess_prec <- function(mess_data,resolution,timespan = c(-999,999)){
       plot(mess_data$MESS_DATUM[mess_data$STATIONS_ID == station_ids[count]],
            mess_data$RF_10[mess_data$STATIONS_ID == station_ids[count]],
            pch = 8, type = "p",xlim <- c(min(mess_data$MESS_DATUM),max(mess_data$MESS_DATUM)),
-           ylim <- c(min(mess_data$RF_10)-10,max(mess_data$RF_10)),
+           ylim <- c(min(mess_data$RF_10,na.rm = T)-10,max(mess_data$RF_10,na.rm = T)),
            col = colours[count], xlab = "Messzeit (UTC)", ylab = "relative Feuchte [%]")
       par(new = TRUE)
       plot(mess_data$MESS_DATUM[mess_data$STATIONS_ID == station_ids[count]] + (count-1)*60,
@@ -44,7 +44,7 @@ f_plot_mess_prec <- function(mess_data,resolution,timespan = c(-999,999)){
       plot(mess_data$MESS_DATUM[mess_data$STATIONS_ID == station_ids[count]],
            mess_data$UPM.Relative_Feuchte[mess_data$STATIONS_ID == station_ids[count]],
            pch = 8, type = "p",xlim <- c(min(mess_data$MESS_DATUM),max(mess_data$MESS_DATUM)),
-           ylim <- c(min(mess_data$UPM.Relative_Feuchte)-30,max(mess_data$UPM.Relative_Feuchte)),
+           ylim <- c(min(mess_data$UPM.Relative_Feuchte-30,40,na.rm = T),max(mess_data$UPM.Relative_Feuchte,100,na.rm = T)),
            col = colours[count], xlab = "Messdatum", ylab = "relative Feuchte [%]")
       par(new = TRUE)
       plot(mess_data$MESS_DATUM[mess_data$STATIONS_ID == station_ids[count]] + (count-1)*60*60,
