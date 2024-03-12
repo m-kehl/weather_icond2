@@ -1,3 +1,11 @@
+## file for all fixed data used by app.R
+# -> federal states with according state capital and coordinates
+# -> names of all plantspecies for which phenological data are available at
+#    opendata.dwd.de
+# -> all phase names and according phase ids for which phenological data are
+#    available
+
+## federal states with according state capital and coordinates
 bundeslaender_coord <- data.frame(
   bundesland = c("Baden-Wuerttemberg", "Bayern","Berlin",                
                  "Brandenburg", "Bremen", "Hamburg",               
@@ -19,6 +27,8 @@ bundeslaender_coord <- data.frame(
                 53.635502,52.375892,51.227741,49.992862,49.240157,51.050409,52.120533,
                 54.323293,50.984768))
 
+## names of all plantspecies for which phenological data are available at
+#    opendata.dwd.de
 pflanzen_arten <- c("","Beifuss","Busch-Windroeschen","Eberesche","Esche",
                     "Europaeische-Laerche","Falscher_Jasmin","",
                     "Fichte","Flieder","Forsythie","Goldregen","Haenge-Birke",
@@ -31,7 +41,8 @@ pflanzen_arten <- c("","Beifuss","Busch-Windroeschen","Eberesche","Esche",
                     "Wiesen-Fuchsschwanz",
                     "Wiesen-Knaeuelgras","Winter-Linde")
 
-#https://opendata.dwd.de/climate_environment/CDC/observations_germany/phenology/annual_reporters/wild/historical/PH_Beschreibung_Phasendefinition_Jahresmelder_Wildwachsende_Pflanze.txt
+## all phase names and according phase ids for which phenological data are
+#    available (source: https://opendata.dwd.de/climate_environment/CDC/observations_germany/phenology/annual_reporters/wild/historical/PH_Beschreibung_Phasendefinition_Jahresmelder_Wildwachsende_Pflanze.txt)
 phenology_phases <- data.frame(phase = c("Beginn der Bluete","Blattfall (Herbst)",
                                          "Beginn Austrieb","Erste reife Fruechte",
                                          "Blattentfaltung","Blattverfaerbung (Herbst)",
@@ -40,11 +51,5 @@ phenology_phases <- data.frame(phase = c("Beginn der Bluete","Blattfall (Herbst)
                                             3,62,
                                             4,31,
                                             6))
-
+# sort phenology_phases
 phenology_phases <- arrange(phenology_phases,phase)
-
-
-
-#copy_right
-# text_copy_right <- paste0(symbol("copyright"), "hello")
-# test <- "Registered\U00AE"
