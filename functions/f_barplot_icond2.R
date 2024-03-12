@@ -1,15 +1,30 @@
 f_barplot_icond2 <- function(point_forecast,input_time,parameter,
-                             input_pf,bl){
+                             type,state){
+  ## function to create barplot with icon d2 point forecast data
+  # - point_forecast: matrix; data of icon d2 point forecast
+  # - input_time:     POSIXct; date/time to focus on in barplot
+  # - parameter:      character; icon d2 abbreviation for forecasted parameter
+  #                        options: "rain_gsp" for rain
+  #                                 "snow_gsp" for snow
+  #                                 "t_2m"     for temperature 2m above ground
+  # - type:           character; either "bhs" (abbreviation for Bundeshauptstadt) or "free"
+  #                    -> needed to specify barplot title
+  # - state:          character; name of federal state in which place for point
+  #                    forecast lies
 
-  if (input_pf == "free"){
+  ##plot basics
+  # title specification
+  if (type == "free"){
     title_help = "nach Koord."
   }else{
-    title_help = bl
+    title_help = state
   }
   
+  # define on which time barplot starts
   converter <- f_time_converter()
   ii <- converter[[parameter]][converter$time == input_time]
   
+  ## placeholder plot -> is shown if no point forecast data is available
   if (is.na(point_forecast[1])){
     plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
     
@@ -17,6 +32,7 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
                                  "of the available range."), 
          cex = 1.6, col = "black")
   } else{
+    ## plot rain/snow
     if (parameter %in% c("rain_gsp", "snow_gsp")){
       color <- rep("blue",ncol(point_forecast))
       color[ii] <- "cadetblue"
@@ -24,8 +40,8 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
               names.arg = format(converter$time[2:nrow(converter)],format ="%a %H:%M" ),
               ylab = "[mm / h]", ylim = c(0,max(2,point_forecast[1,]+0.5)))
       title(paste0("Punktvorhersage: ",title_help))
-      #axis.POSIXct(1,converter$time[2:49],format ="%a %H:%M")
     } else{
+      # plot temperature
       color <- rep("violet",ncol(point_forecast))
       color[ii] <- "darkviolet"
       plot(converter$time,point_forecast[1,], col = color, pch = 16, xaxt="n",
@@ -37,17 +53,4 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
       title(paste0("Punktvorhersage: ",title_help))
     }
   }
-  # point_forecast_rain <- terra::extract(diff_forecasts_rain, point_coord, raw = TRUE, ID = FALSE)
-  # point_forecast_temp <- terra::extract(temp, point_coord, raw = TRUE, ID = FALSE)
-
-  # barplot(point_forecast_rain[1,], col = "blue", names.arg = c(7:29))
-  # plot(point_forecast_temp[1,], col = "red")
-  
-  #barplot for rain and snow together
-  # point_forecast_together <- t(as.matrix(data.frame(A = point_forecast[2,],B=point_forecast_rain[2,])))                
-  # barplot(point_forecast_together, names.arg = c(7:23,0:5), col = c("cyan","blue"),
-  #         legend = c("snow","rain"))
-  # par(new = TRUE)
-  # plot(point_forecast_temp[2,],axes = FALSE, type = "l", col = "red")
-  # axis(side=4, col = "red", at = pretty(range(point_forecast_temp[2,])))
 }

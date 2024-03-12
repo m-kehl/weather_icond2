@@ -1,6 +1,11 @@
-f_infotext <- function(tabset){
-  #options(encoding = "latin1")
-  if (tabset == "icond2"){
+f_infotext <- function(data_kind){
+  ## function to return an information text about opensource data
+  # - data_kind: character; defines about what the information text should be
+  #                         options: "icond2" -> forecast model ICON D2
+  #                                  "mess"   -> measurement surface data
+  #                                  "pheno"  -> phenology data
+  
+  if (data_kind == "icond2"){
     showNotification(tags$p("ICON-D2 ist ein numerisches Modell zur Wetterprognose. Die
     Vorhersagen werden 6x t\u00E4glich durch den Deutschen Wetterdienst berechnet und
     \u00F6ffentlich zur Verf\u00FCgung gestellt. Weiter Informationen finden Sie ", tags$a(href="https://www.dwd.de/DE/forschung/wettervorhersage/num_modellierung/01_num_vorhersagemodelle/regionalmodell_icon_d2.html?nn=512942", "hier."),
@@ -11,7 +16,7 @@ f_infotext <- function(tabset){
                             sowie als Punktvorhersage f\u00FCr die jeweilige Landeshauptstadt
                             oder ein frei w\u00E4hlbares Koordinatenpaar.")
                      ,duration = NULL)
-  }else if (tabset == "mess"){
+  }else if (data_kind == "mess"){
     showNotification(tags$p("Die Messdaten der Bodenparameter, wie beispielsweise
                      Temperatur oder Niederschlag, werden f\u00FCr Deutschland vom 
                      Deutschen Wetterdienst durch dessen Bodenmessnetz erfasst und
@@ -23,7 +28,7 @@ f_infotext <- function(tabset){
                             (Aufl\u00F6sung 10-Minuten), die Tageswerte und die Monatswerte
                             f\u00FCr maximal f\u00FCnf Stationen gleichzeitig.")
                      ,duration = NULL)
-  } else if (tabset == "pheno"){
+  } else if (data_kind == "pheno"){
     showNotification(tags$p("Das Ph\u00E4nologische Messnetz des Deutschen Wetterdienst erfasst
                      die Entwicklungsstufen einiger Pflanzenarten und stellt diese
                      \u00F6ffentlich zur Verf\u00FCgung. Weiter Informationen finden Sie ", tags$a(href="https://www.dwd.de/DE/klimaumwelt/klimaueberwachung/phaenologie/phaenologie_node.html", "hier"),
@@ -32,9 +37,6 @@ f_infotext <- function(tabset){
                      "Je nach Pflanzenart werden unterschiedliche Entwicklungsstufen
                       (ph\u00E4nologische Phasen) registiert. Hier dargestellt werden k\u00F6nnen
                       alle aufgenommenen Pflanzenarten und Phasen je Station."),
-                     
                      duration = NULL)
   }
-
-  
 }
