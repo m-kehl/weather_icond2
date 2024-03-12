@@ -1,18 +1,29 @@
-f_read_mess <- function(name, mess_meta,panel){
+f_read_mess <- function(name, mess_meta,resolution){
+  ## function to read measurement surface data (like ie temperature, precipitation)
+  # - name:       array; names of measurement stations (characters)
+  # - mess_meta:  data.frame; meta data for measurement surface data, result of 
+  #                           f_read_mess_meta.R
+  # - resolution: character; to define which measurement data are downloaded,
+  #                          options: "now" for today's most recent measurement data
+  #                                   "daily" for daily measurement data
+  #                                   "monthly" for monthly measurement data
+  
+  #path definitions for download source
   url_base <- "ftp://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/"
   
-  if (panel == "now"){
+  if (resolution == "now"){
     mess_base <- "10_minutes/air_temperature/now/10minutenwerte_TU_"
     mess_base_prec <- "10_minutes/precipitation/now/10minutenwerte_nieder_"
     mess_end <- "_now"
-  } else if (panel == "daily"){
-    mess_base <- paste0(panel,"/kl/recent/tageswerte_KL_")
+  } else if (resolution == "daily"){
+    mess_base <- paste0(resolution,"/kl/recent/tageswerte_KL_")
     mess_end <- "_akt"
-  } else if (panel == "monthly"){
-    mess_base <- paste0(panel,"/kl/recent/monatswerte_KL_")
+  } else if (resolution == "monthly"){
+    mess_base <- paste0(resolution,"/kl/recent/monatswerte_KL_")
     mess_end <- "_akt"
   }
   
+  #loop to load and concatenate measurement data for all stations
   data_mess_all <- NULL
   
   for (ii in c(1:length(name))){
@@ -24,7 +35,7 @@ f_read_mess <- function(name, mess_meta,panel){
       data_mess <- NULL
     }
     
-    if (panel == "now"){
+    if (resolution == "now"){
       source_prec <- paste0(url_base,mess_base_prec,mess_meta$Stations_id[mess_meta$Stationsname == name[ii]],mess_end,".zip")
       
       if(url.exists(source_prec)){
@@ -39,5 +50,4 @@ f_read_mess <- function(name, mess_meta,panel){
     data_mess_all <- rbind(data_mess_all,data_mess)
   }
   return(data_mess_all)
-  
 }
