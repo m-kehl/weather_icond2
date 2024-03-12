@@ -29,7 +29,7 @@ f_infotext <- function(data_kind){
                             f\u00FCr maximal f\u00FCnf Stationen gleichzeitig.")
                      ,duration = NULL)
   } else if (data_kind == "pheno"){
-    showNotification(tags$p("Das Ph\u00E4nologische Messnetz des Deutschen Wetterdienst erfasst
+    showNotification(tags$p("Das Ph\u00E4nologische Messnetz des Deutschen Wetterdienstes erfasst
                      die Entwicklungsstufen einiger Pflanzenarten und stellt diese
                      \u00F6ffentlich zur Verf\u00FCgung. Weiter Informationen finden Sie ", tags$a(href="https://www.dwd.de/DE/klimaumwelt/klimaueberwachung/phaenologie/phaenologie_node.html", "hier"),
                      "oder", tags$a(href="https://www.dwd.de/DE/derdwd/messnetz/bodenbeobachtung/_functions/Teasergroup/phaenologie.html;jsessionid=E0C5A71A618B415EB6FE934E7E579586.live21062?nn=452720", "hier."),
