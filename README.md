@@ -1,2 +1,2 @@
 # weather_icond2
-RShiny project to visualize icon d2 weather data
+RShiny project to visualize open source data published by DWD (Deutscher Wetterdienst; opendata.dwd.de)
