@@ -4,6 +4,7 @@
 #    opendata.dwd.de
 # -> all phase names and according phase ids for which phenological data are
 #    available
+# -> meteorological parameters with according names, units, axes for plot, etc
 
 ## federal states with according state capital and coordinates
 bundeslaender_coord <- data.frame(
@@ -53,3 +54,16 @@ phenology_phases <- data.frame(phase = c("Beginn der Bluete","Blattfall (Herbst)
                                             6))
 # sort phenology_phases
 phenology_phases <- arrange(phenology_phases,phase)
+
+## meteorological parameters with according names, units, axes for plot, etc
+meteo_parameters <- data.frame(parameter = c("Temperatur","Niederschlag",
+                                             "relative Feuchte", "Sonnenscheindauer",
+                                             "Globalstrahlung","Druck"),
+                               unit = c("\u00B0C", "mm", "%", "min", "??","?hPa"),
+                               dwd_name_now = c("TT_10","RWS_10","RF_10","??","??","PP_10"),
+                               dwd_name_daily = c("TMK.Lufttemperatur","RSK.Niederschlagshoehe",
+                                                  "UPM.Relative_Feuchte","SDK.Sonnenscheindauer",
+                                                  "??","PM.Luftdruck"),
+                               dwd_name_monthly = c("MO_TT.Lufttemperatur","MO_RR.Niederschlagshoehe",
+                                                    "??","MO_SD_S.Sonnenscheindauer",
+                                                    "??","??"))
