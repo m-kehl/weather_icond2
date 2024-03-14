@@ -31,19 +31,17 @@ f_plot_mess <- function(mess_data,resolution,parameters, timespan = c(-999,999))
   #attr(mess_data$MESS_DATUM,"tzone") <- "GMT"
   #mess_data$MESS_DATUM <- strftime(mess_data$MESS_DATUM,format="%H:%M:%S",tz = "UTC")
   
-  # for (mm in c(1:length(parameters))){
-  #   if (!(meteo_parameters$dwd_name_now[meteo_parameters$parameter==parameters[mm]] %in% colnames(mess_data))){
-  #     parameters <- parameters[-c(parameters[mm])]
-  #   }x <- x[! x %in% c('Mavs', 'Spurs')]
-  # }
+  ###umschreiben sodass if (param != XX) schleife unten nicht gebraucht wird, dafür
+  ## hier oben fehlende Parameter aus array nehmen
+  ## make pch symbols via unicode and unicode as well :)
   
   if (resolution == "now"){
     while(more_plots){
       param <- meteo_parameters$dwd_name_now[meteo_parameters$parameter==parameters[1]]
       print(param)
       print(min(mess_data$MESS_DATUM, na.rm = T))
+      mess_data_plot <- mess_data[mess_data$STATIONS_ID == station_ids[count],]
       if (param != "XX"){
-        mess_data_plot <- mess_data[mess_data$STATIONS_ID == station_ids[count],]
         plot(mess_data_plot$MESS_DATUM,
              array(mess_data_plot[param][[1]]),
              pch = meteo_parameters$pch[meteo_parameters$parameter==parameters[1]],
