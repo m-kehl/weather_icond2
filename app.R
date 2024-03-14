@@ -174,6 +174,22 @@ ui <- fluidPage(
                 choices = c(""),
                 multiple = TRUE,
                 options = list(maxItems = 5)),
+               selectizeInput(
+                inputId = "parameter_plot1",
+                label = "Parameter für Plot 1 (max. 2)",
+                choices = c(meteo_parameters$parameter),
+                multiple = TRUE,
+                options = list(maxItems = 2),
+                selected = c("Temperatur")
+               ),
+               selectizeInput(
+                 inputId = "parameter_plot2",
+                 label = "Parameter für Plot 2 (max. 2)",
+                 choices = c(meteo_parameters$parameter),
+                 multiple = TRUE,
+                 options = list(maxItems = 2),
+                 selected = c("Niederschlag","relative Feuchte")
+               ),
                box(id = "box_sincetill",
                 width = '800px',
                 sliderInput("sincetill",
@@ -370,7 +386,7 @@ server <- function(input, output, session) {
       output$mess_plot_monthly <- renderPlot(f_plot_placeholder())
     } else if (input$mess_tabsets == "now"){
       # plot measurement data for recent measurements
-      output$mess_plot <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets))
+      output$mess_plot <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot1))
       output$mess_plot_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_tabsets))
       shinyjs::hideElement("box_sincetill")
     } else if (input$mess_tabsets == "daily"){
