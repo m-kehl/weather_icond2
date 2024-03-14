@@ -24,7 +24,12 @@ f_plot_mess <- function(mess_data,resolution,parameters, timespan = c(-999,999))
   more_plots <- TRUE
   count <- 1
   
-  attr(mess_data$MESS_DATUM,"tzone") <- "UTC"
+  #set to UTC
+  get_zime_zone <- Sys.getenv()
+  Sys.setenv(TZ='GMT')
+  
+  #attr(mess_data$MESS_DATUM,"tzone") <- "GMT"
+  #mess_data$MESS_DATUM <- strftime(mess_data$MESS_DATUM,format="%H:%M:%S",tz = "UTC")
   
   # for (mm in c(1:length(parameters))){
   #   if (!(meteo_parameters$dwd_name_now[meteo_parameters$parameter==parameters[mm]] %in% colnames(mess_data))){
@@ -36,6 +41,7 @@ f_plot_mess <- function(mess_data,resolution,parameters, timespan = c(-999,999))
     while(more_plots){
       param <- meteo_parameters$dwd_name_now[meteo_parameters$parameter==parameters[1]]
       print(param)
+      print(min(mess_data$MESS_DATUM, na.rm = T))
       if (param != "XX"){
         mess_data_plot <- mess_data[mess_data$STATIONS_ID == station_ids[count],]
         plot(mess_data_plot$MESS_DATUM,
@@ -58,6 +64,7 @@ f_plot_mess <- function(mess_data,resolution,parameters, timespan = c(-999,999))
       if (length(parameters) > 1){
         param <- meteo_parameters$dwd_name_now[meteo_parameters$parameter==parameters[2]]
         print(param)
+        print(min(mess_data$MESS_DATUM, na.rm = T))
         if (param != "XX"){
           plot(mess_data_plot$MESS_DATUM + (count-1)*60,
                array(mess_data_plot[param][[1]]),
@@ -76,7 +83,7 @@ f_plot_mess <- function(mess_data,resolution,parameters, timespan = c(-999,999))
           graphics::box()
           axis(side=4, col = "black", ylim =c(min(mess_data[param],na.rm = T),max(mess_data[param],na.rm = T)))
           axis.POSIXct(side=1, xlim = c(min(mess_data$MESS_DATUM, na.rm = T),
-                                        max(mess_data$MESS_DATUM, na.rm = T)),tz = "UTC")
+                                        max(mess_data$MESS_DATUM, na.rm = T)))
           mtext(paste0(meteo_parameters$parameter[meteo_parameters$parameter==parameters[2]]," [", 
                        meteo_parameters$unit[meteo_parameters$parameter==parameters[2]],"]"),
                 side = 4, line = 3)
@@ -139,4 +146,7 @@ f_plot_mess <- function(mess_data,resolution,parameters, timespan = c(-999,999))
   #          pch = 16)
   #   title("Monatswerte", adj = 0)
   # }
+  
+  ## turn zimezone back
+  Sys.setenv(TZ="CET")
 }
