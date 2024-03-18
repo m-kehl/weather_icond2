@@ -1,8 +1,8 @@
-f_plot_mess <- function(mess_data,resolution,parameters, timespan = c(-999,999)){
+f_plot_mess <- function(mess_data,granularity,parameters, timespan = c(-999,999)){
   ## function to plot measurement surface temperature data
   # - mess_data:   data.frame; data for measurement surface data, result of
   #                           f_read_mess.R
-  # - resolution:  character; to define which measurement data are plotted,
+  # - granularity:  character; to define which measurement data are plotted,
   #                          options: "now" for today's most recent measurement data
   #                                   "daily" for daily measurement data
   #                                   "monthly" for monthly measurement data
@@ -28,18 +28,16 @@ f_plot_mess <- function(mess_data,resolution,parameters, timespan = c(-999,999))
   get_zime_zone <- Sys.getenv()
   Sys.setenv(TZ='GMT')
   
-  #attr(mess_data$MESS_DATUM,"tzone") <- "GMT"
-  #mess_data$MESS_DATUM <- strftime(mess_data$MESS_DATUM,format="%H:%M:%S",tz = "UTC")
-  
-  ###umschreiben sodass if (param != XX) schleife unten nicht gebraucht wird, dafür
-  ## hier oben fehlende Parameter aus array nehmen
-  ## make pch symbols via unicode and unicode as well :)
-  
-  if (resolution == "now"){
+
+  if (granularity == "now"){
+    #delete parameters which are not available for granularity
+    param_exists <- meteo_parameters$parameter[meteo_parameters$dwd_name_now == "XX"]
+    for (ii in c(1:length(param_exists))){
+      parameters <- parameters[parameters != param_exists[ii]]
+    }
+    #plot
     while(more_plots){
       param <- meteo_parameters$dwd_name_now[meteo_parameters$parameter==parameters[1]]
-      print(param)
-      print(min(mess_data$MESS_DATUM, na.rm = T))
       mess_data_plot <- mess_data[mess_data$STATIONS_ID == station_ids[count],]
       if (param != "XX"){
         plot(mess_data_plot$MESS_DATUM,
@@ -61,8 +59,6 @@ f_plot_mess <- function(mess_data,resolution,parameters, timespan = c(-999,999))
 
       if (length(parameters) > 1){
         param <- meteo_parameters$dwd_name_now[meteo_parameters$parameter==parameters[2]]
-        print(param)
-        print(min(mess_data$MESS_DATUM, na.rm = T))
         if (param != "XX"){
           plot(mess_data_plot$MESS_DATUM + (count-1)*60,
                array(mess_data_plot[param][[1]]),
@@ -114,7 +110,7 @@ f_plot_mess <- function(mess_data,resolution,parameters, timespan = c(-999,999))
            pch = 16)
 
   }
-  # else if (resolution == "daily"){
+  # else if (granularity == "daily"){
   #   mess_data <- mess_data[mess_data$MESS_DATUM>=timespan[1] & mess_data$MESS_DATUM<=timespan[2],]
   #   while(more_plots){
   #     plot(mess_data$MESS_DATUM[mess_data$STATIONS_ID == station_ids[count]],
@@ -129,7 +125,7 @@ f_plot_mess <- function(mess_data,resolution,parameters, timespan = c(-999,999))
   #   legend(x="bottomleft",legend = station_names, col = c(1:length(station_names)),
   #          pch = 16)
   #   title("Tageswerte", adj = 0)
-  # } else if (resolution == "monthly"){
+  # } else if (granularity == "monthly"){
   #   while(more_plots){
   #     plot(mess_data$MESS_DATUM[mess_data$STATIONS_ID == station_ids[count]],
   #          mess_data$MO_TT.Lufttemperatur[mess_data$STATIONS_ID == station_ids[count]],
