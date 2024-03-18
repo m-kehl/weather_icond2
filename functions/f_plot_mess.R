@@ -28,7 +28,9 @@ f_plot_mess <- function(mess_data,granularity,parameters, timespan = c(-999,999)
   get_zime_zone <- Sys.getenv()
   Sys.setenv(TZ='GMT')
   
-
+  #setup for different granularities
+#   if (granularity == "now"){
+# }
   if (granularity == "now"){
     #delete parameters which are not available for granularity
     param_exists <- meteo_parameters$parameter[meteo_parameters$dwd_name_now == "XX"]
@@ -106,6 +108,7 @@ f_plot_mess <- function(mess_data,granularity,parameters, timespan = c(-999,999)
                        meteo_parameters$pch[meteo_parameters$parameter==parameters[1]],
                        ") - ",
                        format(mess_data$MESS_DATUM[1],"%d.%m.%y")), adj = 0)
+          par(new = TRUE)
         }
         more_plots <- ifelse(count < length(station_names),TRUE,FALSE)
         count <- count + 1
