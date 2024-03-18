@@ -35,81 +35,87 @@ f_plot_mess <- function(mess_data,granularity,parameters, timespan = c(-999,999)
     for (ii in c(1:length(param_exists))){
       parameters <- parameters[parameters != param_exists[ii]]
     }
-    #plot
-    while(more_plots){
-      param <- meteo_parameters$dwd_name_now[meteo_parameters$parameter==parameters[1]]
-      mess_data_plot <- mess_data[mess_data$STATIONS_ID == station_ids[count],]
-      if (param != "XX"){
-        plot(mess_data_plot$MESS_DATUM,
-             array(mess_data_plot[param][[1]]),
-             pch = meteo_parameters$pch[meteo_parameters$parameter==parameters[1]],
-             type = meteo_parameters$type[meteo_parameters$parameter==parameters[1]],
-             xlim = c(min(mess_data$MESS_DATUM, na.rm = T),
-                       max(mess_data$MESS_DATUM, na.rm = T)),
-             ylim = c(min(mess_data[param], meteo_parameters$min_now[meteo_parameters$parameter==parameters[1]]
-                           ,na.rm = T),
-                       max(mess_data[param], meteo_parameters$max_now[meteo_parameters$parameter==parameters[1]]
-                           ,na.rm = T)),
-             col = colours[count],
-             xlab = "Messzeit (UTC)",
-             ylab = paste0(meteo_parameters$parameter[meteo_parameters$parameter==parameters[1]]," [", 
-                           meteo_parameters$unit[meteo_parameters$parameter==parameters[1]],"]"))
-        par(new = TRUE)
-      }
-
-      if (length(parameters) > 1){
-        param <- meteo_parameters$dwd_name_now[meteo_parameters$parameter==parameters[2]]
+    #plot blank plot if no parameter with available data is chosen
+    if (length(parameters) == 0){
+      plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
+    }else{
+      #plot (with left y-axis)
+      while(more_plots){
+        param <- meteo_parameters$dwd_name_now[meteo_parameters$parameter==parameters[1]]
+        mess_data_plot <- mess_data[mess_data$STATIONS_ID == station_ids[count],]
         if (param != "XX"){
-          plot(mess_data_plot$MESS_DATUM + (count-1)*60,
+          plot(mess_data_plot$MESS_DATUM,
                array(mess_data_plot[param][[1]]),
-               pch = meteo_parameters$pch[meteo_parameters$parameter==parameters[2]],
-               type = meteo_parameters$type[meteo_parameters$parameter==parameters[2]],
-               col = colours[count], 
+               pch = meteo_parameters$pch[meteo_parameters$parameter==parameters[1]],
+               type = meteo_parameters$type[meteo_parameters$parameter==parameters[1]],
                xlim = c(min(mess_data$MESS_DATUM, na.rm = T),
-                         max(mess_data$MESS_DATUM, na.rm = T)),
-               ylim = c(min(mess_data[param], meteo_parameters$min_now[meteo_parameters$parameter==parameters[2]]
-                             ,na.rm = T),
-                         max(mess_data[param], meteo_parameters$max_now[meteo_parameters$parameter==parameters[2]]
-                             ,na.rm = T)),
+                        max(mess_data$MESS_DATUM, na.rm = T)),
+               ylim = c(min(mess_data[param], meteo_parameters$min_now[meteo_parameters$parameter==parameters[1]]
+                            ,na.rm = T),
+                        max(mess_data[param], meteo_parameters$max_now[meteo_parameters$parameter==parameters[1]]
+                            ,na.rm = T)),
+               col = colours[count],
                xlab = "Messzeit (UTC)",
-               ylab = "",
-               axes = FALSE)
-          graphics::box()
-          axis(side=4, col = "black", ylim =c(min(mess_data[param],na.rm = T),max(mess_data[param],na.rm = T)))
-          axis.POSIXct(side=1, xlim = c(min(mess_data$MESS_DATUM, na.rm = T),
-                                        max(mess_data$MESS_DATUM, na.rm = T)))
-          mtext(paste0(meteo_parameters$parameter[meteo_parameters$parameter==parameters[2]]," [", 
-                       meteo_parameters$unit[meteo_parameters$parameter==parameters[2]],"]"),
-                side = 4, line = 3)
+               ylab = paste0(meteo_parameters$parameter[meteo_parameters$parameter==parameters[1]]," [", 
+                             meteo_parameters$unit[meteo_parameters$parameter==parameters[1]],"]"))
+          par(new = TRUE)
+        }
+        #plot (with right y-axis)
+        if (length(parameters) > 1){
+          param <- meteo_parameters$dwd_name_now[meteo_parameters$parameter==parameters[2]]
+          if (param != "XX"){
+            plot(mess_data_plot$MESS_DATUM + (count-1)*60,
+                 array(mess_data_plot[param][[1]]),
+                 pch = meteo_parameters$pch[meteo_parameters$parameter==parameters[2]],
+                 type = meteo_parameters$type[meteo_parameters$parameter==parameters[2]],
+                 col = colours[count], 
+                 xlim = c(min(mess_data$MESS_DATUM, na.rm = T),
+                          max(mess_data$MESS_DATUM, na.rm = T)),
+                 ylim = c(min(mess_data[param], meteo_parameters$min_now[meteo_parameters$parameter==parameters[2]]
+                              ,na.rm = T),
+                          max(mess_data[param], meteo_parameters$max_now[meteo_parameters$parameter==parameters[2]]
+                              ,na.rm = T)),
+                 xlab = "Messzeit (UTC)",
+                 ylab = "",
+                 axes = FALSE)
+            graphics::box()
+            axis(side=4, col = "black", ylim =c(min(mess_data[param],na.rm = T),max(mess_data[param],na.rm = T)))
+            axis.POSIXct(side=1, xlim = c(min(mess_data$MESS_DATUM, na.rm = T),
+                                          max(mess_data$MESS_DATUM, na.rm = T)))
+            mtext(paste0(meteo_parameters$parameter[meteo_parameters$parameter==parameters[2]]," [", 
+                         meteo_parameters$unit[meteo_parameters$parameter==parameters[2]],"]"),
+                  side = 4, line = 3)
+            title(paste0("Plot 1: ",
+                         meteo_parameters$parameter[meteo_parameters$parameter==parameters[1]],
+                         " (",
+                         meteo_parameters$pch[meteo_parameters$parameter==parameters[1]],
+                         ") und ",
+                         meteo_parameters$parameter[meteo_parameters$parameter==parameters[2]],
+                         " (",
+                         meteo_parameters$pch[meteo_parameters$parameter==parameters[2]],
+                         ") - ",
+                         format(mess_data$MESS_DATUM[1],"%d.%m.%y")), adj = 0)
+            
+            par(new = TRUE)
+          }
+          
+        } else{
           title(paste0("Plot 1: ",
                        meteo_parameters$parameter[meteo_parameters$parameter==parameters[1]],
                        " (",
                        meteo_parameters$pch[meteo_parameters$parameter==parameters[1]],
-                       ") und ",
-                       meteo_parameters$parameter[meteo_parameters$parameter==parameters[2]],
-                       " (",
-                       meteo_parameters$pch[meteo_parameters$parameter==parameters[2]],
                        ") - ",
                        format(mess_data$MESS_DATUM[1],"%d.%m.%y")), adj = 0)
-          
-          par(new = TRUE)
         }
-
-      } else{
-        title(paste0("Plot 1: ",
-                     meteo_parameters$parameter[meteo_parameters$parameter==parameters[1]],
-                     " (",
-                     meteo_parameters$pch[meteo_parameters$parameter==parameters[1]],
-                     ") - ",
-                     format(mess_data$MESS_DATUM[1],"%d.%m.%y")), adj = 0)
+        more_plots <- ifelse(count < length(station_names),TRUE,FALSE)
+        count <- count + 1
       }
-      more_plots <- ifelse(count < length(station_names),TRUE,FALSE)
-      count <- count + 1
+      legend(x="bottomleft",legend = station_names, col = c(1:length(station_names)),
+             pch = 16)
+      
     }
-    legend(x="bottomleft",legend = station_names, col = c(1:length(station_names)),
-           pch = 16)
-
   }
+      
   # else if (granularity == "daily"){
   #   mess_data <- mess_data[mess_data$MESS_DATUM>=timespan[1] & mess_data$MESS_DATUM<=timespan[2],]
   #   while(more_plots){
