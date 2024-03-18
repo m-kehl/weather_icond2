@@ -88,11 +88,11 @@ f_plot_mess <- function(mess_data,resolution,parameters, timespan = c(-999,999))
           title(paste0("Plot 1: ",
                        meteo_parameters$parameter[meteo_parameters$parameter==parameters[1]],
                        " (",
-                       meteo_parameters$pch_unicode[meteo_parameters$parameter==parameters[1]],
+                       meteo_parameters$pch[meteo_parameters$parameter==parameters[1]],
                        ") und ",
                        meteo_parameters$parameter[meteo_parameters$parameter==parameters[2]],
                        " (",
-                       meteo_parameters$pch_unicode[meteo_parameters$parameter==parameters[2]],
+                       meteo_parameters$pch[meteo_parameters$parameter==parameters[2]],
                        ") - ",
                        format(mess_data$MESS_DATUM[1],"%d.%m.%y")), adj = 0)
           
@@ -103,7 +103,7 @@ f_plot_mess <- function(mess_data,resolution,parameters, timespan = c(-999,999))
         title(paste0("Plot 1: ",
                      meteo_parameters$parameter[meteo_parameters$parameter==parameters[1]],
                      " (",
-                     meteo_parameters$pch_unicode[meteo_parameters$parameter==parameters[1]],
+                     meteo_parameters$pch[meteo_parameters$parameter==parameters[1]],
                      ") - ",
                      format(mess_data$MESS_DATUM[1],"%d.%m.%y")), adj = 0)
       }

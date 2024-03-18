@@ -69,6 +69,6 @@ meteo_parameters <- data.frame(parameter = c("Temperatur","Niederschlag",
                                                     "??","??"),
                                min_now = c(50,0,50,0,0,2000),
                                max_now = c(-50,1,40,0,0,500),
-                               pch = c("\u2193","\u2193","\u2193","\u2193","\u2193","\u2193"),
-                               pch_unicode = c("\u2022","\u007C","\u2193","\u23F6","\23F9","\u25B2"),
+                               pch = c("\u2022","\u007C","\u23F9","\u2193","\u2193","\u25B2"),
+                               pch_unicode = c("\u2022","\u007C","\u23F9","\u23F6","\23F9","\u25B2"),
                                type = c("b","h","p","p","p","p"))
