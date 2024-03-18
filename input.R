@@ -59,7 +59,7 @@ phenology_phases <- arrange(phenology_phases,phase)
 meteo_parameters <- data.frame(parameter = c("Temperatur","Niederschlag",
                                              "relative Feuchte", "Sonnenscheindauer",
                                              "Globalstrahlung","Druck"),
-                               unit = c("\u00B0C", "mm", "%", "min", "??","hPa"),
+                               unit = c("\u00B0C", "mm", "%", "h", "??","hPa"),
                                dwd_name_now = c("TT_10","RWS_10","RF_10","XX","XX","PP_10"),
                                dwd_name_daily = c("TMK.Lufttemperatur","RSK.Niederschlagshoehe",
                                                   "UPM.Relative_Feuchte","SDK.Sonnenscheindauer",

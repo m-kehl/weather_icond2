@@ -397,11 +397,11 @@ server <- function(input, output, session) {
                         timeFormat = "%d.%m.%Y")
       shinyjs::showElement("box_sincetill")
       # plot measurement data for daily measurements
-      output$mess_plot_daily <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$sincetill))
+      output$mess_plot_daily <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot1,input$sincetill))
       output$mess_plot_daily_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_tabsets,input$sincetill))
     } else if (input$mess_tabsets == "monthly"){
       # plot measurement data for monthly measurements
-      output$mess_plot_monthly <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets))
+      output$mess_plot_monthly <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot1))
       output$mess_plot_monthly_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_tabsets))
       # update UI
       shinyjs::hideElement("box_sincetill")
