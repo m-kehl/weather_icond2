@@ -386,8 +386,8 @@ server <- function(input, output, session) {
       output$mess_plot_monthly <- renderPlot(f_plot_placeholder())
     } else if (input$mess_tabsets == "now"){
       # plot measurement data for recent measurements
-      output$mess_plot <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot1))
-      output$mess_plot_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_tabsets))
+      output$mess_plot <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot1,"Plot 1: "))
+      output$mess_plot_prec <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot2,"Plot 2: "))
       shinyjs::hideElement("box_sincetill")
     } else if (input$mess_tabsets == "daily"){
       # update UI
@@ -397,12 +397,12 @@ server <- function(input, output, session) {
                         timeFormat = "%d.%m.%Y")
       shinyjs::showElement("box_sincetill")
       # plot measurement data for daily measurements
-      output$mess_plot_daily <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot1,input$sincetill))
-      output$mess_plot_daily_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_tabsets,input$sincetill))
+      output$mess_plot_daily <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot1,"Plot 1: ",input$sincetill))
+      output$mess_plot_daily_prec <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot2,"Plot 2: ",input$sincetill))
     } else if (input$mess_tabsets == "monthly"){
       # plot measurement data for monthly measurements
-      output$mess_plot_monthly <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot1))
-      output$mess_plot_monthly_prec <- renderPlot(f_plot_mess_prec(mess_data(),input$mess_tabsets))
+      output$mess_plot_monthly <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot1,"Plot 1: "))
+      output$mess_plot_monthly_prec <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot2,"Plot 2: "))
       # update UI
       shinyjs::hideElement("box_sincetill")
     }
