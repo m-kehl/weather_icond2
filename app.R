@@ -21,6 +21,7 @@ library(curl)
 library(R.utils)
 library(dplyr)
 library(r2symbols)
+library(leaflet)
 
 ## source functions and input
 source.all(paste0(getwd(),"/functions/"))
