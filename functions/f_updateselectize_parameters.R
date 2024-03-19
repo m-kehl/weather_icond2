@@ -8,6 +8,7 @@ f_updateselectize_parameters <- function(session,id,granularity,parameters){
   #                                   "daily" for daily measurement data
   #                                   "monthly" for monthly measurement data
   # - parameters:  array; name/s of parameters which are selected (characters)
+  source(paste0(getwd(),"/input.R"),local = TRUE)
   dwd_name <- paste0("dwd_name_",granularity)
   updateSelectizeInput(session,id,
                        choices = meteo_parameters$parameter[meteo_parameters[dwd_name][[1]] != "XX"],
