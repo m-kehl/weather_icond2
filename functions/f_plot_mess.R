@@ -59,7 +59,7 @@ f_plot_mess <- function(mess_data,granularity,parameters, title_start, timespan 
   count <- 1
 
   # empty plot if no data available
-  if (length(parameters) == 0){
+  if (length(parameters) == 0 | nrow(mess_data) == 0){
     plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
   }else{
     #plot (with left y-axis)
