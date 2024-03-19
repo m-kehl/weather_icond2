@@ -58,17 +58,17 @@ phenology_phases <- arrange(phenology_phases,phase)
 ## meteorological parameters with according names, units, axes for plot, etc
 meteo_parameters <- data.frame(parameter = c("Temperatur","Niederschlag",
                                              "relative Feuchte", "Sonnenscheindauer",
-                                             "Globalstrahlung","Druck"),
-                               unit = c("\u00B0C", "mm", "%", "h", "??","hPa"),
-                               dwd_name_now = c("TT_10","RWS_10","RF_10","XX","XX","PP_10"),
+                                             "Druck"),
+                               unit = c("\u00B0C", "mm", "%", "h","hPa"),
+                               dwd_name_now = c("TT_10","RWS_10","RF_10","XX","PP_10"),
                                dwd_name_daily = c("TMK.Lufttemperatur","RSK.Niederschlagshoehe",
                                                   "UPM.Relative_Feuchte","SDK.Sonnenscheindauer",
-                                                  "XX","PM.Luftdruck"),
+                                                  "PM.Luftdruck"),
                                dwd_name_monthly = c("MO_TT.Lufttemperatur","MO_RR.Niederschlagshoehe",
                                                     "XX","MO_SD_S.Sonnenscheindauer",
-                                                    "XX","XX"),
-                               min_now = c(50,0,50,0,0,2000),
-                               max_now = c(-50,1,40,0,0,500),
-                               pch = c("\u2022","\u007C","\u23F9","\u003D","\u2193","\u25B2"), #"\u03A0" -> PI
-                               #pch_unicode = c("\u2022","\u1965","\u23F9","\u23F6","\23F9","\u25B2"),
-                               type = c("b","h","p","p","p","p"))
+                                                    "XX"),
+                               min_now = c(50,0,50,0,2000),
+                               max_now = c(-50,1,40,0,500),
+                               pch = c("\u2022","\u007C","\u23F9","\u003D","\u25B2"), #"\u03A0" -> PI
+                               #pch_unicode = c("\u2022","\u1965","\u23F9","\u23F6","\u25B2"),
+                               type = c("b","h","p","p","p"))
