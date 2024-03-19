@@ -138,11 +138,12 @@ ui <- fluidPage(
                 label = "Bundesland",
                 choices = c(""),
                 multiple = FALSE),
-               selectInput(
+               selectizeInput(
                 inputId = "station_name",
                 label = "Stationsname",
-                choices = c(""),
-                multiple = FALSE),
+                choices = c("Adelsheim"),
+                selected = c("Adelsheim"),
+                multiple = TRUE),
                p("Datenbasis: ",
                 symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)")
             ),
@@ -326,8 +327,9 @@ server <- function(input, output, session) {
   # limit stations in UI to those which host species chosen in UI
   bl_meta <- reactive(plant_meta$Stationsname[plant_meta$Bundesland == input$bl_plant])
   observe({
-    updateSelectInput(session,"station_name",
-                      choices = c(bl_meta()))
+    updateSelectizeInput(session,"station_name",
+                      choices = c(bl_meta(),input$station_name),
+                      selected = input$station_name)
   })
   # postprocess phenology data
   plant_data_processed <- reactive(
@@ -341,12 +343,12 @@ server <- function(input, output, session) {
   
   ## plot phenology data
   observe({
-    #placeholder-plot if no species is chosen in UI
-    if (input$pflanzen == ""){
+    #placeholder-plot if no species or stationname is chosen in UI
+    if (input$pflanzen == "" | length(input$station_name) == 0){
       output$plant_out <- renderPlot(f_plot_placeholder())
     }else{
       #plot phenology data for species chosen in UI
-      output$plant_out <- renderPlot(f_plot_plants(plant_data_processed(),input$pflanzen))
+      output$plant_out <- renderPlot(f_plot_plants(plant_data_processed(),input$pflanzen,plant_meta))
       #extract data of station-closure (if it is closed)
       end_data <- plant_meta$`Datum Stationsaufloesung`[plant_meta$Stationsname==input$station_name][1]
       end_data <- ifelse(is.na(end_data),"",end_data)

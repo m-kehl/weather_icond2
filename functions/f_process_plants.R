@@ -9,10 +9,10 @@ f_process_plants <- function(plant_table,phase,station_name, meta_data){
   #                 f_read_plants_meta.R
   
   # get station_id which corresponds to station_name
-  station_id <- meta_data$Stations_id[meta_data$Stationsname == station_name]
+  station_id <- meta_data$Stations_id[meta_data$Stationsname %in% station_name]
   
   # subset plant_table
-  plant_data_proc <- plant_table[plant_table$Stations_id == station_id & plant_table$Phase_id == phase,]
+  plant_data_proc <- plant_table[plant_table$Stations_id %in% station_id & plant_table$Phase_id == phase,]
   # format date
   plant_data_proc$Eintrittsdatum <- as.POSIXct(as.character(plant_data_proc$Eintrittsdatum), format = "%Y%m%d")
   
