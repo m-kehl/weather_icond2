@@ -377,6 +377,15 @@ server <- function(input, output, session) {
     f_infotext(input$main_tabsets)
   })
   
+  ## update UI
+  observeEvent(input$mess_tabsets,{
+    print(input$mess_tabsets)
+    tic()
+    f_updateselectize_parameters(session,"parameter_plot1",input$mess_tabsets,input$parameter_plot1)
+    f_updateselectize_parameters(session,"parameter_plot2",input$mess_tabsets,input$parameter_plot2)
+    toc()
+  })
+  
   ## plot measurement data
   observe({
     # placeholder-plot if no station is chosen in UI
@@ -385,10 +394,6 @@ server <- function(input, output, session) {
       output$mess_plot_daily <- renderPlot(f_plot_placeholder())
       output$mess_plot_monthly <- renderPlot(f_plot_placeholder())
     } else if (input$mess_tabsets == "now"){
-      # update UI
-      updateSelectizeInput(session,"parameter_plot1",
-                           choices = meteo_parameters$parameter[meteo_parameters$dwd_name_now != "XX"],
-                           selected = input$parameter_plot1)
       # plot measurement data for recent measurements
       output$mess_plot <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot1,"Plot 1: "))
       output$mess_plot_prec <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot2,"Plot 2: "))
@@ -399,18 +404,11 @@ server <- function(input, output, session) {
                         min = mess_data()$MESS_DATUM[1],
                         max = mess_data()$MESS_DATUM[nrow(mess_data())],
                         timeFormat = "%d.%m.%Y")
-      updateSelectizeInput(session,"parameter_plot1",
-                           choices = meteo_parameters$parameter[meteo_parameters$dwd_name_daily != "XX"],
-                           selected = input$parameter_plot1)
       shinyjs::showElement("box_sincetill")
       # plot measurement data for daily measurements
       output$mess_plot_daily <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot1,"Plot 1: ",input$sincetill))
       output$mess_plot_daily_prec <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot2,"Plot 2: ",input$sincetill))
     } else if (input$mess_tabsets == "monthly"){
-      #update UI
-      updateSelectizeInput(session,"parameter_plot1",
-                           choices = meteo_parameters$parameter[meteo_parameters$dwd_name_monthly != "XX"],
-                           selected = input$parameter_plot1)
       # plot measurement data for monthly measurements
       output$mess_plot_monthly <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot1,"Plot 1: "))
       output$mess_plot_monthly_prec <- renderPlot(f_plot_mess(mess_data(),input$mess_tabsets,input$parameter_plot2,"Plot 2: "))
