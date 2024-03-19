@@ -140,7 +140,7 @@ ui <- fluidPage(
                 multiple = FALSE),
                selectizeInput(
                 inputId = "station_name",
-                label = "Stationsname",
+                label = "Stationsname/n",
                 choices = c("Adelsheim"),
                 selected = c("Adelsheim"),
                 multiple = TRUE),
