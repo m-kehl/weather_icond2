@@ -22,7 +22,7 @@ f_read_plants <- function(plant){
     
     ui_plant <- all_plants[grepl(plant,all_plants)]
     plant_data <- data.table::fread(paste0(phenology_base,ui_plant))
-    
   }
+  
   return(plant_data)
 }

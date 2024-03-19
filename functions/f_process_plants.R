@@ -13,8 +13,14 @@ f_process_plants <- function(plant_table,phase,station_name, meta_data){
   
   # subset plant_table
   plant_data_proc <- plant_table[plant_table$Stations_id %in% station_id & plant_table$Phase_id == phase,]
-  # format date
+  # format data.table
   plant_data_proc$Eintrittsdatum <- as.POSIXct(as.character(plant_data_proc$Eintrittsdatum), format = "%Y%m%d")
+  plant_data_proc$Stationsname <- sapply(plant_data_proc$Stations_id,
+                                         function(x) meta_data$Stationsname[meta_data$Stations_id == x])
+  #get stations without data
+  #plant_data_proc <- arrange(plant_data_proc,Stationsname)
+  plant_data_proc <- plant_data_proc[order(plant_data_proc$Stationsname),]
+  no_data <- station_name[!(station_name %in% unique(plant_data_proc$Stationsname))]
   
-  return(plant_data_proc)
+  return(list(plant_data_proc,no_data))
 }

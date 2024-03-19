@@ -12,7 +12,7 @@ f_plot_plants <- function(plant_data,plant,meta_data){
   #define plot basics
   par(mar = c(5, 5, 4, 6))
   station_ids <- base::unique(plant_data$Stations_id)
-  station_names <- sapply(station_ids, function(station_ids) meta_data$Stationsname[meta_data$Stations_id == station_ids])
+  station_names <- base::unique(plant_data$Stationsname)
   colours <- rainbow(length(station_ids))
   
   ##plot  
