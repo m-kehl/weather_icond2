@@ -15,6 +15,8 @@ f_plot_plants <- function(plant_data,plant,meta_data){
   station_names <- sapply(station_ids, function(station_ids) meta_data$Stationsname[meta_data$Stations_id == station_ids])
   colours <- rainbow(length(station_ids))
   
+  ##plot  
+  # loop to plot measurement data of multiple stations in one plot
   more_plots <- TRUE
   count <- 1
   
