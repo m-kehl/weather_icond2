@@ -36,7 +36,9 @@ f_infotext <- function(data_kind){
                      tags$br(),tags$br(),
                      "Je nach Pflanzenart werden unterschiedliche Entwicklungsstufen
                       (ph\u00E4nologische Phasen) registiert. Hier dargestellt werden k\u00F6nnen
-                      alle aufgenommenen Pflanzenarten und Phasen je Station."),
+                      alle aufgenommenen Pflanzenarten und Phasen je Station. Erscheint eine
+                      Station trotz deren Auswahl nicht im Plot bedeutet dies, dass für diese Station und Phase keine
+                      Daten vorhanden sind."),
                      duration = NULL)
   }
 }
