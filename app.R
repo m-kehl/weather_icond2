@@ -148,7 +148,8 @@ ui <- fluidPage(
                 symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)")
             ),
             column(9,
-               plotOutput("plant_out")
+               plotOutput("plant_out"),
+               textOutput("no_plant")
             ),
           ),
 
@@ -348,14 +349,11 @@ server <- function(input, output, session) {
       output$plant_out <- renderPlot(f_plot_placeholder())
     }else{
       #plot phenology data for species chosen in UI
-      output$plant_out <- renderPlot(f_plot_plants(plant_data_processed(),input$pflanzen,plant_meta))
-      #extract data of station-closure (if it is closed)
-      end_data <- plant_meta$`Datum Stationsaufloesung`[plant_meta$Stationsname==input$station_name][1]
-      end_data <- ifelse(is.na(end_data),"",end_data)
-      if (end_data == ""){
-        output$plant_text <- renderText("")
-      }else{
-        output$plant_text <- renderText(paste0("Stationsauflösung: ",end_data))
+      output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()[[1]],input$pflanzen,plant_meta))
+      if (length(plant_data_processed()[[2]]) == 0){
+        output$no_plant <- renderText("")
+      } else{
+        output$no_plant <- renderText(paste0("Keine Daten vorhanden für: ",paste(plant_data_processed()[[2]],collapse = ', ')))
       }
     }
   })
