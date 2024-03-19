@@ -30,8 +30,10 @@ f_plot_mess <- function(mess_data,granularity,parameters, title_start, timespan 
   dwd_name <- paste0("dwd_name_",granularity)
   
   param_exists <- meteo_parameters$parameter[meteo_parameters[dwd_name][[1]] == "XX"]
-  for (ii in c(1:length(param_exists))){
-    parameters <- parameters[parameters != param_exists[ii]]
+  if (length(param_exists) > 0){
+    for (ii in c(1:length(param_exists))){
+      parameters <- parameters[parameters != param_exists[ii]]
+    }
   }
   
   if (granularity == "now"){
