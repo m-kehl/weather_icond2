@@ -379,11 +379,8 @@ server <- function(input, output, session) {
   
   ## update UI
   observeEvent(input$mess_tabsets,{
-    print(input$mess_tabsets)
-    tic()
     f_updateselectize_parameters(session,"parameter_plot1",input$mess_tabsets,input$parameter_plot1)
     f_updateselectize_parameters(session,"parameter_plot2",input$mess_tabsets,input$parameter_plot2)
-    toc()
   })
   
   ## plot measurement data
