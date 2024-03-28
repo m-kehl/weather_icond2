@@ -351,7 +351,7 @@ server <- function(input, output, session) {
       output$plant_out <- renderPlot(f_plot_placeholder())
     }else{
       #plot phenology data for species chosen in UI
-      output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()[[1]],input$pflanzen,plant_meta))
+      output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()[[1]],input$pflanzen,plant_meta,input$station_name))
       output$plant_table <- renderTable(f_table_plants(plant_meta,input$station_name))
       output$plant_map <- renderPlot(f_map_plants(plant_meta,input$station_name))
       if (length(plant_data_processed()[[2]]) == 0){
