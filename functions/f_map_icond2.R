@@ -28,14 +28,14 @@ f_map_icond2 <- function(input_time,forecast_data,parameter,point_coord,type){
 
     ##map rain/snow
     terra::plot(x = subset(forecast_data, c(ii)), main = paste0(title_name," [mm/h] - ",
-                                format(time(subset(forecast_data, c(ii)), format= ""),
+                                format(as.POSIXct(time(subset(forecast_data, c(ii)), format= ""),"CET"),
                                        "%d.%m.%Y %H:%M")),
                 col = df_col)
   } else{
     ## map temperature
-    terra::plot(x = subset(forecast_data, c(ii)), main = paste0("Temperatur [\u00B0C] ",
-                        format(time(subset(forecast_data, c(ii)), format= ""),
-                               "%d.%m.%Y %H:%M - ")),
+    terra::plot(x = subset(forecast_data, c(ii)), main = paste0("Temperatur [\u00B0C] - ",
+                                format(as.POSIXct(time(subset(forecast_data, c(ii)), format= ""),"CET"),
+                                        "%d.%m.%Y %H:%M")),
                  range = c(min(minmax(forecast_data)),max(minmax(forecast_data))))
   }
   
