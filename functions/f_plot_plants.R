@@ -14,13 +14,27 @@ f_plot_plants <- function(plant_data,plant,meta_data,station_name){
   par(mar = c(5, 5, 4, 6))
   station_ids <- base::unique(plant_data$Stations_id)
   station_names_data <- base::unique(plant_data$Stationsname)
-  colours <- rainbow(length(station_name))
+  #colours <- rainbow(length(station_name))
+  colours <- c("#FF0000","#0000FF","#00FF00",
+               "#8000FF","#00FFFF", "darkorange1",
+               "orange", "#FF00F5", "black",
+               "forestgreen","yellow", "brown4", 
+               "mediumorchid4","lavender","aquamarine",
+               "beige","chocolate","azure4",
+               "azure2", "indianred", "khaki",
+               "bisque1","gold1", "lavenderblush"
+               ,"mediumorchid","aquamarine4","cadetblue2",
+               "cadetblue4","#00E0FF", "#FF0099",
+               "#FF006B","#00FFD1","#FFC700",
+               "#00FF66","#CCFF00"
+               )
+  
+
   
   ##plot  
   # loop to plot measurement data of multiple stations in one plot
   more_plots <- TRUE
   count <- 1
-  count_plot <- 1
   
   if (nrow(plant_data) == 0){
     # if data.table is empty -> create empty plot with title telling user that
@@ -31,7 +45,7 @@ f_plot_plants <- function(plant_data,plant,meta_data,station_name){
   } else{
     while(more_plots){
       if (station_name[count] %in% station_names_data){
-        station_data <- plant_data[plant_data$Stations_id == station_ids[count_plot],]
+        station_data <- plant_data[plant_data$Stationsname == station_name[count],]
         plot(station_data$Referenzjahr,yday(station_data$Eintrittsdatum),
              ylab = "Tag des Jahres", xlab = "Jahr",
              pch = "\u2600",
@@ -44,14 +58,14 @@ f_plot_plants <- function(plant_data,plant,meta_data,station_name){
         
         more_plots <- ifelse(count < length(station_name),TRUE,FALSE)
         count <- count + 1
-        count_plot <- count_plot + 1
       } else{
         more_plots <- ifelse(count < length(station_name),TRUE,FALSE)
         count <- count + 1
       }
 
     }
-    legend(x="bottomleft",legend = meta_data$Stationsname[meta_data$Stationsname %in% station_name], col = colours,
-           pch = "\u2600")
+    # legend(x="bottomleft",legend = meta_data$Stationsname[meta_data$Stationsname %in% station_name], col = colours,
+    #        pch = "\u2600")
+    legend(x="bottomleft", legend = station_name, col = colours, pch = "\u2600")
   }
 }
