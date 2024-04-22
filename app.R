@@ -148,10 +148,11 @@ ui <- fluidPage(
                 symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)")
             ),
             column(9,
-               plotOutput("plant_out"),
-               textOutput("no_plant"),
-               column(6,plotOutput("plant_map")),
-               column(6,tableOutput("plant_table"))
+              p("In Bearbeitung..")
+               # plotOutput("plant_out"),
+               # textOutput("no_plant"),
+               # column(6,plotOutput("plant_map")),
+               # column(6,tableOutput("plant_table"))
             ),
           ),
 
