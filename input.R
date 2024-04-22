@@ -72,3 +72,17 @@ meteo_parameters <- data.frame(parameter = c("Temperatur","Niederschlag",
                                pch = c("\u2022","\u007C","\u23F9","\u003D","\u25B2"), #"\u03A0" -> PI
                                #pch_unicode = c("\u2022","\u1965","\u23F9","\u23F6","\u25B2"),
                                type = c("b","h","p","p","p"))
+
+colours <- c("#FF0000","#0000FF","#00FF00",
+             "#8000FF","#00FFFF", "darkorange1",
+             "orange", "#FF00F5", "black",
+             "forestgreen","yellow", "brown4", 
+             "mediumorchid4","lavender","aquamarine",
+             "beige","chocolate","azure4",
+             "azure2", "indianred", "khaki",
+             "bisque1","gold1", "lavenderblush"
+             ,"mediumorchid","aquamarine4","cadetblue2",
+             "cadetblue4","#00E0FF", "#FF0099",
+             "#FF006B","#00FFD1","#FFC700",
+             "#00FF66","#CCFF00")
+
