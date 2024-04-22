@@ -3,7 +3,7 @@ f_read_plants <- function(plant){
   # - plant: character; name of plant species to read
   
   # show waiter while reading data
-  waiter_show( 
+  waiter_show(
     html = tagList(
       spin_fading_circles(),
       "Download data from opendata.dwd.de .."

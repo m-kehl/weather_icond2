@@ -151,8 +151,8 @@ ui <- fluidPage(
               #p("In Bearbeitung..")
                plotOutput("plant_out"),
                textOutput("no_plant"),
-               # column(6,plotOutput("plant_map")),
-               # column(6,tableOutput("plant_table"))
+               column(6,plotOutput("plant_map")),
+               column(6,tableOutput("plant_table"))
             ),
           ),
 
