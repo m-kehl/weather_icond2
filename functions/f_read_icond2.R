@@ -8,13 +8,13 @@ f_read_icond2 <- function(date,parameter){
   #                                  "t_2m"     for temperature 2m above ground
 
   # show waiter while searching for data
-  # waiter_show(
-  #   html = tagList(
-  #     spin_fading_circles(),
-  #     "Download data from opendata.dwd.de .."
-  #   ),
-  #   id = c("map_out")
-  # )
+  waiter_show(
+    html = tagList(
+      spin_fading_circles(),
+      "Download data from opendata.dwd.de .."
+    ),
+    id = c("map_out")
+  )
   
   # define source/path for download
   nwp_base <- paste0("ftp://opendata.dwd.de/weather/nwp/icon-d2/grib/",
@@ -33,14 +33,14 @@ f_read_icond2 <- function(date,parameter){
   nwp_file <- dataDWD(nwp_urls, base=nwp_base, dir=tempdir(), 
                       joinbf=TRUE, dbin=TRUE, read=F, browse = F, quiet = TRUE)
   # show other waiter while reading data
-  # waiter_hide()
-  # waiter_show(
-  #   html = tagList(
-  #     spin_fading_circles(),
-  #     "Postprocess data for visualization.."
-  #   ),
-  #   id = c("map_out")
-  # )
+  waiter_hide()
+  waiter_show(
+    html = tagList(
+      spin_fading_circles(),
+      "Postprocess data for visualization.."
+    ),
+    id = c("map_out")
+  )
   
   #read
   nwp_data <- readDWD(nwp_file)
