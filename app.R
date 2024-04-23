@@ -422,15 +422,15 @@ server <- function(input, output, session) {
   ## read and process icon d2 forecast data
   # read icon d2 forecast data
   icond2_data <- reactive(f_read_icond2(f_forecast_time(),input$parameter))
-  # read boundary-coordinates for specified Bundesland
-  square_coord <- reactive(f_spatvector(input$bundesland))
   # postprocess icon d2 forecast data
   icond2_processed <- reactive(f_process_icond2(icond2_data(),input$parameter))
-  # adapt forecast data for specified Bundesland
-  icond2_state <- reactive(f_cut_forecast(icond2_processed(),square_coord()))
+  # take needed layer out of forecast data (according to user input)
+  icond2_layer <- reactive(f_subset_icond2(input$slider_time,icond2_processed(),input$parameter))
+  
   # read coordinates for point forecast
   point_coord <- reactive(f_point_coord(input$bundesland, input$point_forecast,
-                                        input$free_lon, input$free_lat))
+                                        input$free_lon, input$free_lat, input$map_out_click))
+  
   # produce point forecast out of icon d2 forecast data
   point_forecast <- reactive(
     terra::extract(icond2_processed(), point_coord()[[1]], raw = TRUE, ID = FALSE)
