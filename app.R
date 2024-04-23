@@ -21,6 +21,7 @@ library(curl)
 library(R.utils)
 library(dplyr)
 library(r2symbols)
+library(leaflet)
 
 ## source functions and input
 source.all(paste0(getwd(),"/functions/"))
@@ -50,7 +51,9 @@ ui <- fluidPage(
                             max-width: 450px;
                             background-color: HoneyDew;
                             color: black;
-                            border-color: aquamarine}"
+                            border-color: aquamarine}
+      .intro {background-color: yellow;
+              font-size: 30px;}"
     ))
   ),
   # use shiny waiter
