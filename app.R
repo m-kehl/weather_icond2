@@ -228,58 +228,56 @@ ui <- fluidPage(
 ## -- B.4 --  TabPanel 4: ICON D2 --------------------------------------------------------------
           tabPanel("Modell ICON-D2",
                    value = "icond2",
-            column(3, 
-               br(),
-               column(1,
-                   actionButton("info_icond2", label = NULL, icon = icon("info"),
-                                       style="color: black; 
+                   column(3, 
+                          br(),
+                          column(1,
+                                 actionButton("info_icond2", label = NULL, icon = icon("info"),
+                                              style="color: black; 
                                               background-color: HoneyDew;
                                               border-color: aquamarine",
-                                       widht = "10%")),
-               column(10,
-                   h4("Regionalmodell ICON-D2",width = "90%")),
-               br(),
-               br(),
-               hr(),
-               radioButtons(
-                inputId = "parameter",
-                label = "Parameter",
-                selected = character(0),
-                choiceNames = c("Regen","Schnee","Temperatur"),
-                choiceValues = c("rain_gsp","snow_gsp","t_2m")),
-               selectInput(
-                inputId = "bundesland",
-                label = "Bundesland",
-                choices = bundeslaender_coord$bundesland,
-                multiple = FALSE),
-               radioButtons(
-                inputId = "point_forecast",
-                label = "Punktvorhersage",
-                choiceNames = c("Landeshauptstadt","freie Koordinatenwahl"),
-                choiceValues = c("bhs","free")),
-               box(id = "box_free_coord",
-                width = '800px',
-                numericInput("free_lon",label = "longitude", value = 9.05222,
-                                 step = 0.5, width = "50%"),
-                numericInput("free_lat",label = "latitude", value = 48.52266,
-                                 step = 0.5, width = "50%")),
-               p("Datenbasis: ",
-                symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)")
-            ),
-            column(5,
-               plotOutput("map_out"),
-               sliderInput("slider_time", 
-                "Zeit", 
-                min = ceiling_date(Sys.time(),unit = "hour"),
-                max = ceiling_date(Sys.time(),unit = "hour") + 6 * 60 * 60,
-                step = 3600,
-                value = c(ceiling_date(Sys.time(),unit = "hour")),
-                timeFormat = "%a %H:%M", ticks = T, animate = T,
-                width = "95%")
-            ),
-            column(4,
-               plotOutput("bar_out")
-            )
+                                              widht = "10%")),
+                          column(10,
+                                 h4("Regionalmodell ICON-D2",width = "90%")),
+                          br(),
+                          br(),
+                          hr(),
+                          radioButtons(
+                            inputId = "parameter",
+                            label = "Parameter",
+                            selected = character(0),
+                            choiceNames = c("Regen","Schnee","Temperatur"),
+                            choiceValues = c("rain_gsp","snow_gsp","t_2m")),
+                          selectInput(
+                            inputId = "bundesland",
+                            label = "Bundesland",
+                            choices = bundeslaender_coord$bundesland,
+                            multiple = FALSE),
+                          radioButtons(
+                            inputId = "point_forecast",
+                            label = "Punktvorhersage",
+                            choiceNames = c("Mausklick","Landeshauptstadt","freie Koordinatenwahl"),
+                            choiceValues = c("mouse","bhs","free")),
+                          box(id = "box_free_coord",
+                              width = '800px',
+                              numericInput("free_lon",label = "longitude", value = 9.05222,
+                                           step = 0.5, width = "50%"),
+                              numericInput("free_lat",label = "latitude", value = 48.52266,
+                                           step = 0.5, width = "50%")),
+                          p("Datenbasis: ",
+                            symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)")
+                   ),
+                   column(9,
+                          leafletOutput("map_out"),
+                          sliderInput("slider_time", 
+                                      "Zeit", 
+                                      min = ceiling_date(Sys.time(),unit = "hour"),
+                                      max = ceiling_date(Sys.time(),unit = "hour") + 6 * 60 * 60,
+                                      step = 3600,
+                                      value = c(ceiling_date(Sys.time(),unit = "hour")),
+                                      timeFormat = "%a %H:%M", ticks = T, animate = T,
+                                      width = "95%"),
+                          plotOutput("bar_out") 
+                   )
           )
         )
     )
