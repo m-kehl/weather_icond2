@@ -433,44 +433,94 @@ server <- function(input, output, session) {
   
   # produce point forecast out of icon d2 forecast data
   point_forecast <- reactive(
-    terra::extract(icond2_processed(), point_coord()[[1]], raw = TRUE, ID = FALSE)
+    terra::extract(icond2_processed(), point_coord(), raw = TRUE, ID = FALSE)
   )
+  
   # specify when forecast data was calculated
-  output$forecast_time <- renderText(paste0("Forecast time is: ", f_forecast_time()))
+  #output$forecast_time <- renderText(paste0("Forecast time is: ", f_forecast_time()))
 
   ## show information box
   observeEvent(input$info_icond2, {
     f_infotext(input$main_tabsets)
   })
-
+  
   ## plot forecast data
+  # setup leaflet map
+  output$map_out <- renderLeaflet(
+    f_leaflet_basic()
+  )
+  
+  # adapt displayed layer on map according to user time input
   observe({
-    # placeholder-plot if no parameter is chosen in UI
-    if (length(input$parameter) == 0){
-      output$map_out <- renderPlot(
-        f_plot_placeholder()
+    f_leaflet_layer(input$parameter,icond2_processed(),icond2_layer(),session)
+  })
+  
+  # adapt legend on map if parameter input changes
+  observeEvent(input$parameter,{
+    f_leaflet_legend(input$parameter,icond2_processed(),session)
+  })
+  
+  # adapt shown leaflet map section according to user input
+  observeEvent(input$bundesland,{
+    f_leaflet_setview(input$bundesland,session)
+  })
+  
+  # add markers on leaflet map according to user input
+  observe({
+    f_leaflet_markers(input$point_forecast,input$free_lon,input$free_lat,input$bundesland,
+                      input$map_out_click,session)
+  })
+  
+  observe({
+    if (is.null(input$parameter)){
+      output$bar_out <- renderPlot(
+        plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
+      )
+    } else if (is.null(input$map_out_click) && input$point_forecast == "mouse"){
+      output$bar_out <- renderPlot(
+        plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
+      )
+    } else if ((is.na(input$free_lon) | is.na(input$free_lat)) & input$point_forecast == "free"){
+      output$bar_out <- renderPlot(
+        f_barplot_icond2_placeholder()
       )
     } else{
-      # plot parameter chosen in UI on map
-      output$map_out <- renderPlot(
-        f_map_icond2(input$slider_time,icond2_state(),input$parameter,
-                     point_coord()[[2]], input$point_forecast)
+      output$bar_out <- renderPlot(
+        f_barplot_icond2(point_forecast(),input$slider_time,input$parameter,
+                         input$point_forecast,
+                         bundeslaender_coord$landeshauptstadt[bundeslaender_coord$bundesland == input$bundesland])
       )
-      # plot point forecast
-      if (!is.na(input$free_lon) && !is.na(input$free_lat)){
-        output$bar_out <- renderPlot(
-          f_barplot_icond2(point_forecast(),input$slider_time,input$parameter,
-                           input$point_forecast,
-                           bundeslaender_coord$landeshauptstadt[bundeslaender_coord$bundesland == input$bundesland])
-        )
-      } else{
-        # placeholder-barplot if no parameter is chosen in UI
-        output$bar_out <- renderPlot(
-          f_barplot_icond2_placeholder()
-        )
-      }
     }
   })
+
+  # ## plot forecast data
+  # observe({
+  #   # placeholder-plot if no parameter is chosen in UI
+  #   if (length(input$parameter) == 0){
+  #     output$map_out <- renderPlot(
+  #       f_plot_placeholder()
+  #     )
+  #   } else{
+  #     # plot parameter chosen in UI on map
+  #     output$map_out <- renderPlot(
+  #       f_map_icond2(input$slider_time,icond2_state(),input$parameter,
+  #                    point_coord()[[2]], input$point_forecast)
+  #     )
+  #     # plot point forecast
+  #     if (!is.na(input$free_lon) && !is.na(input$free_lat)){
+  #       output$bar_out <- renderPlot(
+  #         f_barplot_icond2(point_forecast(),input$slider_time,input$parameter,
+  #                          input$point_forecast,
+  #                          bundeslaender_coord$landeshauptstadt[bundeslaender_coord$bundesland == input$bundesland])
+  #       )
+  #     } else{
+  #       # placeholder-barplot if no parameter is chosen in UI
+  #       output$bar_out <- renderPlot(
+  #         f_barplot_icond2_placeholder()
+  #       )
+  #     }
+  #   }
+  # })
 
   ## adapt UI if user wishes free coordinates
   observeEvent(input$point_forecast,{
