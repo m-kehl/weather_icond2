@@ -7,5 +7,5 @@ f_leaflet_basic <- function(){
     addPolygons(lng = c(-0.326501,5.470697,10.331397,13.519183,17.628903,20.219425,13.030434,7.577484,-3.834759),
                 lat = c(43.170241,43.535726,43.646881,43.600792,43.362164,57.637294,58.032444,58.052226,57.333792),
                 fill =FALSE) %>%
-    addControl("Bitte wähle einen Parameter.","topleft",className = "intro",layerId = "intro")
+    addControl("Bitte wählen Sie einen Parameter.","topleft",className = "intro",layerId = "intro")
 }
