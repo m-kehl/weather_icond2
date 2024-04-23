@@ -1,4 +1,8 @@
 f_leaflet_legend <- function(parameter,icond2_processed,session){
+  ## legend preparations
+  # load meta legend data (colours)
+  source(paste0(getwd(),"/input.R"),local = TRUE)
+  
   if (parameter == "rain_gsp"){
     map_legend <- "Regen [mm/h]"
   } else if (parameter == "snow_gsp"){
@@ -7,16 +11,18 @@ f_leaflet_legend <- function(parameter,icond2_processed,session){
     map_legend <- "Temperatur [\u2103]"
   }
   if (parameter != "t_2m"){
-    colorpal <- colorNumeric(c("peachpuff1","maroon1","red","orange","gold","gold4","darkgreen","lawngreen"),
+    colorpal <- colorNumeric(colours_temperature,
                              domain = c(min(terra::values(icond2_processed),na.rm = T),
                                         max(terra::values(icond2_processed),na.rm = T)),
                              na.color = "transparent")
   } else{
-    colorpal <- colorNumeric(c("blue","cyan4","lightblue","lavender","gold","orange","maroon","red4"),
+    colorpal <- colorNumeric(colours_precipitation,
                              domain = c(min(terra::values(icond2_processed),na.rm = T),
                                         max(terra::values(icond2_processed),na.rm = T)),
                              na.color = "transparent")
   }
+  
+  ## add legend to map
   
   mapModifier <- leafletProxy(
     "map_out", session)
