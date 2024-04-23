@@ -524,7 +524,11 @@ server <- function(input, output, session) {
 
   ## adapt UI if user wishes free coordinates
   observeEvent(input$point_forecast,{
-    shinyjs::toggle("box_free_coord")
+    if (input$point_forecast == "free"){
+      shinyjs::show("box_free_coord")
+    } else{
+      shinyjs::hide("box_free_coord")
+    }
   })
 
 }
