@@ -11,13 +11,15 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
   #                    -> needed to specify barplot title
   # - state:          character; name of federal state in which place for point
   #                    forecast lies
-
+  
   ##plot basics
   # title specification
   if (type == "free"){
     title_help = "nach Koord."
-  }else{
+  }else if (type == "bhs"){
     title_help = state
+  }else if (type == "mouse"){
+    title_help = "nach Mausklick"
   }
   
   # define on which time barplot starts
@@ -28,8 +30,7 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
   if (is.na(point_forecast[1])){
     plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
     
-    text(x = 0.5, y = 0.5, paste("Chosen coordinates are outside\n",
-                                 "of the available range."), 
+    text(x = 0.5, y = 0.5, paste("No data for chosen coordinates."), 
          cex = 1.6, col = "black")
   } else{
     ## plot rain/snow
