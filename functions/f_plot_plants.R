@@ -33,7 +33,7 @@ f_plot_plants <- function(plant_data,plant,meta_data,station_name){
         plot(station_data$Referenzjahr,yday(station_data$Eintrittsdatum),
              ylab = "Tag des Jahres", xlab = "Jahr",
              pch = "\u2600",
-             col = colours[count],
+             col = colours_phenology[count],
              ylim = c(min(yday(plant_data$Eintrittsdatum)),max(yday(plant_data$Eintrittsdatum))),
              xlim = c(min(plant_data$Referenzjahr),max(plant_data$Referenzjahr)),
              main = paste0(plant," (",min(plant_data$Referenzjahr),"-",
@@ -50,6 +50,6 @@ f_plot_plants <- function(plant_data,plant,meta_data,station_name){
     }
     # legend(x="bottomleft",legend = meta_data$Stationsname[meta_data$Stationsname %in% station_name], col = colours,
     #        pch = "\u2600")
-    legend(x="bottomleft", legend = station_name, col = colours, pch = "\u2600")
+    legend(x="bottomleft", legend = station_name, col = colours_phenology, pch = "\u2600")
   }
 }
