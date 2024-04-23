@@ -6,7 +6,7 @@ f_read_icond2 <- function(date,parameter){
   #                         options: "rain_gsp" for rain
   #                                  "snow_gsp" for snow
   #                                  "t_2m"     for temperature 2m above ground
-
+  
   # show waiter while searching for data
   waiter_show(
     html = tagList(
@@ -32,6 +32,7 @@ f_read_icond2 <- function(date,parameter){
   #downlaod
   nwp_file <- dataDWD(nwp_urls, base=nwp_base, dir=tempdir(), 
                       joinbf=TRUE, dbin=TRUE, read=F, browse = F, quiet = TRUE)
+  
   # show other waiter while reading data
   waiter_hide()
   waiter_show(
@@ -44,6 +45,6 @@ f_read_icond2 <- function(date,parameter){
   
   #read
   nwp_data <- readDWD(nwp_file)
-
+  
   return(nwp_data)
 }
