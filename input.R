@@ -18,6 +18,11 @@ bundeslaender_coord <- data.frame(
   lon2 = c(11,14,15,15,9.5,11,10.5,15,12,10,9,7.5,15.5,13.5,11.5,13.5),
   lat1 = c(47,47,52,51,53,53,49,52.5,51,50,48.5,49,50,50.5,53,50),
   lat2 = c(50,51,53,54,54,54.5,52,55,54,53,51,50,52,53.5,55,52),
+  mittel_lon =  c(9.00, 11.25, 13.28, 13.00,  8.50, 10.00,  9.00, 12.75, 9.00,  7.50,  7.25,  6.9,
+                  13.50, 11.75,  9.75, 11.25),
+  mittel_lat = c(48.50, 49.00, 52.50, 52.50, 53.50, 53.6, 50.50, 53.75, 52.50, 51.50, 49.75, 49.4,
+                 51.00, 52.00, 54.00, 51.00),
+  zoom = c(7,7,9,7,8,9,7,8,7,7,7,9,8,8,7,7),
   landeshauptstadt = c("Stuttgart","Muenchen","Berlin","Potsdam","Bremen","Hamburg",
                        "Wiesbaden","Schwerin","Hannover","Duesseldorf","Mainz",
                        "Saarbruecken","Dresden","Magdeburg","Kiel","Erfurt"),
@@ -73,7 +78,7 @@ meteo_parameters <- data.frame(parameter = c("Temperatur","Niederschlag",
                                #pch_unicode = c("\u2022","\u1965","\u23F9","\u23F6","\u25B2"),
                                type = c("b","h","p","p","p"))
 
-colours <- c("#FF0000","#0000FF","#00FF00",
+colours_phenology <- c("#FF0000","#0000FF","#00FF00",
              "#8000FF","#00FFFF", "darkorange1",
              "orange", "#FF00F5", "black",
              "forestgreen","yellow", "brown4", 
@@ -86,3 +91,6 @@ colours <- c("#FF0000","#0000FF","#00FF00",
              "#FF006B","#00FFD1","#FFC700",
              "#00FF66","#CCFF00")
 
+colours_temperature <- c("peachpuff1","maroon1","red","orange","gold","gold4","darkgreen","lawngreen")
+  
+colours_precipitation <- c("blue","cyan4","lightblue","lavender","gold","orange","maroon","red4")
