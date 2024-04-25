@@ -17,7 +17,7 @@ f_map_plants <- function(meta_data,station_name){
 
   point_coord <- vect(data.frame(lon = lon_station,lat = lat_station),
                             geom=c("lon", "lat"), crs="", keepgeom=FALSE)
-  map_col <- colours[1:length(station_name)]
+  map_col <- colours_phenology[1:length(station_name)]
   
   terra::plot(point_coord, xlim=c(5, 15),ylim = c(47,55),pch = 20,col = map_col)
   addBorders()
