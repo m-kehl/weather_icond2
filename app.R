@@ -270,6 +270,7 @@ ui <- fluidPage(
                             symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)")
                    ),
                    column(9,
+                          h4(textOutput("map_title")),
                           leafletOutput("map_out"),
                           sliderInput("slider_time", 
                                       "Zeit", 
@@ -456,6 +457,18 @@ server <- function(input, output, session) {
   # adapt displayed layer on map according to user time input
   observe({
     f_leaflet_layer(input$parameter,icond2_processed(),icond2_layer(),session)
+    if (length(input$parameter) != 0){
+      if (input$parameter == "rain_gsp"){
+        map_text <- "Niederschlag [mm/h] - "
+      } else if (input$parameter == "snow_gsp"){
+        map_text <- "Schnee [mm/h] - "
+      } else if (input$parameter == "t_2m"){
+        map_text <- "Temperatur [\u00B0C] - "
+      }
+      output$map_title <- renderText(paste0(map_text,format(as.POSIXct(time(icond2_layer(), format= ""),"CET"),
+                                                            "%d.%m.%Y %H:%M")))
+    }
+
   })
   
   # adapt legend on map if parameter input changes
