@@ -1,6 +1,7 @@
 f_leaflet_basic <- function(){
+  ## function to set up leaflet map (define kind of map, borders etc)
+  
   leaflet() %>% 
-    #addTiles() %>%
     addProviderTiles(providers$CartoDB.Positron,layerId = "map_click") %>% 
     setMaxBounds(lng1 = -3.834759, lat1 = 43.170241, lng2=20.219425, lat2=58.052226) %>%
     # borders of forecast area

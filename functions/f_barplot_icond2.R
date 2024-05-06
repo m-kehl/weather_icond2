@@ -7,7 +7,9 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
   #                        options: "rain_gsp" for rain
   #                                 "snow_gsp" for snow
   #                                 "t_2m"     for temperature 2m above ground
-  # - type:           character; either "bhs" (abbreviation for Bundeshauptstadt) or "free"
+  # - type:           character; either "bhs" (abbreviation for Bundeshauptstadt),
+  #                              "free" (free entry of coodrinate pair) or
+  #                              "mouse" (mouse cick on map to define coordinates)
   #                    -> needed to specify barplot title
   # - state:          character; name of federal state in which place for point
   #                    forecast lies

@@ -1,10 +1,11 @@
 ## file for all fixed data used by app.R
 # -> federal states with according state capital and coordinates
-# -> names of all plantspecies for which phenological data are available at
+# -> names of all plant species for which phenological data are available at
 #    opendata.dwd.de
 # -> all phase names and according phase ids for which phenological data are
 #    available
 # -> meteorological parameters with according names, units, axes for plot, etc
+# -> individual list of colours used in graphics
 
 ## federal states with according state capital and coordinates
 bundeslaender_coord <- data.frame(
@@ -74,10 +75,10 @@ meteo_parameters <- data.frame(parameter = c("Temperatur","Niederschlag",
                                                     "XX"),
                                min_now = c(50,0,50,0,2000),
                                max_now = c(-50,1,40,0,500),
-                               pch = c("\u2022","\u007C","\u23F9","\u003D","\u25B2"), #"\u03A0" -> PI
-                               #pch_unicode = c("\u2022","\u1965","\u23F9","\u23F6","\u25B2"),
+                               pch = c("\u2022","\u007C","\u23F9","\u003D","\u25B2"),
                                type = c("b","h","p","p","p"))
 
+## list of colours for plots (phenology plot and forecast map)
 colours_phenology <- c("#FF0000","#0000FF","#00FF00",
              "#8000FF","#00FFFF", "darkorange1",
              "orange", "#FF00F5", "black",
@@ -92,5 +93,4 @@ colours_phenology <- c("#FF0000","#0000FF","#00FF00",
              "#00FF66","#CCFF00")
 
 colours_temperature <- c("peachpuff1","maroon1","red","orange","gold","gold4","darkgreen","lawngreen")
-  
 colours_precipitation <- c("blue","cyan4","lightblue","lavender","gold","orange","maroon","red4")

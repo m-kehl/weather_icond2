@@ -1,8 +1,21 @@
 f_leaflet_layer <- function(parameter,icond2_processed,icond2_layer,session){
+  ## function to exchange plotted layer on leaflet map
+  # - parameter:      character; icon d2 abbreviation for forecasted parameter
+  #                        options: "rain_gsp" for rain
+  #                                 "snow_gsp" for snow
+  #                                 "t_2m"     for temperature 2m above ground
+  # - icond2_processed: SpatRaster; processed icon d2 data (result of
+  #                                 f_process_icond2())
+  # - icond2_layer: SpatRaster; layer of icond2_processed which is to be plotted
+  #                             on the map
+  # - session: Shiny Session
+  
   ## layer preparations
-  # load meta legend data (colours)
+  # load meta data (colours)
   source(paste0(getwd(),"/input.R"),local = TRUE)
   
+  # set min and max values for colorbar
+  # process icon d2 data -> NA if precipitation smaller 0.1
   if (length(parameter) != 0){
     if (parameter != "t_2m"){
       colorpal <- colorNumeric(colours_temperature,
@@ -19,7 +32,6 @@ f_leaflet_layer <- function(parameter,icond2_processed,icond2_layer,session){
     }
     
     ## add layer to map
-    
     mapModifier <- leafletProxy(
       "map_out", session)
     
@@ -28,6 +40,5 @@ f_leaflet_layer <- function(parameter,icond2_processed,icond2_layer,session){
       removeControl(layerId = "intro") %>%
       addRasterImage(iconlayer, col = colorpal,opacity = 0.8)
     waiter_hide()
-    
   }
 }
