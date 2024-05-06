@@ -153,7 +153,7 @@ ui <- fluidPage(
                plotOutput("plant_out"),
                textOutput("no_plant"),
                column(6,plotOutput("plant_map")),
-               column(6,tableOutput("plant_table"))
+               #column(6,tableOutput("plant_table"))
             ),
           ),
 
@@ -307,20 +307,20 @@ server <- function(input, output, session) {
 ## -- C.2 --  TabPanel 2: phenology  -------------------------------------------
   ## read and process phenology data
   # read meta data
-  # observe({
-  #   if (input$main_tabsets == "pheno"){
-  #     
-  #   }
-  # })
-  # read phenology data for specific species
+  plant_meta <- reactive({
+    if (input$main_tabsets == "pheno"){
+      f_read_plants_meta()
+    }
+  })
+  
+  # read phenology data
   plant_data <- reactive(
       if (input$pflanzen != ""){
         f_read_plants(input$pflanzen)
       }else{
-        #update SelectInput for Bundesland chosen in UI
-        plant_meta <- f_read_plants_meta()
+        #show all federal states as options in UI
         updateSelectInput(session,"bl_plant",
-                            choices = unique(plant_meta$Bundesland))
+                            choices = unique(plant_meta()$Bundesland))
       }
   )
   #update UI for specific phases
@@ -332,7 +332,7 @@ server <- function(input, output, session) {
                        selected = c(5))
   })
   # limit stations in UI to those which host species chosen in UI
-  bl_meta <- reactive(plant_meta$Stationsname[plant_meta$Bundesland == input$bl_plant])
+  bl_meta <- reactive(plant_meta()$Stationsname[plant_meta()$Bundesland == input$bl_plant])
   observe({
     updateSelectizeInput(session,"station_name",
                       choices = c(bl_meta(),input$station_name),
@@ -340,7 +340,7 @@ server <- function(input, output, session) {
   })
   # postprocess phenology data
   plant_data_processed <- reactive(
-    f_process_plants(plant_data(),input$phase,input$station_name,plant_meta)
+    f_process_plants(plant_data(),input$phase,input$station_name,plant_meta())
     )
 
   ## show information box
@@ -355,9 +355,9 @@ server <- function(input, output, session) {
       output$plant_out <- renderPlot(f_plot_placeholder())
     }else{
       #plot phenology data for species chosen in UI
-      output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()[[1]],input$pflanzen,plant_meta,input$station_name))
-      output$plant_table <- renderTable(f_table_plants(plant_meta,input$station_name))
-      output$plant_map <- renderPlot(f_map_plants(plant_meta,input$station_name))
+      output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()[[1]],input$pflanzen,plant_meta(),input$station_name))
+      output$plant_table <- renderTable(f_table_plants(plant_meta(),input$station_name))
+      output$plant_map <- renderPlot(f_map_plants(plant_meta(),input$station_name))
       if (length(plant_data_processed()[[2]]) == 0){
         output$no_plant <- renderText("")
       } else{
