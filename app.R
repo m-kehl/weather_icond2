@@ -9,6 +9,7 @@ rm(list = ls())
 
 ## required packages
 library(shiny)
+library(shinybrowser)
 library(shinydashboard)
 library(shinyjs)
 library(waiter)
@@ -57,6 +58,8 @@ ui <- fluidPage(
   ),
   # use shiny waiter
   useWaiter(),
+  # use shinybrowser
+  shinybrowser::detect(),
   ## Title
   titlePanel(title=div(img(src="laubfrosch.jpg",width = 100,height = 100),
                        "Prognose- und Messdaten"), windowTitle = "ICON-D2"),
@@ -276,10 +279,12 @@ ui <- fluidPage(
                                       value = c(ceiling_date(Sys.time(),unit = "hour")),
                                       timeFormat = "%a %H:%M", ticks = T, animate = T,
                                       width = "95%"),
-                          plotOutput("bar_out") 
+                          plotOutput("bar_out"),
+                          verbatimTextOutput("browser_info")
                    )
           )
-        )
+        ),
+      width = 12
     )
   )
 )
@@ -424,6 +429,9 @@ server <- function(input, output, session) {
 
 
 ## -- C.4 --  TabPanel 4: ICON d2  ----------------------------------------------------------------
+  output$browser_info <- renderPrint({
+    shinybrowser::get_all_info()
+  })
   ## read and process icon d2 forecast data
   # read icon d2 forecast data
   icond2_data <- reactive(f_read_icond2(f_forecast_time(),input$parameter))
