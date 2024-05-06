@@ -20,7 +20,6 @@ library(RCurl)
 library(curl)
 library(R.utils)
 library(dplyr)
-library(r2symbols)
 library(leaflet)
 
 ## source functions and input
@@ -28,7 +27,7 @@ source.all(paste0(getwd(),"/functions/"))
 source(paste0(getwd(),"/input.R"),local = TRUE)
 
 ##set local system
-Sys.setlocale("LC_TIME", "German")
+#Sys.setlocale("LC_TIME", "German")
 
 ## -- B -- User Interface ------------------------------------------------------
 ui <- fluidPage(
@@ -147,8 +146,7 @@ ui <- fluidPage(
                 choices = c("Adelsheim"),
                 selected = c("Adelsheim"),
                 multiple = TRUE),
-               p("Datenbasis: ",
-                symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)")
+               p("Datenbasis: \u00A9 Deutscher Wetterdienst (opendata.dwd.de)")
             ),
             column(9,
               #p("In Bearbeitung..")
@@ -206,8 +204,7 @@ ui <- fluidPage(
                 max = Sys.Date(),
                 value = c(Sys.Date()-60,Sys.Date()-1),
                 step = 1)), #1day
-               p("Datenbasis: ",
-                symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)")
+               p("Datenbasis: \u00A9 Deutscher Wetterdienst (opendata.dwd.de)")
             ),
             column(9,
               # define second-level tabsets (now, daily, monthly)
@@ -266,8 +263,7 @@ ui <- fluidPage(
                                            step = 0.5, width = "50%"),
                               numericInput("free_lat",label = "latitude", value = 48.52266,
                                            step = 0.5, width = "50%")),
-                          p("Datenbasis: ",
-                            symbol("copyright"), "Deutscher Wetterdienst (opendata.dwd.de)")
+                          p("Datenbasis: \u00A9 Deutscher Wetterdienst (opendata.dwd.de)")
                    ),
                    column(9,
                           h4(textOutput("map_title")),
