@@ -307,13 +307,18 @@ server <- function(input, output, session) {
 ## -- C.2 --  TabPanel 2: phenology  -------------------------------------------
   ## read and process phenology data
   # read meta data
-  plant_meta <- f_read_plants_meta()
+  # observe({
+  #   if (input$main_tabsets == "pheno"){
+  #     
+  #   }
+  # })
   # read phenology data for specific species
   plant_data <- reactive(
       if (input$pflanzen != ""){
         f_read_plants(input$pflanzen)
       }else{
         #update SelectInput for Bundesland chosen in UI
+        plant_meta <- f_read_plants_meta()
         updateSelectInput(session,"bl_plant",
                             choices = unique(plant_meta$Bundesland))
       }
