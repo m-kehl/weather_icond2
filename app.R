@@ -270,7 +270,7 @@ ui <- fluidPage(
                    ),
                    column(9,
                           h4(textOutput("map_title")),
-                          leafletOutput("map_out"),
+                          leafletOutput("map_out",width = "75%"),
                           sliderInput("slider_time", 
                                       "Zeit", 
                                       min = ceiling_date(Sys.time(),unit = "hour"),
@@ -278,8 +278,8 @@ ui <- fluidPage(
                                       step = 3600,
                                       value = c(ceiling_date(Sys.time(),unit = "hour")),
                                       timeFormat = "%a %H:%M", ticks = T, animate = T,
-                                      width = "95%"),
-                          plotOutput("bar_out"),
+                                      width = "75%"),
+                          plotOutput("bar_out", width = "75%"),
                           verbatimTextOutput("browser_info")
                    )
           )
