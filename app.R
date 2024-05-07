@@ -63,6 +63,8 @@ ui <- fluidPage(
   ## Title
   titlePanel(title=div(img(src="laubfrosch.jpg",width = 100,height = 100),
                        "Prognose- und Messdaten"), windowTitle = "ICON-D2"),
+  
+  span(textOutput("browser_info"),style = "color:red"),
 
   ## Main Panel
   fluidRow(
@@ -233,6 +235,7 @@ ui <- fluidPage(
                    value = "icond2",
                    column(3, 
                           br(),
+                          span(textOutput("browser_info"),style = "color:red"),
                           column(1,
                                  actionButton("info_icond2", label = NULL, icon = icon("info"),
                                               style="color: black; 
@@ -270,7 +273,7 @@ ui <- fluidPage(
                    ),
                    column(9,
                           h4(textOutput("map_title")),
-                          leafletOutput("map_out",width = "75%"),
+                          leafletOutput("map_out",width = "800px"),
                           sliderInput("slider_time", 
                                       "Zeit", 
                                       min = ceiling_date(Sys.time(),unit = "hour"),
@@ -278,9 +281,8 @@ ui <- fluidPage(
                                       step = 3600,
                                       value = c(ceiling_date(Sys.time(),unit = "hour")),
                                       timeFormat = "%a %H:%M", ticks = T, animate = T,
-                                      width = "75%"),
-                          plotOutput("bar_out", width = "75%"),
-                          verbatimTextOutput("browser_info")
+                                      width = "750px"),
+                          plotOutput("bar_out", width = "800px")
                    )
           )
         ),
