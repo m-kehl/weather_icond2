@@ -235,7 +235,6 @@ ui <- fluidPage(
                    value = "icond2",
                    column(3, 
                           br(),
-                          span(textOutput("browser_info"),style = "color:red"),
                           column(1,
                                  actionButton("info_icond2", label = NULL, icon = icon("info"),
                                               style="color: black; 
@@ -273,7 +272,9 @@ ui <- fluidPage(
                    ),
                    column(9,
                           h4(textOutput("map_title")),
-                          leafletOutput("map_out",width = "800px"),
+                          #uiOutput("leaf"),
+                          uiOutput("leaf"),
+                          #leafletOutput("map_out",width = "800px"),
                           sliderInput("slider_time", 
                                       "Zeit", 
                                       min = ceiling_date(Sys.time(),unit = "hour"),
@@ -282,7 +283,7 @@ ui <- fluidPage(
                                       value = c(ceiling_date(Sys.time(),unit = "hour")),
                                       timeFormat = "%a %H:%M", ticks = T, animate = T,
                                       width = "750px"),
-                          plotOutput("bar_out", width = "800px")
+                          plotOutput("bar_out")
                    )
           )
         ),
@@ -295,7 +296,16 @@ ui <- fluidPage(
 
 ## -- C --  server -------------------------------------------------------------
 server <- function(input, output, session) {
-
+  ## read device infos to make app reactive to it
+  output$browser_info <- renderText({
+    device <- shinybrowser::get_device()
+    if (device == "Mobile"){
+      paste0("Achtung: Die Darstellung dieser Webapp kann auf mobilen Geräten fehlerhaft sein,
+    da sie für den Desktop und nicht für mobile Geräte entwickelt wurde.")
+    }
+  })
+  
+  device_width <- reactive(shinybrowser::get_width())
 ## -- C.1 --  TabPanel 1: Impressum --------------------------------------------
   
   # picture of laubfrosch
@@ -431,9 +441,7 @@ server <- function(input, output, session) {
 
 
 ## -- C.4 --  TabPanel 4: ICON d2  ----------------------------------------------------------------
-  output$browser_info <- renderPrint({
-    shinybrowser::get_all_info()
-  })
+  
   ## read and process icon d2 forecast data
   # read icon d2 forecast data
   icond2_data <- reactive(f_read_icond2(f_forecast_time(),input$parameter))
@@ -464,6 +472,11 @@ server <- function(input, output, session) {
   output$map_out <- renderLeaflet(
     f_leaflet_basic()
   )
+  
+  # make leaflet UI reactive to device width
+  output$leaf=renderUI({
+    leafletOutput('map_out', width = min(800,device_width()))
+  })
   
   # adapt displayed layer on map according to user time input
   observe({
@@ -498,6 +511,7 @@ server <- function(input, output, session) {
                       input$map_out_click,session)
   })
   
+  ## plot point forecast data
   observe({
     if (is.null(input$parameter)){
       output$bar_out <- renderPlot(
@@ -509,45 +523,20 @@ server <- function(input, output, session) {
       )
     } else if ((is.na(input$free_lon) | is.na(input$free_lat)) & input$point_forecast == "free"){
       output$bar_out <- renderPlot(
-        f_barplot_icond2_placeholder()
+        f_barplot_icond2_placeholder(),
+        # make plot size reactive to device width
+        width = min(800,device_width())
       )
     } else{
       output$bar_out <- renderPlot(
         f_barplot_icond2(point_forecast(),input$slider_time,input$parameter,
                          input$point_forecast,
-                         bundeslaender_coord$landeshauptstadt[bundeslaender_coord$bundesland == input$bundesland])
+                         bundeslaender_coord$landeshauptstadt[bundeslaender_coord$bundesland == input$bundesland]),
+        # make plot size reactive to device width
+        width = min(800,device_width())
       )
     }
   })
-
-  # ## plot forecast data
-  # observe({
-  #   # placeholder-plot if no parameter is chosen in UI
-  #   if (length(input$parameter) == 0){
-  #     output$map_out <- renderPlot(
-  #       f_plot_placeholder()
-  #     )
-  #   } else{
-  #     # plot parameter chosen in UI on map
-  #     output$map_out <- renderPlot(
-  #       f_map_icond2(input$slider_time,icond2_state(),input$parameter,
-  #                    point_coord()[[2]], input$point_forecast)
-  #     )
-  #     # plot point forecast
-  #     if (!is.na(input$free_lon) && !is.na(input$free_lat)){
-  #       output$bar_out <- renderPlot(
-  #         f_barplot_icond2(point_forecast(),input$slider_time,input$parameter,
-  #                          input$point_forecast,
-  #                          bundeslaender_coord$landeshauptstadt[bundeslaender_coord$bundesland == input$bundesland])
-  #       )
-  #     } else{
-  #       # placeholder-barplot if no parameter is chosen in UI
-  #       output$bar_out <- renderPlot(
-  #         f_barplot_icond2_placeholder()
-  #       )
-  #     }
-  #   }
-  # })
 
   ## adapt UI if user wishes free coordinates
   observeEvent(input$point_forecast,{
