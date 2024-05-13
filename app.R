@@ -154,9 +154,12 @@ ui <- fluidPage(
                p("Datenbasis: \u00A9 Deutscher Wetterdienst (opendata.dwd.de)")
             ),
             column(9,
+               column(10,
+                      plotOutput("plant_out"),
+                      textOutput("no_plant")),
               #p("In Bearbeitung..")
-               plotOutput("plant_out"),
-               textOutput("no_plant"),
+               column(2,
+                      checkboxInput("trendline", "lin. Regression")),
                column(6,plotOutput("plant_map")),
                #column(6,tableOutput("plant_table"))
             ),
@@ -373,7 +376,7 @@ server <- function(input, output, session) {
       output$plant_out <- renderPlot(f_plot_placeholder())
     }else{
       #plot phenology data for species chosen in UI
-      output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()[[1]],input$pflanzen,plant_meta(),input$station_name))
+      output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()[[1]],input$pflanzen,plant_meta(),input$station_name,input$trendline))
       output$plant_table <- renderTable(f_table_plants(plant_meta(),input$station_name))
       output$plant_map <- renderPlot(f_map_plants(plant_meta(),input$station_name))
       if (length(plant_data_processed()[[2]]) == 0){

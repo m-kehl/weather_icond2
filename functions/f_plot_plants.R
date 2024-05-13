@@ -1,4 +1,4 @@
-f_plot_plants <- function(plant_data,plant,meta_data,station_name){
+f_plot_plants <- function(plant_data,plant,meta_data,station_name,regression){
   ## function to plot postprocessed phenological data
   # - plant_data:   data.table with phenological data; produced by f_process_plants.R
   # - plant:        character; plant species
@@ -38,6 +38,11 @@ f_plot_plants <- function(plant_data,plant,meta_data,station_name){
              xlim = c(min(plant_data$Referenzjahr),max(plant_data$Referenzjahr)),
              main = paste0(plant," (",min(plant_data$Referenzjahr),"-",
                            max(plant_data$Referenzjahr),")"))
+        if (regression == "TRUE" & nrow(station_data) > 10){
+          model <- lm(yday(station_data$Eintrittsdatum) ~ station_data$Referenzjahr)
+          abline(model, col = colours_phenology[count])
+        }
+        
         par(new=T)
         
         more_plots <- ifelse(count < length(station_name),TRUE,FALSE)
@@ -51,5 +56,9 @@ f_plot_plants <- function(plant_data,plant,meta_data,station_name){
     # legend(x="bottomleft",legend = meta_data$Stationsname[meta_data$Stationsname %in% station_name], col = colours,
     #        pch = "\u2600")
     legend(x="bottomleft", legend = station_name, col = colours_phenology, pch = "\u2600")
+    abline(h=c(31,60,91,121,152,182,213,244,274,305,335))
+    text(max(yday(plant_data$Eintrittsdatum)),213,"hello")
+    text(rep(max(plant_data$Referenzjahr),11),c(31,60,91,121,152,182,213,244,274,305,335)+1,
+         c("Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"))
   }
 }
