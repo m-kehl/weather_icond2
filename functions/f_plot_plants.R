@@ -1,10 +1,14 @@
-f_plot_plants <- function(plant_data,plant,meta_data,station_name,regression){
+f_plot_plants <- function(plant_data,plant,meta_data,station_name,regression,mtline){
   ## function to plot postprocessed phenological data
   # - plant_data:   data.table with phenological data; produced by f_process_plants.R
   # - plant:        character; plant species
   # - meta_data:    data.table with phenological meta data, produced by
   #                 f_read_plants_meta.R
   # - station_name: array; name/s of measurement station/s (characters)
+  # - regression:   character; True or False, whether regression line should be plotted
+  #                 or not
+  # - mtline:       character, True or False, whether help lines for months should
+  #                 be plotted or not
   
   ## plot preparations
   # load meta plot data for parameters
@@ -38,9 +42,17 @@ f_plot_plants <- function(plant_data,plant,meta_data,station_name,regression){
              xlim = c(min(plant_data$Referenzjahr),max(plant_data$Referenzjahr)),
              main = paste0(plant," (",min(plant_data$Referenzjahr),"-",
                            max(plant_data$Referenzjahr),")"))
+        # plot regression line
         if (regression == "TRUE" & nrow(station_data) > 10){
           model <- lm(yday(station_data$Eintrittsdatum) ~ station_data$Referenzjahr)
           abline(model, col = colours_phenology[count])
+        }
+        # plot help lines for months
+        if (mtline == "TRUE"){
+          abline(h=c(31,60,91,121,152,182,213,244,274,305,335))
+          text(max(yday(plant_data$Eintrittsdatum)),213,"hello")
+          text(rep(max(plant_data$Referenzjahr),11),c(31,60,91,121,152,182,213,244,274,305,335)+1,
+               c("Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"))
         }
         
         par(new=T)
@@ -53,12 +65,6 @@ f_plot_plants <- function(plant_data,plant,meta_data,station_name,regression){
       }
 
     }
-    # legend(x="bottomleft",legend = meta_data$Stationsname[meta_data$Stationsname %in% station_name], col = colours,
-    #        pch = "\u2600")
     legend(x="bottomleft", legend = station_name, col = colours_phenology, pch = "\u2600")
-    abline(h=c(31,60,91,121,152,182,213,244,274,305,335))
-    text(max(yday(plant_data$Eintrittsdatum)),213,"hello")
-    text(rep(max(plant_data$Referenzjahr),11),c(31,60,91,121,152,182,213,244,274,305,335)+1,
-         c("Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"))
   }
 }
