@@ -1,4 +1,4 @@
-f_plot_plants <- function(plant_data,plant,meta_data,station_name,regression,mtline){
+f_plot_plants <- function(plant_data,plant,meta_data,station_name,regression,mtline,grid){
   ## function to plot postprocessed phenological data
   # - plant_data:   data.table with phenological data; produced by f_process_plants.R
   # - plant:        character; plant species
@@ -9,6 +9,7 @@ f_plot_plants <- function(plant_data,plant,meta_data,station_name,regression,mtl
   #                 or not
   # - mtline:       character, True or False, whether help lines for months should
   #                 be plotted or not
+  # - grid:         character; True or False, whether grid should be plotted or not
   
   ## plot preparations
   # load meta plot data for parameters
@@ -53,6 +54,10 @@ f_plot_plants <- function(plant_data,plant,meta_data,station_name,regression,mtl
           text(max(yday(plant_data$Eintrittsdatum)),213,"hello")
           text(rep(max(plant_data$Referenzjahr),11),c(31,60,91,121,152,182,213,244,274,305,335)+1,
                c("Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"))
+        }
+        # plot grid
+        if (grid == "TRUE"){
+          grid(col = "grey")
         }
         
         par(new=T)

@@ -162,7 +162,8 @@ ui <- fluidPage(
                       br(),
                       p("Hilfslinien:"),
                       checkboxInput("trendline", "lin. Regression"),
-                      checkboxInput("mtline","Monatslinien")),
+                      checkboxInput("mtline","Monatslinien"),
+                      checkboxInput("grid","Gitternetz")),
                column(6,plotOutput("plant_map")),
                #column(6,tableOutput("plant_table"))
             ),
@@ -382,7 +383,7 @@ server <- function(input, output, session) {
       output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()[[1]],
                                                    input$pflanzen,plant_meta(),
                                                    input$station_name,input$trendline,
-                                                   input$mtline))
+                                                   input$mtline,input$grid))
       output$plant_table <- renderTable(f_table_plants(plant_meta(),input$station_name))
       output$plant_map <- renderPlot(f_map_plants(plant_meta(),input$station_name))
       if (length(plant_data_processed()[[2]]) == 0){
