@@ -305,7 +305,8 @@ server <- function(input, output, session) {
     }
   })
   
-  device_width <- reactive(shinybrowser::get_width())
+  device_width <- reactive(shinybrowser::get_width() -40)
+  
 ## -- C.1 --  TabPanel 1: Impressum --------------------------------------------
   
   # picture of laubfrosch
