@@ -171,7 +171,7 @@ ui <- fluidPage(
             ),
             column(9,
                column(10,
-                      plotOutput("plant_out"),
+                      div(class = "map_plot",plotOutput("plant_out")),
                       textOutput("no_plant")),
               #p("In Bearbeitung..")
                column(2,
@@ -239,17 +239,17 @@ ui <- fluidPage(
               tabsetPanel(id = "mess_tabsets",
                 tabPanel("aktuelle Messungen",
                   value = "now",
-                  plotOutput("mess_plot"),
-                  plotOutput("mess_plot_prec")),
+                  div(class = "map_plot",plotOutput("mess_plot")),
+                  div(class = "map_plot",plotOutput("mess_plot_prec"))),
                 tabPanel("Tageswerte",
                   value = "daily",
-                  plotOutput("mess_plot_daily"),
-                  plotOutput("mess_plot_daily_prec")),
+                  div(class = "map_plot",plotOutput("mess_plot_daily")),
+                  div(class = "map_plot",plotOutput("mess_plot_daily_prec"))),
                 tabPanel("Monatswerte",
                   value = "monthly",
-                  plotOutput("mess_plot_monthly"),
-                  plotOutput("mess_plot_monthly_prec"),
-                  p("in Bearbeitung.."))
+                  div(class = "map_plot",plotOutput("mess_plot_monthly")),
+                  div(class = "map_plot",plotOutput("mess_plot_monthly_prec"))),
+                  #p("in Bearbeitung.."))
               )
             )
           ),
