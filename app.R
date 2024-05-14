@@ -63,7 +63,13 @@ ui <- fluidPage(
                             color: black;
                             border-color: aquamarine}
       .intro {background-color: yellow;
-              font-size: 30px;}"
+              font-size: 30px;}
+              
+      .map_plot {max-width: 800px;
+                  padding: 16px}
+      .slider {padding: 16px}
+      
+      "
     ))
   ),
   # use shiny waiter
@@ -164,7 +170,7 @@ ui <- fluidPage(
             ),
             column(9,
                column(10,
-                      plotOutput("plant_out"),
+                      div("map_plot",plotOutput("plant_out")),
                       textOutput("no_plant")),
               #p("In Bearbeitung..")
                column(2,
@@ -232,17 +238,17 @@ ui <- fluidPage(
               tabsetPanel(id = "mess_tabsets",
                 tabPanel("aktuelle Messungen",
                   value = "now",
-                  plotOutput("mess_plot"),
-                  plotOutput("mess_plot_prec")),
+                  div("map_plot",plotOutput("mess_plot")),
+                      div("map_plot",plotOutput("mess_plot_prec"))),
                 tabPanel("Tageswerte",
                   value = "daily",
-                  plotOutput("mess_plot_daily"),
-                  plotOutput("mess_plot_daily_prec")),
+                  div("map_plot",plotOutput("mess_plot_daily")),
+                  div("map_plot",plotOutput("mess_plot_daily_prec"))),
                 tabPanel("Monatswerte",
                   value = "monthly",
-                  plotOutput("mess_plot_monthly"),
-                  plotOutput("mess_plot_monthly_prec"),
-                  p("in Bearbeitung.."))
+                  div("map_plot",plotOutput("mess_plot_monthly")),
+                  div("map_plot",plotOutput("mess_plot_monthly_prec")),
+                  #p("in Bearbeitung.."))
               )
             )
           ),
