@@ -41,7 +41,8 @@ ui <- fluidPage(
           margin: auto;}
           
       .mobile_info {
-          color:red;}
+          color: red;
+          background-color: #39f40b}
           
       .title {
           color: black;
@@ -297,7 +298,7 @@ ui <- fluidPage(
                           h4(textOutput("map_title")),
                           #uiOutput("leaf"),
                           #uiOutput("leaf"),
-                          div(class = "map_plot",leafletOutput("map_out",width = "800px")),
+                          div(class = "map_plot",leafletOutput("map_out")),
                           div(class = "slider", sliderInput("slider_time", 
                                       "Zeit", 
                                       min = ceiling_date(Sys.time(),unit = "hour"),
