@@ -62,7 +62,7 @@ ui <- fluidPage(
                             background-color: HoneyDew;
                             color: black;
                             border-color: aquamarine}
-      .intro {background-color: yellow;
+      .intro {background-color: #39f40b;
               font-size: 30px;}
               
       .map_plot {max-width: 800px;
@@ -296,17 +296,17 @@ ui <- fluidPage(
                    column(9,
                           h4(textOutput("map_title")),
                           #uiOutput("leaf"),
-                          uiOutput("leaf"),
-                          #leafletOutput("map_out",width = "800px"),
-                          sliderInput("slider_time", 
+                          #uiOutput("leaf"),
+                          div(class = "map_plot",leafletOutput("map_out",width = "800px")),
+                          div(class = "slider", sliderInput("slider_time", 
                                       "Zeit", 
                                       min = ceiling_date(Sys.time(),unit = "hour"),
                                       max = ceiling_date(Sys.time(),unit = "hour") + 6 * 60 * 60,
                                       step = 3600,
                                       value = c(ceiling_date(Sys.time(),unit = "hour")),
                                       timeFormat = "%a %H:%M", ticks = T, animate = T,
-                                      width = "750px"),
-                          plotOutput("bar_out")
+                                      width = "750px")),
+                          div(class = "map_plot",plotOutput("bar_out"))
                    )
           )
         ),
@@ -501,9 +501,9 @@ server <- function(input, output, session) {
   )
   
   # make leaflet UI reactive to device width
-  output$leaf=renderUI({
-    leafletOutput('map_out', width = min(800,device_width()))
-  })
+  # output$leaf=renderUI({
+  #   leafletOutput('map_out', width = min(800,device_width()))
+  # })
   
   # adapt displayed layer on map according to user time input
   observe({
