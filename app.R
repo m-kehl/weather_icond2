@@ -34,9 +34,15 @@ source(paste0(getwd(),"/input.R"),local = TRUE)
 ui <- fluidPage(
   tags$head(
     ## define superordinate settings 
-    # HTML style for tabsets and notifications
+    # HTML/CSS style for different elements (tabsets, plots, text, etc)
     tags$style(HTML(
-      ".tabbable > .nav > li                 > a  {font-weight: bold; 
+      "body {
+        max-width: 1320px;
+        margin: auto;
+      }
+      
+      
+      .tabbable > .nav > li                 > a  {font-weight: bold; 
                                                   background-color: aquamarine; 
                                                   color:black}
       .tabbable > .nav > li[class=active]    > a {background-color: HoneyDew; 
