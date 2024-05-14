@@ -67,6 +67,7 @@ ui <- fluidPage(
               
       .map_plot {max-width: 800px;
                   padding: 16px}
+
       .slider {padding: 16px}
       
       "
@@ -170,7 +171,7 @@ ui <- fluidPage(
             ),
             column(9,
                column(10,
-                      div("map_plot",plotOutput("plant_out")),
+                      plotOutput("plant_out"),
                       textOutput("no_plant")),
               #p("In Bearbeitung..")
                column(2,
@@ -238,17 +239,17 @@ ui <- fluidPage(
               tabsetPanel(id = "mess_tabsets",
                 tabPanel("aktuelle Messungen",
                   value = "now",
-                  div("map_plot",plotOutput("mess_plot")),
-                      div("map_plot",plotOutput("mess_plot_prec"))),
+                  plotOutput("mess_plot"),
+                  plotOutput("mess_plot_prec")),
                 tabPanel("Tageswerte",
                   value = "daily",
-                  div("map_plot",plotOutput("mess_plot_daily")),
-                  div("map_plot",plotOutput("mess_plot_daily_prec"))),
+                  plotOutput("mess_plot_daily"),
+                  plotOutput("mess_plot_daily_prec")),
                 tabPanel("Monatswerte",
                   value = "monthly",
-                  div("map_plot",plotOutput("mess_plot_monthly")),
-                  div("map_plot",plotOutput("mess_plot_monthly_prec")),
-                  #p("in Bearbeitung.."))
+                  plotOutput("mess_plot_monthly"),
+                  plotOutput("mess_plot_monthly_prec"),
+                  p("in Bearbeitung.."))
               )
             )
           ),
@@ -294,7 +295,9 @@ ui <- fluidPage(
                    ),
                    column(9,
                           h4(textOutput("map_title")),
-                          div("map_plot",leafletOutput("map_out")),
+                          #uiOutput("leaf"),
+                          uiOutput("leaf"),
+                          #leafletOutput("map_out",width = "800px"),
                           sliderInput("slider_time", 
                                       "Zeit", 
                                       min = ceiling_date(Sys.time(),unit = "hour"),
@@ -498,9 +501,9 @@ server <- function(input, output, session) {
   )
   
   # make leaflet UI reactive to device width
-  # output$leaf=renderUI({
-  #   leafletOutput('map_out', width = min(800,device_width()))
-  # })
+  output$leaf=renderUI({
+    leafletOutput('map_out', width = min(800,device_width()))
+  })
   
   # adapt displayed layer on map according to user time input
   observe({
