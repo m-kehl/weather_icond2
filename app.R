@@ -37,10 +37,17 @@ ui <- fluidPage(
     # HTML/CSS style for different elements (tabsets, plots, text, etc)
     tags$style(HTML(
       "body {
-        max-width: 1320px;
-        margin: auto;
-      }
+          max-width: 1320px;
+          margin: auto;}
+      .mobile_info {
+          color:red;}
+      .title {
+          color: black;
+          float: left; width: 50%}
+          
       
+      
+      .tabbable > .nav {background-color:	 #3dc296;}
       
       .tabbable > .nav > li                 > a  {font-weight: bold; 
                                                   background-color: aquamarine; 
@@ -67,7 +74,7 @@ ui <- fluidPage(
   # use shinybrowser
   shinybrowser::detect(),
   ## Title
-  titlePanel(title=div(img(src="laubfrosch.jpg",width = 100,height = 100),
+  titlePanel(title=div(class = "title",img(class = "title_pic",src="laubfrosch.jpg",width = 100,height = 100),
                        "Prognose- und Messdaten"), windowTitle = "ICON-D2"),
   
   span(textOutput("browser_info"),style = "color:red"),
