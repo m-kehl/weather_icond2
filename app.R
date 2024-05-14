@@ -39,25 +39,22 @@ ui <- fluidPage(
       "body {
           max-width: 1320px;
           margin: auto;}
+          
       .mobile_info {
           color:red;}
+          
       .title {
           color: black;
           float: left; width: 50%}
           
-      
-      
       .tabbable > .nav {background-color:	 #3dc296;}
-      
+      .tabbable > .nav > li {float: right;  padding-top: 65px;}
       .tabbable > .nav > li                 > a  {font-weight: bold; 
                                                   background-color: aquamarine; 
                                                   color:black}
       .tabbable > .nav > li[class=active]    > a {background-color: HoneyDew; 
                                                   color:black}
-      .tabbable ul li:nth-child(1) { float: right; }
-      .tabbable ul li:nth-child(2) { float: right; }
-      .tabbable ul li:nth-child(3) { float: right; }
-      .tabbable ul li:nth-child(4) { float: right; }
+
       .shiny-notification {position:fixed;
                             top: calc(13%);
                             left: calc(18%);
@@ -73,16 +70,15 @@ ui <- fluidPage(
   useWaiter(),
   # use shinybrowser
   shinybrowser::detect(),
-  ## Title
-  titlePanel(title=div(class = "title",img(class = "title_pic",src="laubfrosch.jpg",width = 100,height = 100),
-                       "Prognose- und Messdaten"), windowTitle = "ICON-D2"),
-  
   span(textOutput("browser_info"),style = "color:red"),
 
   ## Main Panel
   fluidRow(
     mainPanel(
       useShinyjs(),
+      ## Title
+      titlePanel(title=div(class = "title",img(class = "title_pic",src="laubfrosch.jpg",width = 100,height = 100),
+                           "Prognose- und Messdaten"), windowTitle = "ICON-D2"),
         # define main_tabsets (ICON D2, measurement data, phenology, impressum)
         tabsetPanel(
           id = "main_tabsets",
