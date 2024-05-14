@@ -328,7 +328,7 @@ server <- function(input, output, session) {
     }
   })
   
-  device_width <- reactive(shinybrowser::get_width() -40)
+  #device_width <- reactive(shinybrowser::get_width() -40)
   
 ## -- C.1 --  TabPanel 1: Impressum --------------------------------------------
   
@@ -552,7 +552,7 @@ server <- function(input, output, session) {
       output$bar_out <- renderPlot(
         f_barplot_icond2_placeholder(),
         # make plot size reactive to device width
-        width = min(800,device_width())
+        #width = min(800,device_width())
       )
     } else{
       output$bar_out <- renderPlot(
@@ -560,7 +560,7 @@ server <- function(input, output, session) {
                          input$point_forecast,
                          bundeslaender_coord$landeshauptstadt[bundeslaender_coord$bundesland == input$bundesland]),
         # make plot size reactive to device width
-        width = min(800,device_width())
+        #width = min(800,device_width())
       )
     }
   })
