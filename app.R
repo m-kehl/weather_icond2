@@ -77,7 +77,7 @@ ui <- fluidPage(
     mainPanel(
       useShinyjs(),
       ## Title
-      titlePanel(title=div(class = "title",img(class = "title_pic",src="laubfrosch.jpg",width = 100,height = 100),
+      titlePanel(title=div(class = "title",img(class = "title_pic",src="laubfrosch.png",width = 100,height = 100),
                            "Prognose- und Messdaten"), windowTitle = "ICON-D2"),
         # define main_tabsets (ICON D2, measurement data, phenology, impressum)
         tabsetPanel(
@@ -327,7 +327,7 @@ server <- function(input, output, session) {
   
   # picture of laubfrosch
   output$laubfrosch <- renderUI({
-        tags$img(src="laubfrosch_blau.jpg", height=250)
+        tags$img(src="laubfrosch_blau.png", height=250)
   })
   
   # change picture of laubfrosch on click
@@ -335,7 +335,7 @@ server <- function(input, output, session) {
     "laubfrosch", {
       #on click -> changing color
       output$laubfrosch <- renderUI({
-            tags$img(src="laubfrosch_rot.jpg", height=250)
+            tags$img(src="laubfrosch_rot.png", height=250)
       })
   })
 ## -- C.2 --  TabPanel 2: phenology  -------------------------------------------
