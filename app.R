@@ -294,9 +294,7 @@ ui <- fluidPage(
                    ),
                    column(9,
                           h4(textOutput("map_title")),
-                          #uiOutput("leaf"),
-                          uiOutput("leaf"),
-                          #leafletOutput("map_out",width = "800px"),
+                          div("map_plot",leafletOutput("map_out")),
                           sliderInput("slider_time", 
                                       "Zeit", 
                                       min = ceiling_date(Sys.time(),unit = "hour"),
@@ -500,9 +498,9 @@ server <- function(input, output, session) {
   )
   
   # make leaflet UI reactive to device width
-  output$leaf=renderUI({
-    leafletOutput('map_out', width = min(800,device_width()))
-  })
+  # output$leaf=renderUI({
+  #   leafletOutput('map_out', width = min(800,device_width()))
+  # })
   
   # adapt displayed layer on map according to user time input
   observe({
