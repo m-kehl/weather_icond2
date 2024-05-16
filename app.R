@@ -42,7 +42,7 @@ ui <- fluidPage(
           
       .mobile_info {
           color: red;
-          background-color: #39f40b}
+          background-color: #39f40b;}
           
       .title {
           color: black;
@@ -69,7 +69,22 @@ ui <- fluidPage(
       .map_plot {max-width: 800px;
                   padding: 16px}
 
-      .slider {padding: 16px}
+      .slider {padding-left: 16px}
+      
+      .subtitle {padding-left: 8px;}
+      
+      .helplines {border-style: solid;
+                  border-color: #3dc296;
+                  border-width: 2px;
+                  border-radius: 5px;
+                  padding: 5px;
+                  width: 150px;
+                  }
+
+      .impressum_style {padding: 32px}
+      
+      #map_title {padding-left: 16px;
+                  }
       
       "
     ))
@@ -95,6 +110,7 @@ ui <- fluidPage(
 ## -- B.1 --  TabPanel 1: Impressum --------------------------------------------
           tabPanel("Impressum",
                    value = "impressum",
+            div(class = "impressum_style",
             uiOutput("laubfrosch",style="float:right"),
             h3("Kontakt"),
             h4("M. Kehl"),
@@ -127,7 +143,7 @@ ui <- fluidPage(
                im Voraus einzuholen."),
             h3("Quelle Impressum"),
             h4(tags$a(href="https://brainbox.swiss/impressum-generator-schweiz/",
-                      "BrainBox Solutions"))
+                      "BrainBox Solutions")))
           ),
 ## -- B.2 --  TabPanel 2: phenology  -------------------------------------------
 
@@ -139,10 +155,10 @@ ui <- fluidPage(
                    actionButton("info_pheno", label = NULL, icon = icon("info"),
                                        style="color: black; 
                                               background-color: HoneyDew; 
-                                              border-color: aquamarine",
+                                              border-color: #3dc296",
                                        widht = "10%")),
                column(10,
-                  h4("Phänologie",width = "90%")),
+                      div(class = "subtitle",h4("Phänologie",width = "90%"))),
                br(),
                br(),
                hr(),
@@ -177,10 +193,14 @@ ui <- fluidPage(
               #p("In Bearbeitung..")
                column(2,
                       br(),
+                      br(),
+                      br(),
+                      br(),
+                      div(class = "helplines",
                       p("Hilfslinien:"),
                       checkboxInput("trendline", "lin. Regression"),
                       checkboxInput("mtline","Monatslinien"),
-                      checkboxInput("grid","Gitternetz")),
+                      checkboxInput("grid","Gitternetz"))),
                column(6,plotOutput("plant_map")),
                #column(6,tableOutput("plant_table"))
             ),
@@ -196,10 +216,10 @@ ui <- fluidPage(
                    actionButton("info_mess", label = NULL, icon = icon("info"),
                                  style="color: black;
                                         background-color: HoneyDew;
-                                        border-color: aquamarine",
+                                        border-color: #3dc296",
                                  widht = "10%")),
                column(10,
-                   h4("Messdaten",width = "90%")),
+                      div(class = "subtitle",h4("Messdaten",width = "90%"))),
                br(),
                br(),
                hr(),
@@ -263,10 +283,10 @@ ui <- fluidPage(
                                  actionButton("info_icond2", label = NULL, icon = icon("info"),
                                               style="color: black; 
                                               background-color: HoneyDew;
-                                              border-color: aquamarine",
-                                              widht = "10%")),
+                                              border-color: #3dc296",
+                                              widht = "5%")),
                           column(10,
-                                 h4("Regionalmodell ICON-D2",width = "90%")),
+                                 div(class = "subtitle",h4("Regionalmodell ICON-D2",width = "95%"))),
                           br(),
                           br(),
                           hr(),
@@ -295,6 +315,7 @@ ui <- fluidPage(
                           p("Datenbasis: \u00A9 Deutscher Wetterdienst (opendata.dwd.de)")
                    ),
                    column(9,
+                          br(),
                           h4(textOutput("map_title")),
                           #uiOutput("leaf"),
                           #uiOutput("leaf"),
