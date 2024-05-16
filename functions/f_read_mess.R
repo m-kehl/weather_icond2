@@ -8,6 +8,29 @@ f_read_mess <- function(name, mess_meta,granularity){
   #                                   "daily" for daily measurement data
   #                                   "monthly" for monthly measurement data
   
+  # show waiter while reading data
+  waiter_show(
+    html = tagList(
+      spin_fading_circles(),
+      "Download data from opendata.dwd.de .."
+    ),
+    id = c("mess_plot")
+  )
+  waiter_show(
+    html = tagList(
+      spin_fading_circles(),
+      "Download data from opendata.dwd.de .."
+    ),
+    id = c("mess_plot_daily")
+  )
+  waiter_show(
+    html = tagList(
+      spin_fading_circles(),
+      "Download data from opendata.dwd.de .."
+    ),
+    id = c("mess_plot_monthly")
+  )
+  
   #path definitions for download source
   url_base <- "ftp://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/"
   
@@ -49,5 +72,6 @@ f_read_mess <- function(name, mess_meta,granularity){
     data_mess <- arrange(data_mess,MESS_DATUM)
     data_mess_all <- rbind(data_mess_all,data_mess)
   }
+  waiter_hide()
   return(data_mess_all)
 }
