@@ -1,7 +1,7 @@
 #ShinyApp to visualise measurement and forecast weather data provided
 #to the public by DWD (Deutscher Wetterdienst; opendata.dwd.de)
 #
-#20.02.2024 - ShinyApp created by m-kehl (mkehl.laubfrosch@gmx.ch)
+#20.02.2024 - ShinyApp created by m-kehl (mkehl.laubfrosch@gmail.com)
 
 
 ## -- A -- Preparation ---------------------------------------------------------
@@ -38,7 +38,8 @@ ui <- fluidPage(
     tags$style(HTML(
       "body {
           max-width: 1320px;
-          margin: auto;}
+          margin: auto;
+          background-color: white}
           
       .mobile_info {
           color: red;
@@ -57,13 +58,14 @@ ui <- fluidPage(
                                                   color:black}
 
       .shiny-notification {position:fixed;
-                            top: calc(13%);
-                            left: calc(18%);
+                            top: calc(20%);
+                            left: calc(30%);
                             max-width: 450px;
                             background-color: HoneyDew;
                             color: black;
                             border-color: aquamarine}
-      .intro {background-color: #39f40b;
+                            
+      .intro {background-color: aquamarine;
               font-size: 30px;}
               
       .map_plot {max-width: 800px;
@@ -84,7 +86,31 @@ ui <- fluidPage(
       .impressum_style {padding: 32px}
       
       #map_title {padding-left: 16px;
-                  }
+      }
+      
+      .main {background-color: white;}
+                  
+      .footer {background-color: HoneyDew;
+                }
+              
+      a {color: #3dc296;}
+      
+      .hidekontakt {
+          display: none;
+      }
+              
+      .kontakt:hover {
+       color: red;
+      }
+        
+      .kontakt {display: inline-block;
+                color: #3dc296;}
+
+      .kontakt:hover + .hidekontakt {
+        display: initial;
+        color: red;
+      }
+
       
       "
     ))
@@ -114,7 +140,7 @@ ui <- fluidPage(
             uiOutput("laubfrosch",style="float:right"),
             h3("Kontakt"),
             h4("M. Kehl"),
-            h4("mkehl.laubfrosch@gmx.ch"),
+            h4("mkehl.laubfrosch@gmail.com"),
             h4("Quellcode auf", tags$a(href="https://github.com/m-kehl/weather_icond2",
                                        "GitHub")),
             h3("Haftungsausschluss"),
@@ -330,11 +356,13 @@ ui <- fluidPage(
                                       width = "750px")),
                           div(class = "map_plot",plotOutput("bar_out"))
                    )
-          )
+          ),
         ),
-      width = 12
+      width = 12,
+      
     )
-  )
+  ),tags$footer(class = "footer","\u00A9 2024 - M. Kehl      ",br(), actionLink("link_to_impressum", "Impressum"),
+                "|", div(class = "kontakt", "Kontakt"), div(class="hidekontakt","mkehl.laubfrosch@gmail.com"))
 )
 
 
@@ -348,6 +376,20 @@ server <- function(input, output, session) {
       paste0("Achtung: Die Darstellung dieser Webapp kann auf mobilen Geräten fehlerhaft sein,
     da sie für den Desktop und nicht für mobile Geräte entwickelt wurde.")
     }
+  })
+  
+  # make link to impressum reactive
+  observeEvent(input$link_to_impressum, {
+    updateTabItems(session, "main_tabsets", "impressum")
+  })
+  
+  # show infobox with contact details
+  observeEvent(input$kontakt, {
+    showNotification(h4("Kontakt"),
+                      p("mkehl.laubfrosch@gmail.com", tags$br(),
+                        "GitHub:", tags$a(href = "https://github.com/m-kehl/weather_icond2",
+                                          "https://github.com/m-kehl/weather_icond2"))
+      ,duration = NULL)
   })
   
   #device_width <- reactive(shinybrowser::get_width() -40)
