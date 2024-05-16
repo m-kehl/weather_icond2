@@ -100,7 +100,7 @@ ui <- fluidPage(
       }
               
       .kontakt:hover {
-       color: red;
+       color: #1E2B3D;
       }
         
       .kontakt {display: inline-block;
@@ -108,7 +108,7 @@ ui <- fluidPage(
 
       .kontakt:hover + .hidekontakt {
         display: initial;
-        color: red;
+        color: #1E2B3D;
       }
 
       
