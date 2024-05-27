@@ -66,7 +66,8 @@ ui <- fluidPage(
                             border-color: aquamarine}
                             
       .intro {background-color: aquamarine;
-              font-size: 30px;}
+              font-size: 30px;
+              }
               
       .map_plot {max-width: 800px;
                   padding: 16px}
@@ -111,6 +112,11 @@ ui <- fluidPage(
         color: #1E2B3D;
       }
 
+      @media (max-width: 1010px) {
+        .tabbable > .nav > li {float: left;  padding-top: 2px;}
+        .title {
+          float: left; width: 100%}
+      }
       
       "
     ))
@@ -181,10 +187,8 @@ ui <- fluidPage(
                    actionButton("info_pheno", label = NULL, icon = icon("info"),
                                        style="color: black; 
                                               background-color: HoneyDew; 
-                                              border-color: #3dc296",
-                                       widht = "10%")),
-               column(10,
-                      div(class = "subtitle",h4("Phänologie",width = "90%"))),
+                                              border-color: #3dc296")),
+               column(10,div(class = "subtitle",h4("Phänologie"))),
                br(),
                br(),
                hr(),
@@ -362,7 +366,7 @@ ui <- fluidPage(
       
     )
   ),tags$footer(class = "footer","\u00A9 2024 - M. Kehl      ",br(), actionLink("link_to_impressum", "Impressum"),
-                "|", div(class = "kontakt", "Kontakt"), div(class="hidekontakt","mkehl.laubfrosch@gmail.com"))
+                "|", div(class = "kontakt", a(href="mailto:mkehl.laubfrosch@gmail.com","Kontakt")), div(class="hidekontakt","mkehl.laubfrosch@gmail.com"))
 )
 
 
