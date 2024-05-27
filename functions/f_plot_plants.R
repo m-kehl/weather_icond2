@@ -50,9 +50,9 @@ f_plot_plants <- function(plant_data,plant,meta_data,station_name,regression,mtl
         }
         # plot help lines for months
         if (mtline == "TRUE"){
-          abline(h=c(31,60,91,121,152,182,213,244,274,305,335))
-          text(max(yday(plant_data$Eintrittsdatum)),213,"hello")
-          text(rep(max(plant_data$Referenzjahr),11),c(31,60,91,121,152,182,213,244,274,305,335)+1,
+          abline(h=c(0,31,60,91,121,152,182,213,244,274,305,335))
+          #text(max(yday(plant_data$Eintrittsdatum)),213,"hello")
+          text(rep(max(plant_data$Referenzjahr),12),c(0,31,60,91,121,152,182,213,244,274,305,335)+2,
                c("Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"))
         }
         # plot grid
