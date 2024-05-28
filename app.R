@@ -100,6 +100,8 @@ ui <- fluidPage(
               
       a {color: #3dc296;}
       
+      a:hover {color: #32805b;}
+      
       .hidekontakt {
           display: none;
       }
