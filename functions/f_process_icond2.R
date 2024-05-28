@@ -12,7 +12,7 @@ f_process_icond2 <- function(icond2_data,parameter){
   
   #get difference between SpatRaster layers for rain and snow
   # -> results in moment forecast not sum over all forecasts
-  if (parameter %in% c("rain_gsp", "snow_gsp")){
+  if (parameter %in% c("tot_prec")){
     diff_forecasts <- diff(all_forecasts)
   } else{
     diff_forecasts <- all_forecasts
