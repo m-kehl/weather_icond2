@@ -1,9 +1,10 @@
 f_leaflet_layer <- function(parameter,icond2_processed,icond2_layer,session){
   ## function to exchange plotted layer on leaflet map
   # - parameter:      character; icon d2 abbreviation for forecasted parameter
-  #                        options: "rain_gsp" for rain
-  #                                 "snow_gsp" for snow
+  #                        options: "tot_prec" for precipitation
   #                                 "t_2m"     for temperature 2m above ground
+  #                                 "clct"     for cloud cover
+  #                                 "pmsl"     for sea level pressure
   # - icond2_processed: SpatRaster; processed icon d2 data (result of
   #                                 f_process_icond2())
   # - icond2_layer: SpatRaster; layer of icond2_processed which is to be plotted
@@ -36,6 +37,13 @@ f_leaflet_layer <- function(parameter,icond2_processed,icond2_layer,session){
                                na.color = "transparent")
       
       iconlayer <- ifel(icond2_layer < 10, NA, icond2_layer)  
+    } else if (parameter == "pmsl"){
+      colorpal <- colorNumeric(colours_pressure,
+                               domain = c(min(terra::values(icond2_processed),na.rm = T),
+                                          max(terra::values(icond2_processed),na.rm = T)),
+                               na.color = "transparent")
+      
+      iconlayer <- icond2_layer  
     }
     
     ## add layer to map
