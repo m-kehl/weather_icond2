@@ -94,4 +94,5 @@ colours_phenology <- c("#FF0000","#0000FF","#00FF00",
 
 colours_precipitation <- c("peachpuff1","maroon1","red","orange","gold","gold4","darkgreen","lawngreen")
 colours_temperature <- c("blue","cyan4","lightblue","lavender","gold","orange","maroon","red4")
-colours_cloud <- c("lightyellow","lightgreen","forestgreen","darkgreen")
+colours_cloud <- c("transparent","lightyellow","lightgreen","forestgreen","darkgreen")
+colours_pressure <- c("purple4","transparent","darkorange")
