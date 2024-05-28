@@ -17,18 +17,25 @@ f_leaflet_layer <- function(parameter,icond2_processed,icond2_layer,session){
   # set min and max values for colorbar
   # process icon d2 data -> NA if precipitation smaller 0.1
   if (length(parameter) != 0){
-    if (parameter != "t_2m"){
-      colorpal <- colorNumeric(colours_temperature,
-                               domain = c(min(terra::values(icond2_processed),na.rm = T),
-                                          max(terra::values(icond2_processed),na.rm = T)),
-                               na.color = "transparent")
-      iconlayer <- ifel(icond2_layer < 0.1, NA, icond2_layer)        
-    } else{
+    if (parameter == "tot_prec"){
       colorpal <- colorNumeric(colours_precipitation,
                                domain = c(min(terra::values(icond2_processed),na.rm = T),
                                           max(terra::values(icond2_processed),na.rm = T)),
                                na.color = "transparent")
+      iconlayer <- ifel(icond2_layer < 0.1, NA, icond2_layer)        
+    } else if (parameter == "t_2m"){
+      colorpal <- colorNumeric(colours_temperature,
+                               domain = c(min(terra::values(icond2_processed),na.rm = T),
+                                          max(terra::values(icond2_processed),na.rm = T)),
+                               na.color = "transparent")
       iconlayer <- icond2_layer
+    } else if (parameter == "clct"){
+      colorpal <- colorNumeric(colours_cloud,
+                               domain = c(min(terra::values(icond2_processed),na.rm = T),
+                                          max(terra::values(icond2_processed),na.rm = T)),
+                               na.color = "transparent")
+      
+      iconlayer <- ifel(icond2_layer < 10, NA, icond2_layer)  
     }
     
     ## add layer to map

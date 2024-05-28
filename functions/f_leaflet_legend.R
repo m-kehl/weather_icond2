@@ -3,20 +3,25 @@ f_leaflet_legend <- function(parameter,icond2_processed,session){
   # load meta legend data (colours)
   source(paste0(getwd(),"/input.R"),local = TRUE)
   
-  if (parameter == "rain_gsp"){
-    map_legend <- "Regen [mm/h]"
-  } else if (parameter == "snow_gsp"){
-    map_legend <- "Schnee [mm/h]"
+  if (parameter == "tot_prec"){
+    map_legend <- "Niederschlag [mm/h]"
   } else if (parameter == "t_2m"){
     map_legend <- "Temperatur [\u2103]"
+  } else if (parameter == "clct"){
+    map_legend <- "Bewölkung [%]"
   }
-  if (parameter != "t_2m"){
+  if (parameter == "tot_prec"){
+    colorpal <- colorNumeric(colours_precipitation,
+                             domain = c(min(terra::values(icond2_processed),na.rm = T),
+                                        max(terra::values(icond2_processed),na.rm = T)),
+                             na.color = "transparent")
+  } else if (parameter == "t_2m"){
     colorpal <- colorNumeric(colours_temperature,
                              domain = c(min(terra::values(icond2_processed),na.rm = T),
                                         max(terra::values(icond2_processed),na.rm = T)),
                              na.color = "transparent")
-  } else{
-    colorpal <- colorNumeric(colours_precipitation,
+  } else if (parameter == "clct"){
+    colorpal <- colorNumeric(colours_cloud,
                              domain = c(min(terra::values(icond2_processed),na.rm = T),
                                         max(terra::values(icond2_processed),na.rm = T)),
                              na.color = "transparent")
