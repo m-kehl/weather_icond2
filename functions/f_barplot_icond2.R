@@ -36,14 +36,14 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
          cex = 1.6, col = "black")
   } else{
     ## plot rain/snow
-    if (parameter %in% c("rain_gsp", "snow_gsp")){
+    if (parameter %in% c("tot_prec")){
       color <- rep("blue",ncol(point_forecast))
       color[ii] <- "cadetblue"
       barplot(point_forecast[1,], col = color, axis.lty = 1, las = 2,
               names.arg = format(converter$time[2:nrow(converter)],format ="%a %H:%M" ),
               ylab = "[mm / h]", ylim = c(0,max(2,point_forecast[1,]+0.5)))
       title(paste0("Punktvorhersage: ",title_help))
-    } else{
+    } else if (parameter %in% c("t_2m")){
       # plot temperature
       color <- rep("violet",ncol(point_forecast))
       color[ii] <- "darkviolet"
@@ -52,6 +52,17 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
                               c(converter$time[ii] + 30 * 60), 1e6,
                               col='gray', border=NA),
            ylab = "Temperatur [\u00B0C]", xlab = "", type = "b")
+      axis.POSIXct(1,converter$time,format ="%a %H:%M")
+      title(paste0("Punktvorhersage: ",title_help))
+    } else if (parameter %in% c("clct")){
+      # plot temperature
+      color <- rep("violet",ncol(point_forecast))
+      color[ii] <- "darkviolet"
+      plot(converter$time,point_forecast[1,], col = color, pch = 16, xaxt="n",
+           panel.first = rect(c(converter$time[ii] - 30 * 60), -1e6,
+                              c(converter$time[ii] + 30 * 60), 1e6,
+                              col='gray', border=NA),
+           ylab = "Bewölkung [%]", xlab = "", type = "b")
       axis.POSIXct(1,converter$time,format ="%a %H:%M")
       title(paste0("Punktvorhersage: ",title_help))
     }
