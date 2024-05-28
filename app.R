@@ -56,6 +56,10 @@ ui <- fluidPage(
                                                   color:black}
       .tabbable > .nav > li[class=active]    > a {background-color: HoneyDew; 
                                                   color:black}
+      
+      #mess_tabsets > li {
+        padding-top: 5px;
+      }
 
       .shiny-notification {position:fixed;
                             top: calc(20%);
@@ -299,8 +303,7 @@ ui <- fluidPage(
                 tabPanel("Monatswerte",
                   value = "monthly",
                   div(class = "map_plot",plotOutput("mess_plot_monthly")),
-                  div(class = "map_plot",plotOutput("mess_plot_monthly_prec"))),
-                  #p("in Bearbeitung.."))
+                  div(class = "map_plot",plotOutput("mess_plot_monthly_prec")))
               )
             )
           ),
@@ -554,9 +557,6 @@ server <- function(input, output, session) {
   point_forecast <- reactive(
     terra::extract(icond2_processed(), point_coord(), raw = TRUE, ID = FALSE)
   )
-  
-  # specify when forecast data was calculated
-  #output$forecast_time <- renderText(paste0("Forecast time is: ", f_forecast_time()))
 
   ## show information box
   observeEvent(input$info_icond2, {
@@ -617,16 +617,12 @@ server <- function(input, output, session) {
     } else if ((is.na(input$free_lon) | is.na(input$free_lat)) & input$point_forecast == "free"){
       output$bar_out <- renderPlot(
         f_barplot_icond2_placeholder(),
-        # make plot size reactive to device width
-        #width = min(800,device_width())
       )
     } else{
       output$bar_out <- renderPlot(
         f_barplot_icond2(point_forecast(),input$slider_time,input$parameter,
                          input$point_forecast,
                          bundeslaender_coord$landeshauptstadt[bundeslaender_coord$bundesland == input$bundesland]),
-        # make plot size reactive to device width
-        #width = min(800,device_width())
       )
     }
   })
