@@ -324,8 +324,8 @@ ui <- fluidPage(
                             inputId = "parameter",
                             label = "Parameter",
                             selected = character(0),
-                            choiceNames = c("Niederschlag","Temperatur","Bewölkung"),
-                            choiceValues = c("tot_prec","t_2m","clct")),
+                            choiceNames = c("Niederschlag","Temperatur","Bewölkung","Druck"),
+                            choiceValues = c("tot_prec","t_2m","clct","pmsl")),
                           selectInput(
                             inputId = "bundesland",
                             label = "Bundesland",
@@ -366,7 +366,7 @@ ui <- fluidPage(
       width = 12,
       
     )
-  ),tags$footer(class = "footer","\u00A9 2024 - M. Kehl      ",br(), actionLink("link_to_impressum", "Impressum"),
+  ),tags$footer(class = "footer","\u00A9 2024 - M. Kehl",br(), actionLink("link_to_impressum", "Impressum"),
                 "|", div(class = "kontakt", a(href="mailto:mkehl.laubfrosch@gmail.com","Kontakt")), div(class="hidekontakt","mkehl.laubfrosch@gmail.com"))
 )
 
@@ -579,6 +579,8 @@ server <- function(input, output, session) {
         map_text <- "Temperatur [\u00B0C] - "
       } else if (input$parameter == "clct"){
         map_text <- "Bewölkung [%] - "
+      } else if (input$parameter == "pmsl"){
+        map_text <- "Druck [Pa] - "
       }
       output$map_title <- renderText(paste0(map_text,format(as.POSIXct(time(icond2_layer(), format= ""),"CET"),
                                                             "%d.%m.%Y %H:%M")))
