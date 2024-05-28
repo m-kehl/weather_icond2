@@ -65,6 +65,27 @@ f_plot_mess <- function(mess_data,granularity,parameters, title_start, timespan 
     #plot (with left y-axis)
     while(more_plots){
       param <- meteo_parameters[dwd_name][[1]][meteo_parameters$parameter==parameters[1]]
+      if (length(parameters) > 1){
+        if (meteo_parameters$unit[meteo_parameters$parameter==parameters[1]] == meteo_parameters$unit[meteo_parameters$parameter==parameters[2]] &
+            parameters[1] != "Dampfdruck" & parameters[2] != "Dampfdruck"){
+          ylim_meteo <- c(min(mess_data[param],mess_data[meteo_parameters[dwd_name][[1]][meteo_parameters$parameter==parameters[2]]],
+                              meteo_parameters$min_now[meteo_parameters$parameter==parameters[2]]
+                              ,na.rm = T),
+                          max(mess_data[param],mess_data[meteo_parameters[dwd_name][[1]][meteo_parameters$parameter==parameters[2]]],
+                             meteo_parameters$max_now[meteo_parameters$parameter==parameters[2]]
+                              ,na.rm = T))
+        } else{
+          ylim_meteo <- c(min(mess_data[param], meteo_parameters$min_now[meteo_parameters$parameter==parameters[1]]
+                              ,na.rm = T),
+                          max(mess_data[param], meteo_parameters$max_now[meteo_parameters$parameter==parameters[1]]
+                              ,na.rm = T))
+        }
+      } else{
+        ylim_meteo <- c(min(mess_data[param], meteo_parameters$min_now[meteo_parameters$parameter==parameters[1]]
+                            ,na.rm = T),
+                        max(mess_data[param], meteo_parameters$max_now[meteo_parameters$parameter==parameters[1]]
+                            ,na.rm = T))
+      }
       mess_data_plot <- mess_data[mess_data$STATIONS_ID == station_ids[count],]
       plot(mess_data_plot$MESS_DATUM + (count-1)*date_spacing,
            array(mess_data_plot[param][[1]]),
@@ -72,10 +93,7 @@ f_plot_mess <- function(mess_data,granularity,parameters, title_start, timespan 
            type = meteo_parameters$type[meteo_parameters$parameter==parameters[1]],
            xlim = c(min(mess_data$MESS_DATUM, na.rm = T),
                     max(mess_data$MESS_DATUM, na.rm = T)),
-           ylim = c(min(mess_data[param], meteo_parameters$min_now[meteo_parameters$parameter==parameters[1]]
-                        ,na.rm = T),
-                    max(mess_data[param], meteo_parameters$max_now[meteo_parameters$parameter==parameters[1]]
-                        ,na.rm = T)),
+           ylim = ylim_meteo,
            col = colours[count],
            xlab = x_label,
            ylab = paste0(meteo_parameters$parameter[meteo_parameters$parameter==parameters[1]]," [", 
@@ -84,6 +102,14 @@ f_plot_mess <- function(mess_data,granularity,parameters, title_start, timespan 
       #plot (with right y-axis)
       if (length(parameters) > 1){
         param <- meteo_parameters[dwd_name][[1]][meteo_parameters$parameter==parameters[2]]
+        if (meteo_parameters$unit[meteo_parameters$parameter==parameters[1]] != meteo_parameters$unit[meteo_parameters$parameter==parameters[2]] |
+            parameters[1] == "Dampfdruck" | parameters[2] == "Dampfdruck"){
+          ylim_meteo <- c(min(mess_data[param], meteo_parameters$min_now[meteo_parameters$parameter==parameters[2]]
+                              ,na.rm = T),
+                          max(mess_data[param], meteo_parameters$max_now[meteo_parameters$parameter==parameters[2]]
+                              ,na.rm = T))
+          }
+
         plot(mess_data_plot$MESS_DATUM + (count-1)*date_spacing,
              array(mess_data_plot[param][[1]]),
              pch = meteo_parameters$pch[meteo_parameters$parameter==parameters[2]],
@@ -91,10 +117,7 @@ f_plot_mess <- function(mess_data,granularity,parameters, title_start, timespan 
              col = colours[count], 
              xlim = c(min(mess_data$MESS_DATUM, na.rm = T),
                       max(mess_data$MESS_DATUM, na.rm = T)),
-             ylim = c(min(mess_data[param], meteo_parameters$min_now[meteo_parameters$parameter==parameters[2]]
-                          ,na.rm = T),
-                      max(mess_data[param], meteo_parameters$max_now[meteo_parameters$parameter==parameters[2]]
-                          ,na.rm = T)),
+             ylim = ylim_meteo,
              xlab = x_label,
              ylab = "",
              axes = FALSE)
