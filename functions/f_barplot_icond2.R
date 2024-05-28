@@ -4,9 +4,10 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
   # - point_forecast: matrix; data of icon d2 point forecast
   # - input_time:     POSIXct; date/time to focus on in barplot
   # - parameter:      character; icon d2 abbreviation for forecasted parameter
-  #                        options: "rain_gsp" for rain
-  #                                 "snow_gsp" for snow
+  #                        options: "tot_prec" for precipitation
   #                                 "t_2m"     for temperature 2m above ground
+  #                                 "clct"     for cloud cover
+  #                                 "pmsl"     for sea level pressure
   # - type:           character; either "bhs" (abbreviation for Bundeshauptstadt),
   #                              "free" (free entry of coodrinate pair) or
   #                              "mouse" (mouse cick on map to define coordinates)
@@ -42,7 +43,7 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
       barplot(point_forecast[1,], col = color, axis.lty = 1, las = 2,
               names.arg = format(converter$time[2:nrow(converter)],format ="%a %H:%M" ),
               ylab = "[mm / h]", ylim = c(0,max(2,point_forecast[1,]+0.5)))
-      title(paste0("Punktvorhersage: ",title_help))
+      #title(paste0("Punktvorhersage: ",title_help))
     } else if (parameter %in% c("t_2m")){
       # plot temperature
       color <- rep("violet",ncol(point_forecast))
@@ -53,18 +54,29 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
                               col='gray', border=NA),
            ylab = "Temperatur [\u00B0C]", xlab = "", type = "b")
       axis.POSIXct(1,converter$time,format ="%a %H:%M")
-      title(paste0("Punktvorhersage: ",title_help))
+      #title(paste0("Punktvorhersage: ",title_help))
     } else if (parameter %in% c("clct")){
       # plot temperature
-      color <- rep("violet",ncol(point_forecast))
-      color[ii] <- "darkviolet"
+      color <- rep("forestgreen",ncol(point_forecast))
+      color[ii] <- "darkgreen"
       plot(converter$time,point_forecast[1,], col = color, pch = 16, xaxt="n",
            panel.first = rect(c(converter$time[ii] - 30 * 60), -1e6,
                               c(converter$time[ii] + 30 * 60), 1e6,
                               col='gray', border=NA),
            ylab = "Bewölkung [%]", xlab = "", type = "b")
       axis.POSIXct(1,converter$time,format ="%a %H:%M")
-      title(paste0("Punktvorhersage: ",title_help))
+      #title(paste0("Punktvorhersage: ",title_help))
+    } else if (parameter %in% c("pmsl")){
+      # plot temperature
+      color <- rep("purple",ncol(point_forecast))
+      color[ii] <- "purple4"
+      plot(converter$time,point_forecast[1,], col = color, pch = 16, xaxt="n",
+           panel.first = rect(c(converter$time[ii] - 30 * 60), -1e6,
+                              c(converter$time[ii] + 30 * 60), 1e6,
+                              col='gray', border=NA),
+           ylab = "Druck [hPa]", xlab = "", type = "b")
+      axis.POSIXct(1,converter$time,format ="%a %H:%M")
     }
-  }
+    title(paste0("Punktvorhersage: ",title_help))
+  } 
 }
