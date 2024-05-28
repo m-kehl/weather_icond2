@@ -16,6 +16,15 @@ f_read_icond2 <- function(date,parameter){
     id = c("map_out")
   )
   
+  #determine size of tempdir() folder
+  files<-list.files(tempdir(), full.names = TRUE, recursive = TRUE)
+  vect_size <- sapply(files, file.size)
+  size_files <- sum(vect_size)
+  
+  if (size_files > 140000000){
+    file.remove(list.files(tempdir(), full.names = T, pattern = "icon"))
+  }
+  
   # define source/path for download
   nwp_base <- paste0("ftp://opendata.dwd.de/weather/nwp/icon-d2/grib/",
                      format(date, '%H'),"/",parameter,"/")
