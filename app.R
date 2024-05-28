@@ -324,8 +324,8 @@ ui <- fluidPage(
                             inputId = "parameter",
                             label = "Parameter",
                             selected = character(0),
-                            choiceNames = c("Regen","Schnee","Temperatur"),
-                            choiceValues = c("rain_gsp","snow_gsp","t_2m")),
+                            choiceNames = c("Niederschlag","Temperatur","Bewölkung"),
+                            choiceValues = c("tot_prec","t_2m","clct")),
                           selectInput(
                             inputId = "bundesland",
                             label = "Bundesland",
@@ -568,22 +568,17 @@ server <- function(input, output, session) {
   output$map_out <- renderLeaflet(
     f_leaflet_basic()
   )
-  
-  # make leaflet UI reactive to device width
-  # output$leaf=renderUI({
-  #   leafletOutput('map_out', width = min(800,device_width()))
-  # })
-  
+
   # adapt displayed layer on map according to user time input
   observe({
     f_leaflet_layer(input$parameter,icond2_processed(),icond2_layer(),session)
     if (length(input$parameter) != 0){
-      if (input$parameter == "rain_gsp"){
+      if (input$parameter == "tot_prec"){
         map_text <- "Niederschlag [mm/h] - "
-      } else if (input$parameter == "snow_gsp"){
-        map_text <- "Schnee [mm/h] - "
       } else if (input$parameter == "t_2m"){
         map_text <- "Temperatur [\u00B0C] - "
+      } else if (input$parameter == "clct"){
+        map_text <- "Bewölkung [%] - "
       }
       output$map_title <- renderText(paste0(map_text,format(as.POSIXct(time(icond2_layer(), format= ""),"CET"),
                                                             "%d.%m.%Y %H:%M")))
