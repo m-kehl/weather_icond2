@@ -8,7 +8,8 @@ f_time_converter <- function(){
   end <- ceiling_date(Sys.time(),unit = "hour") + 6 * 60 * 60
   
   converter <- data.frame(time = seq(from=start, by=interval, to=end),
-                          tot_prec = c(0:7), t_2m = c(1:8), clct = c(1:8))
+                          tot_prec = c(0:7), t_2m = c(1:8), clct = c(1:8),
+                          pmsl = c(1:8))
   
   return(converter)
 }
