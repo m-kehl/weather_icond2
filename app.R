@@ -582,7 +582,7 @@ server <- function(input, output, session) {
       } else if (input$parameter == "clct"){
         map_text <- "Bewölkung [%] - "
       } else if (input$parameter == "pmsl"){
-        map_text <- "Druck [Pa] - "
+        map_text <- "Druck [hPa] - "
       }
       output$map_title <- renderText(paste0(map_text,format(as.POSIXct(time(icond2_layer(), format= ""),"CET"),
                                                             "%d.%m.%Y %H:%M")))
