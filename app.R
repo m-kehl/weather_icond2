@@ -220,8 +220,7 @@ ui <- fluidPage(
                 choices = c("Adelsheim"),
                 selected = c("Adelsheim"),
                 multiple = TRUE),
-               p("Datenbasis: \u00A9 Deutscher Wetterdienst (opendata.dwd.de)")
-            ),
+               f_copyright_DWD()),
             column(9,
                column(10,
                       div(class = "map_plot",plotOutput("plant_out")),
@@ -289,8 +288,7 @@ ui <- fluidPage(
                 max = Sys.Date(),
                 value = c(Sys.Date()-60,Sys.Date()-1),
                 step = 1)), #1day
-               p("Datenbasis: \u00A9 Deutscher Wetterdienst (opendata.dwd.de)")
-            ),
+                f_copyright_DWD()),
             column(9,
               # define second-level tabsets (now, daily, monthly)
               tabsetPanel(id = "mess_tabsets",
@@ -348,7 +346,7 @@ ui <- fluidPage(
                                            step = 0.5, width = "50%"),
                               numericInput("free_lat",label = "latitude", value = 48.52266,
                                            step = 0.5, width = "50%")),
-                          p("Datenbasis: \u00A9 Deutscher Wetterdienst (opendata.dwd.de)")
+                          f_copyright_DWD()
                    ),
                    column(9,
                           br(),
