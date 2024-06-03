@@ -26,112 +26,31 @@ library(leaflet)
 ## source functions and input
 source.all(paste0(getwd(),"/functions/"))
 source(paste0(getwd(),"/input.R"),local = TRUE)
-
+css_dep <- function() {
+  htmlDependency(
+    name = "css_dep",
+    version = "1.0",
+    src = paste0(getwd(),"/www/"),
+    stylesheet = "style.css"
+  )
+}
 ##set local system
 #Sys.setlocale("LC_TIME", "German")
 
 ## -- B -- User Interface ------------------------------------------------------
 ui <- fluidPage(
+  ## define superordinate settings 
+  # HTML/CSS style for different elements (tabsets, plots, text, etc)
+
   tags$head(
-    ## define superordinate settings 
-    # HTML/CSS style for different elements (tabsets, plots, text, etc)
-    tags$style(HTML(
-      "body {
-          max-width: 1320px;
-          margin: auto;
-          background-color: white}
-          
-      .mobile_info {
-          color: red;
-          background-color: #39f40b;}
-          
-      .title {
-          color: black;
-          float: left; width: 50%}
-          
-      .tabbable > .nav {background-color:	 #3dc296;}
-      .tabbable > .nav > li {float: right;  padding-top: 65px;}
-      .tabbable > .nav > li                 > a  {font-weight: bold; 
-                                                  background-color: aquamarine; 
-                                                  color:black}
-      .tabbable > .nav > li[class=active]    > a {background-color: HoneyDew; 
-                                                  color:black}
-      
-      #mess_tabsets > li {
-        padding-top: 5px;
-      }
-
-      .shiny-notification {position:fixed;
-                            top: calc(20%);
-                            left: calc(30%);
-                            max-width: 450px;
-                            background-color: HoneyDew;
-                            color: black;
-                            border-color: aquamarine}
-                            
-      .intro {background-color: aquamarine;
-              font-size: 30px;
-              }
-              
-      .map_plot {max-width: 800px;
-                  padding: 16px}
-
-      .slider {padding-left: 16px}
-      
-      .subtitle {padding-left: 8px;}
-      
-      .helplines {border-style: solid;
-                  border-color: #3dc296;
-                  border-width: 2px;
-                  border-radius: 5px;
-                  padding: 5px;
-                  width: 150px;
-                  }
-
-      .impressum_style {padding: 32px}
-      
-      #map_title {padding-left: 16px;
-      }
-      
-      .main {background-color: white;}
-                  
-      .footer {background-color: HoneyDew;
-                }
-              
-      a {color: #3dc296;}
-      
-      a:hover {color: #32805b;}
-      
-      .hidekontakt {
-          display: none;
-      }
-              
-      .kontakt:hover {
-       color: #1E2B3D;
-      }
-        
-      .kontakt {display: inline-block;
-                color: #3dc296;}
-
-      .kontakt:hover + .hidekontakt {
-        display: initial;
-        color: #1E2B3D;
-      }
-
-      @media (max-width: 1010px) {
-        .tabbable > .nav > li {float: left;  padding-top: 2px;}
-        .title {
-          float: left; width: 100%}
-      }
-      
-      "
-    ))
+    tags$link(rel = "stylesheet", href = "style.css")
   ),
-  # use shiny waiter
+  # use shiny waiter and shinybrowser
   useWaiter(),
-  # use shinybrowser
   shinybrowser::detect(),
-  span(textOutput("browser_info"),style = "color:red"),
+  
+  ## show warning text if webapp is used on mobile device
+  span(class = "mobile_info", textOutput("browser_info")),
 
   ## Main Panel
   fluidRow(
