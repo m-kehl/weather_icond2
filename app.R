@@ -348,7 +348,17 @@ ui <- fluidPage(
                                            step = 0.5, width = "50%"),
                               numericInput("free_lat",label = "latitude", value = 48.52266,
                                            step = 0.5, width = "50%")),
-                          p("Datenbasis: \u00A9 Deutscher Wetterdienst (opendata.dwd.de)")
+                          # textInput("starttime","Vorhersage (7h) ab:",
+                          #           format(ceiling_date(Sys.time(),unit = "hour"),"%d.%m.%Y %H:%M"),
+                          #           placeholder = "Format: dd.mm.yyyy HH"),
+                          sliderInput("starting_time",
+                                      "Vorhersagezeitraum",
+                                      min = ceiling_date(Sys.time(),unit = "hour"),
+                                      max = ceiling_date(Sys.time(),unit = "hour") + 48 * 60 * 60,
+                                      step = 3600,
+                                      value = c(ceiling_date(Sys.time(),unit = "hour")),
+                                      timeFormat = "%a %H:%M", ticks = T),
+                        f_copyright_DWD()
                    ),
                    column(9,
                           br(),
