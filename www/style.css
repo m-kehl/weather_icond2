@@ -1,6 +1,6 @@
-body {
-          max-width: 1320px;
-          margin: auto;
+    body {max-width: 1320px;
+          margin-left: auto;
+          margin-right: auto;
           background-color: white}
           
       .mobile_info {
@@ -21,6 +21,12 @@ body {
                                                   color:black}
       
       .col-sm-9 {
+        padding-right: 0px;
+      }
+      .col-sm-10 {
+        padding-right: 0px;
+      }
+      .col-sm-2 {
         padding-right: 0px;
       }
 
@@ -48,12 +54,12 @@ body {
                   border-width: 2px;
                   border-radius: 5px;
                   padding: 5px;
-                  width: 150px;
+                  width: 142px;
                   }
 
       .impressum_style {padding: 32px}
       
-      #map_title {padding-left: 16px;
+      #icond2-map_title {padding-left: 16px;
       }
       
       .main {background-color: white;}
@@ -86,4 +92,18 @@ body {
         #messdata-mess_tabsets > li {float: left; padding-top: 2px;}
         .title {
           float: left; width: 100%}
+      }
+      
+      @media (max-width: 875px) {
+        .subtitle {padding-left: 0px;}
+
+      }
+      @media (max-width: 755px) {
+        .col-sm-10 {
+        padding-left: 0px;
+        }
+        .col-sm-1 {
+          padding-left: 0px;
+        }
+
       }
