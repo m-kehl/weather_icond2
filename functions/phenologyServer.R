@@ -48,7 +48,7 @@ phenologyServer <- function(id,active) {
 
     ## show information box
     observeEvent(input$info_pheno, {
-      f_infotext(input$main_tabsets)
+      f_infotext(active())
     })
 
     ## plot phenology data
