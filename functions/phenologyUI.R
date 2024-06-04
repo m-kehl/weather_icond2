@@ -1,4 +1,4 @@
-phenologyUI <- function(id,hallo) {
+phenologyUI <- function(id) {
   tagList(
     column(3, 
             br(),

@@ -69,58 +69,6 @@ ui <- fluidPage(
           tabPanel("Phänologie", 
                    value = "pheno",
                    phenologyUI("phenology")
-            # column(3, 
-            #    br(),
-            #    column(1,
-            #        actionButton("info_pheno", label = NULL, icon = icon("info"),
-            #                            style="color: black; 
-            #                                   background-color: HoneyDew; 
-            #                                   border-color: #3dc296")),
-            #    column(10,div(class = "subtitle",h4("Phänologie"))),
-            #    br(),
-            #    br(),
-            #    hr(),
-            #    selectInput(
-            #     inputId = "pflanzen",
-            #     label = "Pflanzenart",
-            #     choices = pflanzen_arten,
-            #     multiple = FALSE),
-            #    radioButtons(
-            #     inputId = "phase",
-            #     label = "phänologische Phase",
-            #     choiceNames = phenology_phases$phase,
-            #     choiceValues = phenology_phases$phase_id,
-            #     selected = character(0)),
-            #    selectInput(
-            #     inputId = "bl_plant",
-            #     label = "Bundesland",
-            #     choices = c(""),
-            #     multiple = FALSE),
-            #    selectizeInput(
-            #     inputId = "station_name",
-            #     label = "Stationsname/n",
-            #     choices = c("Adelsheim"),
-            #     selected = c("Adelsheim"),
-            #     multiple = TRUE),
-            #    f_copyright_DWD()),
-            # column(9,
-            #    column(10,
-            #           div(class = "map_plot",plotOutput("plant_out")),
-            #           textOutput("no_plant")),
-            #   #p("In Bearbeitung..")
-            #    column(2,
-            #           br(),
-            #           br(),
-            #           br(),
-            #           br(),
-            #           div(class = "helplines",
-            #           p("Hilfslinien:"),
-            #           checkboxInput("trendline", "lin. Regression"),
-            #           checkboxInput("mtline","Monatslinien"),
-            #           checkboxInput("grid","Gitternetz"))),
-            #    column(6,plotOutput("plant_map"))
-               #column(6,tableOutput("plant_table"))
-          #),
         ),
 
 ## -- B.3 --  TabPanel 3: measurement data -------------------------------------
