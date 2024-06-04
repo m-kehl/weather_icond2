@@ -10,7 +10,7 @@ messdataUI <- function(id) {
     #         padding-top: 5px;
     #   }
     #     "))),
-
+    useWaiter(),
     column(3, 
            br(),
            column(1,       

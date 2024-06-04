@@ -1,4 +1,4 @@
-messdataServer <- function(id,main_active) {
+messdataServer <- function(id,active) {
   moduleServer(id, function(input, output, session) {
     
     # update UI
@@ -17,7 +17,7 @@ messdataServer <- function(id,main_active) {
 
     ## show information box
     observeEvent(input$info_mess, {
-      f_infotext(main_active())
+      f_infotext(active())
     })
 
     ## update UI
