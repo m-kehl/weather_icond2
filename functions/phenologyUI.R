@@ -47,8 +47,7 @@ phenologyUI <- function(id) {
                       p("Hilfslinien:"),
                       checkboxInput(NS(id,"trendline"), "lin. Regression"),
                       checkboxInput(NS(id,"mtline"),"Monatslinien"),
-                      checkboxInput(NS(id,"grid"),"Gitternetz"),
-                      textOutput(NS(id,"test"))
+                      checkboxInput(NS(id,"grid"),"Gitternetz")
                       )),
            column(6,plotOutput(NS(id,"plant_map")))),
            
