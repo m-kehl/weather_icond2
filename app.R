@@ -26,14 +26,7 @@ library(leaflet)
 ## source functions and input
 source.all(paste0(getwd(),"/functions/"))
 source(paste0(getwd(),"/input.R"),local = TRUE)
-css_dep <- function() {
-  htmlDependency(
-    name = "css_dep",
-    version = "1.0",
-    src = paste0(getwd(),"/www/"),
-    stylesheet = "style.css"
-  )
-}
+
 ##set local system
 #Sys.setlocale("LC_TIME", "German")
 
@@ -75,59 +68,60 @@ ui <- fluidPage(
 
           tabPanel("Phänologie", 
                    value = "pheno",
-            column(3, 
-               br(),
-               column(1,
-                   actionButton("info_pheno", label = NULL, icon = icon("info"),
-                                       style="color: black; 
-                                              background-color: HoneyDew; 
-                                              border-color: #3dc296")),
-               column(10,div(class = "subtitle",h4("Phänologie"))),
-               br(),
-               br(),
-               hr(),
-               selectInput(
-                inputId = "pflanzen",
-                label = "Pflanzenart",
-                choices = pflanzen_arten,
-                multiple = FALSE),
-               radioButtons(
-                inputId = "phase",
-                label = "phänologische Phase",
-                choiceNames = phenology_phases$phase,
-                choiceValues = phenology_phases$phase_id,
-                selected = character(0)),
-               selectInput(
-                inputId = "bl_plant",
-                label = "Bundesland",
-                choices = c(""),
-                multiple = FALSE),
-               selectizeInput(
-                inputId = "station_name",
-                label = "Stationsname/n",
-                choices = c("Adelsheim"),
-                selected = c("Adelsheim"),
-                multiple = TRUE),
-               f_copyright_DWD()),
-            column(9,
-               column(10,
-                      div(class = "map_plot",plotOutput("plant_out")),
-                      textOutput("no_plant")),
-              #p("In Bearbeitung..")
-               column(2,
-                      br(),
-                      br(),
-                      br(),
-                      br(),
-                      div(class = "helplines",
-                      p("Hilfslinien:"),
-                      checkboxInput("trendline", "lin. Regression"),
-                      checkboxInput("mtline","Monatslinien"),
-                      checkboxInput("grid","Gitternetz"))),
-               column(6,plotOutput("plant_map")),
+                   phenologyUI("phenology")
+            # column(3, 
+            #    br(),
+            #    column(1,
+            #        actionButton("info_pheno", label = NULL, icon = icon("info"),
+            #                            style="color: black; 
+            #                                   background-color: HoneyDew; 
+            #                                   border-color: #3dc296")),
+            #    column(10,div(class = "subtitle",h4("Phänologie"))),
+            #    br(),
+            #    br(),
+            #    hr(),
+            #    selectInput(
+            #     inputId = "pflanzen",
+            #     label = "Pflanzenart",
+            #     choices = pflanzen_arten,
+            #     multiple = FALSE),
+            #    radioButtons(
+            #     inputId = "phase",
+            #     label = "phänologische Phase",
+            #     choiceNames = phenology_phases$phase,
+            #     choiceValues = phenology_phases$phase_id,
+            #     selected = character(0)),
+            #    selectInput(
+            #     inputId = "bl_plant",
+            #     label = "Bundesland",
+            #     choices = c(""),
+            #     multiple = FALSE),
+            #    selectizeInput(
+            #     inputId = "station_name",
+            #     label = "Stationsname/n",
+            #     choices = c("Adelsheim"),
+            #     selected = c("Adelsheim"),
+            #     multiple = TRUE),
+            #    f_copyright_DWD()),
+            # column(9,
+            #    column(10,
+            #           div(class = "map_plot",plotOutput("plant_out")),
+            #           textOutput("no_plant")),
+            #   #p("In Bearbeitung..")
+            #    column(2,
+            #           br(),
+            #           br(),
+            #           br(),
+            #           br(),
+            #           div(class = "helplines",
+            #           p("Hilfslinien:"),
+            #           checkboxInput("trendline", "lin. Regression"),
+            #           checkboxInput("mtline","Monatslinien"),
+            #           checkboxInput("grid","Gitternetz"))),
+            #    column(6,plotOutput("plant_map"))
                #column(6,tableOutput("plant_table"))
-            ),
-          ),
+          #),
+        ),
 
 ## -- B.3 --  TabPanel 3: measurement data -------------------------------------
 
@@ -293,69 +287,70 @@ server <- function(input, output, session) {
 ## -- C.1 --  TabPanel 1: Impressum --------------------------------------------
   impressumServer("impressum")
 ## -- C.2 --  TabPanel 2: phenology  -------------------------------------------
-  ## read and process phenology data
-  # read meta data
-  plant_meta <- reactive({
-    if (input$main_tabsets == "pheno"){
-      f_read_plants_meta()
-    }
-  })
-  
-  # read phenology data
-  plant_data <- reactive(
-      if (input$pflanzen != ""){
-        f_read_plants(input$pflanzen)
-      }else{
-        #show all federal states as options in UI
-        updateSelectInput(session,"bl_plant",
-                            choices = unique(plant_meta()$Bundesland))
-      }
-  )
-  #update UI for specific phases
-  update_pheno_phases <- reactive(phenology_phases[phenology_phases$phase_id %in% unique(plant_data()$Phase_id),])
-  observe({
-    updateRadioButtons(session, "phase",
-                       choiceNames = update_pheno_phases()$phase,
-                       choiceValues = update_pheno_phases()$phase_id,
-                       selected = c(5))
-  })
-  # limit stations in UI to those which host species chosen in UI
-  bl_meta <- reactive(plant_meta()$Stationsname[plant_meta()$Bundesland == input$bl_plant])
-  observe({
-    updateSelectizeInput(session,"station_name",
-                      choices = c(bl_meta(),input$station_name),
-                      selected = input$station_name)
-  })
-  # postprocess phenology data
-  plant_data_processed <- reactive(
-    f_process_plants(plant_data(),input$phase,input$station_name,plant_meta())
-    )
-
-  ## show information box
-  observeEvent(input$info_pheno, {
-    f_infotext(input$main_tabsets)
-  })
-  
-  ## plot phenology data
-  observe({
-    #placeholder-plot if no species or stationname is chosen in UI
-    if (input$pflanzen == "" | length(input$station_name) == 0){
-      output$plant_out <- renderPlot(f_plot_placeholder())
-    }else{
-      #plot phenology data for species chosen in UI
-      output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()[[1]],
-                                                   input$pflanzen,plant_meta(),
-                                                   input$station_name,input$trendline,
-                                                   input$mtline,input$grid))
-      output$plant_table <- renderTable(f_table_plants(plant_meta(),input$station_name))
-      output$plant_map <- renderPlot(f_map_plants(plant_meta(),input$station_name))
-      if (length(plant_data_processed()[[2]]) == 0){
-        output$no_plant <- renderText("")
-      } else{
-        output$no_plant <- renderText(paste0("Keine Daten vorhanden für: ",paste(plant_data_processed()[[2]],collapse = ', ')))
-      }
-    }
-  })
+  phenologyServer("phenology",reactive(input$main_tabsets))
+  # ## read and process phenology data
+  # # read meta data
+  # plant_meta <- reactive({
+  #   if (input$main_tabsets == "pheno"){
+  #     f_read_plants_meta()
+  #   }
+  # })
+  # 
+  # # read phenology data
+  # plant_data <- reactive(
+  #     if (input$pflanzen != ""){
+  #       f_read_plants(input$pflanzen)
+  #     }else{
+  #       #show all federal states as options in UI
+  #       updateSelectInput(session,"bl_plant",
+  #                           choices = unique(plant_meta()$Bundesland))
+  #     }
+  # )
+  # #update UI for specific phases
+  # update_pheno_phases <- reactive(phenology_phases[phenology_phases$phase_id %in% unique(plant_data()$Phase_id),])
+  # observe({
+  #   updateRadioButtons(session, "phase",
+  #                      choiceNames = update_pheno_phases()$phase,
+  #                      choiceValues = update_pheno_phases()$phase_id,
+  #                      selected = c(5))
+  # })
+  # # limit stations in UI to those which host species chosen in UI
+  # bl_meta <- reactive(plant_meta()$Stationsname[plant_meta()$Bundesland == input$bl_plant])
+  # observe({
+  #   updateSelectizeInput(session,"station_name",
+  #                     choices = c(bl_meta(),input$station_name),
+  #                     selected = input$station_name)
+  # })
+  # # postprocess phenology data
+  # plant_data_processed <- reactive(
+  #   f_process_plants(plant_data(),input$phase,input$station_name,plant_meta())
+  #   )
+  # 
+  # ## show information box
+  # observeEvent(input$info_pheno, {
+  #   f_infotext(input$main_tabsets)
+  # })
+  # 
+  # ## plot phenology data
+  # observe({
+  #   #placeholder-plot if no species or stationname is chosen in UI
+  #   if (input$pflanzen == "" | length(input$station_name) == 0){
+  #     output$plant_out <- renderPlot(f_plot_placeholder())
+  #   }else{
+  #     #plot phenology data for species chosen in UI
+  #     output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()[[1]],
+  #                                                  input$pflanzen,plant_meta(),
+  #                                                  input$station_name,input$trendline,
+  #                                                  input$mtline,input$grid))
+  #     output$plant_table <- renderTable(f_table_plants(plant_meta(),input$station_name))
+  #     output$plant_map <- renderPlot(f_map_plants(plant_meta(),input$station_name))
+  #     if (length(plant_data_processed()[[2]]) == 0){
+  #       output$no_plant <- renderText("")
+  #     } else{
+  #       output$no_plant <- renderText(paste0("Keine Daten vorhanden für: ",paste(plant_data_processed()[[2]],collapse = ', ')))
+  #     }
+  #   }
+  # })
 
 ## -- C.3 --  TabPanel 3: measurement data ----------------------------------------------------------------
   # update UI
