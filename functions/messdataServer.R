@@ -1,8 +1,6 @@
 messdataServer <- function(id,main_active) {
   moduleServer(id, function(input, output, session) {
     
-    output$test <- renderText(paste0("hello","_33"))
-    
     # update UI
     shinyjs::hideElement("box_sincetill")
 
