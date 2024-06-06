@@ -20,7 +20,7 @@ library(shinydashboard)      #to create boxes for UI
 library(shinyjs)             #to use css style
 library(waiter)              #to show waiters while data is downloaded/processed
 library(rdwd)                #to access data provided by DWD (opendata.dwd.de)
-library(terra)               #to visualise Raster Data
+library(terra)               #to visualize Raster Data
 library(lubridate)           #to handle date and time
 library(RCurl)               #to download data provided by DWD
 library(dplyr)               #to handle data frames
@@ -30,32 +30,29 @@ library(leaflet)             #to represents data on a map
 sapply(list.files(pattern="[.]R$", path=paste0(getwd(),"/functions/"), full.names=TRUE), source)
 source(paste0(getwd(),"/input.R"),local = TRUE)
 
-##set local system
-#Sys.setlocale("LC_TIME", "German")
-
 ## -- B -- User Interface ------------------------------------------------------
 ui <- fluidPage(
   ## define superordinate settings 
-  # HTML/CSS style for different elements (tabsets, plots, text, etc)
-
+  # load CSS style for the different elements (tabsets, plots, text, etc)
   tags$head(
     tags$link(rel = "stylesheet", href = "style.css")
   ),
-  # use shiny waiter and shinybrowser
+  
+  # activate shiny waiter,shinybrowser and shinyjs
   useWaiter(),
   shinybrowser::detect(),
+  useShinyjs(),
   
-  ## show warning text if webapp is used on mobile device
+  ## show warning text if ShinyApp is used on mobile device
   span(class = "mobile_info", textOutput("browser_info")),
 
-  ## Main Panel
+  ## Main Panel for ShinyApp
   fluidRow(
     mainPanel(
-      useShinyjs(),
-      ## Title
+      # Title
       titlePanel(title=div(class = "title",img(class = "title_pic",src="laubfrosch.png",width = 100,height = 100),
-                           "Prognose- und Messdaten"), windowTitle = "ICON-D2"),
-        # define main_tabsets (ICON D2, measurement data, phenology, impressum)
+                           "Prognose- und Messdaten"), windowTitle = "Laubfrosch"),
+        # define main tabsets (ICON D2, measurement data, phenology, impressum)
         tabsetPanel(
           id = "main_tabsets",
           selected = "icond2",
@@ -68,14 +65,11 @@ ui <- fluidPage(
             )
           ),
 ## -- B.2 --  TabPanel 2: phenology  -------------------------------------------
-
           tabPanel("Phänologie", 
                    value = "pheno",
                    phenologyUI("phenology")
-        ),
-
+          ),
 ## -- B.3 --  TabPanel 3: measurement data -------------------------------------
-
           tabPanel("Messdaten",
                    value = "mess",
             messdataUI("messdata")
@@ -84,24 +78,26 @@ ui <- fluidPage(
           tabPanel("Modell ICON-D2",
                    value = "icond2",
                    icond2UI("icond2")
-                             ),
+          ),
         ),
       width = 12,
     )
-  ),tags$footer(class = "footer","\u00A9 2024 - M. Kehl",br(), actionLink("link_to_impressum", "Impressum"),
-                "|", div(class = "kontakt", a(href="mailto:mkehl.laubfrosch@gmail.com","Kontakt")), div(class="hidekontakt","mkehl.laubfrosch@gmail.com"))
+  ),
+  ## footer
+  tags$footer(class = "footer","\u00A9 2024 - M. Kehl",br(), actionLink("link_to_impressum", "Impressum"),
+                "|", div(class = "kontakt", a(href="mailto:mkehl.laubfrosch@gmail.com","Kontakt")),
+                div(class="hidekontakt","mkehl.laubfrosch@gmail.com"))
 )
 
-
-
-## -- C --  server -------------------------------------------------------------
+## -- C --  Server -------------------------------------------------------------
 server <- function(input, output, session) {
-  ## read device infos to make app reactive to it
+  ## define superordinate elements
+  # read device information to make app reactive to it
   output$browser_info <- renderText({
     device <- shinybrowser::get_device()
     if (device == "Mobile"){
       paste0("Achtung: Die Darstellung dieser Webapp kann auf mobilen Geräten fehlerhaft sein,
-    da sie für den Desktop und nicht für mobile Geräte entwickelt wurde.")
+      da sie für den Desktop und nicht für mobile Geräte entwickelt wurde.")
     }
   })
   
@@ -110,24 +106,13 @@ server <- function(input, output, session) {
     updateTabItems(session, "main_tabsets", "impressum")
   })
   
-  # show infobox with contact details
-  observeEvent(input$kontakt, {
-    showNotification(h4("Kontakt"),
-                      p("mkehl.laubfrosch@gmail.com", tags$br(),
-                        "GitHub:", tags$a(href = "https://github.com/m-kehl/weather_icond2",
-                                          "https://github.com/m-kehl/weather_icond2"))
-      ,duration = NULL)
-  })
-  
-  #device_width <- reactive(shinybrowser::get_width() -40)
-  
 ## -- C.1 --  TabPanel 1: Impressum --------------------------------------------
   impressumServer("impressum")
 ## -- C.2 --  TabPanel 2: phenology  -------------------------------------------
   phenologyServer("phenology",reactive(input$main_tabsets))
 ## -- C.3 --  TabPanel 3: measurement data ----------------------------------------------------------------
   messdataServer("messdata",reactive(input$main_tabsets))
-## -- C.4 --  TabPanel 4: ICON d2  ----------------------------------------------------------------
+## -- C.4 --  TabPanel 4: ICON D2  ----------------------------------------------------------------
   icond2Server("icond2",reactive(input$main_tabsets))
 }
 shinyApp(ui, server)
