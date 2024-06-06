@@ -19,7 +19,7 @@ phenologyServer <- function(id,active) {
     # read phenology data
     plant_data <- reactive(
       if (input$pflanzen != ""){
-        f_read_plants(input$pflanzen)
+        f_read_plants(input$pflanzen,id)
       }else{
         #show all federal states as options in UI
         updateSelectInput(session,"bl_plant",

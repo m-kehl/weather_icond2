@@ -2,7 +2,7 @@ icond2Server <- function(id,active) {
   moduleServer(id, function(input, output, session) {
     ## read and process icon d2 forecast data
     # read icon d2 forecast data
-    icond2_data <- reactive(f_read_icond2(f_forecast_time(),input$parameter))
+    icond2_data <- reactive(f_read_icond2(f_forecast_time(),input$parameter,id))
     # postprocess icon d2 forecast data
     icond2_processed <- reactive(f_process_icond2(icond2_data(),input$parameter))
     # take needed layer out of forecast data (according to user input)

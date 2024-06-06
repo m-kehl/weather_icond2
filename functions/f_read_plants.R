@@ -1,4 +1,4 @@
-f_read_plants <- function(plant){
+f_read_plants <- function(plant,id){
   ## function to read phenological  data
   # - plant: character; name of plant species to read
   
@@ -8,7 +8,7 @@ f_read_plants <- function(plant){
       spin_fading_circles(),
       "Download data from opendata.dwd.de .."
     ),
-    id = c("plant_out")
+    id = c(NS(id,"plant_out"))
   )
   
   # read phenological data

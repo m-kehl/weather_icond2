@@ -1,4 +1,4 @@
-f_read_icond2 <- function(date,parameter){
+f_read_icond2 <- function(date,parameter,id){
   ## function to read icon d2 forecast data
   # - date:  POSIXct; date and time of forecast calculation, most recent
   #                   forecast calculation is result of f_forecast_time.R
@@ -13,7 +13,7 @@ f_read_icond2 <- function(date,parameter){
       spin_fading_circles(),
       "Download data from opendata.dwd.de .."
     ),
-    id = c("map_out")
+    id = c(NS(id,"map_out"))
   )
   
   #determine size of tempdir() folder
@@ -49,7 +49,7 @@ f_read_icond2 <- function(date,parameter){
       spin_fading_circles(),
       "Postprocess data for visualization.."
     ),
-    id = c("map_out")
+    id = c(NS(id,"map_out"))
   )
   
   #read

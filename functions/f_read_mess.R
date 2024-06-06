@@ -1,4 +1,4 @@
-f_read_mess <- function(name, mess_meta,granularity){
+f_read_mess <- function(name, mess_meta,granularity,id){
   ## function to read measurement surface data (like ie temperature, precipitation)
   # - name:       array; names of measurement stations (characters)
   # - mess_meta:  data.frame; meta data for measurement surface data, result of 
@@ -14,21 +14,21 @@ f_read_mess <- function(name, mess_meta,granularity){
       spin_fading_circles(),
       "Download data from opendata.dwd.de .."
     ),
-    id = c("mess_plot")
+    id = c(NS(id,"mess_plot"))
   )
   waiter_show(
     html = tagList(
       spin_fading_circles(),
       "Download data from opendata.dwd.de .."
     ),
-    id = c("mess_plot_daily")
+    id = c(NS(id,"mess_plot_daily"))
   )
   waiter_show(
     html = tagList(
       spin_fading_circles(),
       "Download data from opendata.dwd.de .."
     ),
-    id = c("mess_plot_monthly")
+    id = c(NS(id,"mess_plot_monthly"))
   )
   
   #path definitions for download source

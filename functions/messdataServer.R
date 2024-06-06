@@ -13,7 +13,7 @@ messdataServer <- function(id,active) {
                          #selected = base::unique(mess_meta$Stationsname)[1],
                          options = list(maxItems = 5))
     # read measurement data
-    mess_data <- reactive(f_read_mess(input$mess_name,mess_meta,sub(paste0(id,"-"),"",input$mess_tabsets)))
+    mess_data <- reactive(f_read_mess(input$mess_name,mess_meta,sub(paste0(id,"-"),"",input$mess_tabsets),id))
 
     ## show information box
     observeEvent(input$info_mess, {
