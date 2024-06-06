@@ -15,11 +15,10 @@ rm(list = ls())
 
 ## required packages
 library(shiny)
-library(shinybrowser)
-#library(shinydashboard)
-library(shinyjs)
-library(waiter)
-library(miceadds)
+library(shinybrowser)        
+library(shinydashboard)     
+library(shinyjs)             
+library(waiter)             
 library(rdwd)
 library(terra)
 library(lubridate)
@@ -30,7 +29,7 @@ library(dplyr)
 library(leaflet)
 
 ## source functions and input
-source.all(paste0(getwd(),"/functions/"))
+sapply(list.files(pattern="[.]R$", path=paste0(getwd(),"/functions/"), full.names=TRUE), source)
 source(paste0(getwd(),"/input.R"),local = TRUE)
 
 ##set local system
