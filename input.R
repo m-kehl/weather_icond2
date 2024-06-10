@@ -3,11 +3,24 @@
 # -> names of all plant species for which phenological data are available at
 #    opendata.dwd.de
 # -> all phase names and according phase ids for which phenological data are
-#    available
+#    available at opendata.dwd.de
 # -> meteorological parameters with according names, units, axes for plot, etc
 # -> individual list of colours used in graphics
 
 ## federal states with according state capital and coordinates
+#  bundesland: character; german name of bundesland
+#  lon1:       double; longitude giving western limit
+#  lon2:       double; longitude giving eastern limit
+#  lat1:       double; latitude giving northern limit
+#  lat2:       double; latitude giving northern limit
+#  mittel_lon: double; longitude of approximately the center of the bundesland
+#  mittel_lat: double; latitude of approximately the center of the bundesland
+#  zoom:       integer; number indicating the zoom status of the leaflet map to
+#                       visualize the bundesland
+#  landeshauptstadt: character; german name of landeshauptstadt
+#  lon_point:  double; longitude of landeshauptstadt
+#  lat_point:  double; latitude of landeshauptstadt
+
 bundeslaender_coord <- data.frame(
   bundesland = c("Baden-Wuerttemberg", "Bayern","Berlin",                
                  "Brandenburg", "Bremen", "Hamburg",               
@@ -34,7 +47,7 @@ bundeslaender_coord <- data.frame(
                 53.635502,52.375892,51.227741,49.992862,49.240157,51.050409,52.120533,
                 54.323293,50.984768))
 
-## names of all plantspecies for which phenological data are available at
+## german names of all plant species for which phenological data are available at
 #    opendata.dwd.de
 pflanzen_arten <- c("","Beifuss","Busch-Windroeschen","Eberesche","Esche",
                     "Europaeische-Laerche","Falscher_Jasmin","",
@@ -48,20 +61,31 @@ pflanzen_arten <- c("","Beifuss","Busch-Windroeschen","Eberesche","Esche",
                     "Wiesen-Fuchsschwanz",
                     "Wiesen-Knaeuelgras","Winter-Linde")
 
-## all phase names and according phase ids for which phenological data are
-#    available (source: https://opendata.dwd.de/climate_environment/CDC/observations_germany/phenology/annual_reporters/wild/historical/PH_Beschreibung_Phasendefinition_Jahresmelder_Wildwachsende_Pflanze.txt)
+## all phase names (in german) and according phase ids for which phenological data are
+#    available at opendata.dwd.de
+#    (source: https://opendata.dwd.de/climate_environment/CDC/observations_germany/phenology/annual_reporters/wild/historical/PH_Beschreibung_Phasendefinition_Jahresmelder_Wildwachsende_Pflanze.txt)
 phenology_phases <- data.frame(phase = c("Beginn der Bluete","Blattfall (Herbst)",
                                          "Beginn Austrieb","Erste reife Fruechte",
                                          "Blattentfaltung","Blattverfaerbung (Herbst)",
                                          "Vollbluete"),
-                               phase_id = c(5,32,
-                                            3,62,
-                                            4,31,
-                                            6))
-# sort phenology_phases
-phenology_phases <- arrange(phenology_phases,phase)
+                               phase_id = c(5,32,3,62,4,31,6)) %>% arrange(phenology_phases,phase)
 
 ## meteorological parameters with according names, units, axes for plot, etc
+#  parameter:      character; german name of parameter
+#  unit:           character; unit of parameter
+#  dwd_name_now:   character; abbreviation of parameter used by DWD for data with
+#                           10'-granularity (XX if not available)
+#  dwd_name_daily; character; abbreviation of parameter used by DWD for data with
+#                           daily granularity (XX if not available)
+#  dwd_name_monthly; character; abbreviation of parameter used by DWD for data with
+#                           monthly granularity (XX if not available)
+#  min_now;        integer; minimum value used in plot of parameter if no data is available
+#  max_now;        integer; maximum value used in plot of parameter if no data is available
+#  pch;            character; symbol with which parameter is represented in plot
+#  type;           character; plot type how to represent parameter in plot, ie 
+#                             "p" for points, "h" for histogram-like, "s" for stair steps
+#                             (please google for other possible options known
+#                              by R plot())
 meteo_parameters <- data.frame(parameter = c("Temperatur","Niederschlag",
                                              "relative Feuchte", "Sonnenscheindauer",
                                              "Druck","Bodentemperatur",
@@ -92,7 +116,8 @@ meteo_parameters <- data.frame(parameter = c("Temperatur","Niederschlag",
                                type = c("b","h","p","p","p","b","p","s",
                                         "p","p","s","p","p","p","p"))
 
-## list of colours for plots (phenology plot and forecast map)
+## individual list of colours used in graphics
+#  phenology plot
 colours_phenology <- c("#FF0000","#0000FF","#00FF00",
              "#8000FF","#00FFFF", "darkorange1",
              "orange", "#FF00F5", "black",
@@ -106,6 +131,7 @@ colours_phenology <- c("#FF0000","#0000FF","#00FF00",
              "#FF006B","#00FFD1","#FFC700",
              "#00FF66","#CCFF00")
 
+# forecast data shown on leaflet map, colours depend on plotted parameter
 colours_precipitation <- c("peachpuff1","maroon1","red","orange","gold","gold4","darkgreen","lawngreen")
 colours_temperature <- c("blue","cyan4","lightblue","lavender","gold","orange","maroon","red4")
 colours_cloud <- c("transparent","lightyellow","lightgreen","forestgreen","darkgreen")
