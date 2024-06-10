@@ -6,9 +6,12 @@ f_table_plants <- function(meta_data,station_name){
   #                             ie result of f_read_plants_meta.R
   # - station_name: array; station name/s (character/s)
   
+  #select important columns of meta_data
   meta_selected <- meta_data[meta_data$Stationsname %in% station_name,c("Stationsname","Stationshoehe","Datum Stationsaufloesung")]
+  #rename columns
   colnames(meta_selected)[colnames(meta_selected) == "Stationshoehe"] <- "Stationshöhe" 
   colnames(meta_selected)[colnames(meta_selected) == "Datum Stationsaufloesung"] <- "Stationsauflösung"
+  #format column Stationsauflösung
   meta_selected$Stationsauflösung <- ifelse(meta_selected$Stationsauflösung == ""," - ",meta_selected$Stationsauflösung)
   
   return(meta_selected)

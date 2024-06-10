@@ -4,7 +4,7 @@ f_process_plants <- function(plant_table,phase,station_name, meta_data){
   #   phase and station & format date)
   # - plant_table:  data.table with phenological data; produced by f_read_plants.R
   # - phase:        integer; indicates phase-ID
-  # - station_name: character; name of measurement station
+  # - station_name: character; name of phenological measurement station
   # - meta_data:    data.table with phenological meta data; produced by
   #                 f_read_plants_meta.R
   
@@ -17,8 +17,7 @@ f_process_plants <- function(plant_table,phase,station_name, meta_data){
   plant_data_proc$Eintrittsdatum <- as.POSIXct(as.character(plant_data_proc$Eintrittsdatum), format = "%Y%m%d")
   plant_data_proc$Stationsname <- sapply(plant_data_proc$Stations_id,
                                          function(x) meta_data$Stationsname[meta_data$Stations_id == x])
-  #get stations without data
-  #plant_data_proc <- arrange(plant_data_proc,Stationsname)
+  #get stations without data for specified species -> to list them separately
   plant_data_proc <- plant_data_proc[order(plant_data_proc$Stationsname),]
   no_data <- station_name[!(station_name %in% unique(plant_data_proc$Stationsname))]
   

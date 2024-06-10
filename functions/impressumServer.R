@@ -1,3 +1,4 @@
+## Server part for the impressum (according User Interface: impressumUI.R)
 impressumServer <- function(id) {
   moduleServer(id, function(input, output, session) {
     
@@ -7,12 +8,11 @@ impressumServer <- function(id) {
     })
     
     # change picture of laubfrosch on click
-    onclick(
-      "laubfrosch", {
+    onclick("laubfrosch", {
         #on click -> changing color
         output$laubfrosch <- renderUI({
           tags$img(src="laubfrosch_rot.png", height=250)
         })
-      })
+    })
   })
 }

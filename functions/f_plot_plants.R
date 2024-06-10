@@ -1,10 +1,11 @@
 f_plot_plants <- function(plant_data,plant,meta_data,station_name,regression,mtline,grid){
   ## function to plot postprocessed phenological data
   # - plant_data:   data.table with phenological data; produced by f_process_plants.R
-  # - plant:        character; plant species
+  # - plant:        character; name of plant species
   # - meta_data:    data.table with phenological meta data, produced by
   #                 f_read_plants_meta.R
-  # - station_name: array; name/s of measurement station/s (characters)
+  # - station_name: array; name/s of measurement station/s (characters) for which
+  #                 data should be plotted
   # - regression:   character; True or False, whether regression line should be plotted
   #                 or not
   # - mtline:       character, True or False, whether help lines for months should

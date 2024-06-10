@@ -1,27 +1,23 @@
+## Server part for the phenology data (according User Interface: phenologyUI.R)
 phenologyServer <- function(id,active) {
+  # - id:     character; namespace id
+  # - active: character; name of active tabset
+  
   moduleServer(id, function(input, output, session) {
     ## read and process phenology data
-    # read meta data
-
-    # observe({
-    #   if (active() == "pheno"){
-    #     output$test <- renderText(paste0(active(),"1"))
-    # 
-    #   } else{
-    #     output$test <- renderText(paste0(active(),"2"))
-    #     
-    #   }
-    # })
+    # read phenology meta data
     plant_meta <- reactive({
       f_read_plants_meta()
     })
     
-    # read phenology data
+    # read phenology measurement data
     plant_data <- reactive(
       if (input$pflanzen != ""){
         f_read_plants(input$pflanzen,id)
       }else{
         #show all federal states as options in UI
+        # -> this is only done once when Shinyapp gets started
+        #     and no plant species has been selected yet
         updateSelectInput(session,"bl_plant",
                           choices = unique(plant_meta()$Bundesland))
       }
@@ -62,8 +58,9 @@ phenologyServer <- function(id,active) {
                                                      input$pflanzen,plant_meta(),
                                                      input$station_name,input$trendline,
                                                      input$mtline,input$grid))
-        output$plant_table <- renderTable(f_table_plants(plant_meta(),input$station_name))
+        #output$plant_table <- renderTable(f_table_plants(plant_meta(),input$station_name))
         output$plant_map <- renderPlot(f_map_plants(plant_meta(),input$station_name))
+        #print names of stations which are selected by user but no data is available
         if (length(plant_data_processed()[[2]]) == 0){
           output$no_plant <- renderText("")
         } else{
@@ -71,7 +68,5 @@ phenologyServer <- function(id,active) {
         }
       }
     })
-
-
   })
 }
