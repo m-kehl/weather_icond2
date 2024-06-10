@@ -1,109 +1,98 @@
-    body {max-width: 1320px;
-          margin-left: auto;
-          margin-right: auto;
-          background-color: white}
-          
-      .mobile_info {
-          color: red;
-          background-color: aquamarine;}
-          
-      .title {
-          color: black;
-          float: left; width: 50%}
-          
-      .tabbable > .nav {background-color:	 #3dc296;}
-      #main_tabsets > li {float: right; padding-top: 65px;}
-      #messdata-mess_tabsets > li {float: right; padding-top: 5px;}
-      .tabbable > .nav > li                 > a  {font-weight: bold; 
-                                                  background-color: aquamarine; 
-                                                  color:black}
-      .tabbable > .nav > li[class=active]    > a {background-color: HoneyDew; 
-                                                  color:black}
-      
-      .col-sm-9 {
-        padding-right: 0px;
-      }
-      .col-sm-10 {
-        padding-right: 0px;
-      }
-      .col-sm-2 {
-        padding-right: 0px;
-      }
+/*  css style for Shinyapp read by app.R */
+/*  general style of Shinyapp */
+body {max-width: 1320px;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: white}
 
-      .shiny-notification {position:fixed;
-                            top: calc(20%);
-                            left: calc(30%);
-                            max-width: 450px;
-                            background-color: HoneyDew;
-                            color: black;
-                            border-color: aquamarine}
-                            
-      .intro {background-color: aquamarine;
-              font-size: 30px;
-              }
-              
-      .map_plot {max-width: 800px;
-                  padding: 16px}
+/*  style for text shown when Shinyapp is used on a mobile device  */  
+.mobile_info {
+    color: red;
+    background-color: aquamarine;}
 
-      .slider {padding-left: 16px}
-      
-      .subtitle {padding-left: 8px;}
-      
-      .helplines {border-style: solid;
-                  border-color: #3dc296;
-                  border-width: 2px;
-                  border-radius: 5px;
-                  padding: 5px;
-                  width: 142px;
-                  }
+/*  style of title, widht: 50% -> so the tabset panels are shown on the same height as the title */
+.title {
+    color: black;
+    float: left; width: 50%}
+    
+/*  style for tabset panels (size, colour and where they are (on the right hand side)) */
+.tabbable > .nav {background-color:	 #3dc296;}
+#main_tabsets > li {float: right; padding-top: 65px;}
+#messdata-mess_tabsets > li {float: right; padding-top: 5px;}
+.tabbable > .nav > li                 > a  {font-weight: bold; 
+                                            background-color: aquamarine; 
+                                            color:black}
+.tabbable > .nav > li[class=active]    > a {background-color: HoneyDew; 
+                                            color:black}
+/*  deleting the predefined spacing on the right hand side of containers */
+.col-sm-9 {
+  padding-right: 0px;}
+.col-sm-10 {
+  padding-right: 0px;}
+.col-sm-2 {
+  padding-right: 0px;}
 
-      .impressum_style {padding: 32px}
-      
-      #icond2-map_title {padding-left: 16px;
-      }
-      
-      .main {background-color: white;}
-                  
-      .footer {background-color: HoneyDew;
-                }
-              
-      a {color: #3dc296;}
-      
-      a:hover {color: #32805b;}
-      
-      .hidekontakt {
-          display: none;
-      }
-              
-      .kontakt:hover {
-       color: #1E2B3D;
-      }
-        
-      .kontakt {display: inline-block;
-                color: #3dc296;}
+/*  style of links and what happens in hover-mode */
+a {color: #3dc296;}
+a:hover {color: #32805b;}
 
-      .kontakt:hover + .hidekontakt {
-        display: initial;
-        color: #1E2B3D;
-      }
+/*  style for shiny notifications (especially where and how large they are shown on the site) */
+.shiny-notification {position:fixed;
+                      top: calc(20%);
+                      left: calc(30%);
+                      max-width: 450px;
+                      background-color: HoneyDew;
+                      color: black;
+                      border-color: aquamarine}
+  
+/*  style for subtitles (text shown right of info-sign). padding-left: 8px -> so that text it is not overwritten by info-sign) */
+.subtitle {padding-left: 8px;}  
+                      
+/*  style for leaflet plot (map) and its time slider and title */
+.map_plot {max-width: 800px;
+            padding: 16px}
+.slider {padding-left: 16px}
+#icond2-map_title {padding-left: 16px;}
 
-      @media (max-width: 1010px) {
-        #main_tabsets > li {float: left; padding-top: 2px;}
-        #messdata-mess_tabsets > li {float: left; padding-top: 2px;}
-        .title {
-          float: left; width: 100%}
-      }
-      
-      @media (max-width: 875px) {
-        .subtitle {padding-left: 0px;}
+/*  style for box around checkboxes for helplines used in phenology plot as well as style for the text belonging to these checkboxes */
+.helplines {border-style: solid;
+            border-color: #3dc296;
+            border-width: 2px;
+            border-radius: 5px;
+            padding: 5px;
+            width: 142px;}
 
-      }
-      @media (max-width: 755px) {
-        .col-sm-10 {
-        padding-left: 0px;
-        }
-        .col-sm-1 {
-          padding-left: 0px;
-        }
+/*  style for impressum */
+.impressum_style {padding: 32px}
 
-      }
+/*  footer style and style for elements in footer (especially kontakt-button */
+.footer {background-color: HoneyDew;}
+
+.hidekontakt {display: none;}
+.kontakt:hover {color: #1E2B3D;
+}
+.kontakt {display: inline-block;
+          color: #3dc296;}
+.kontakt:hover + .hidekontakt {
+  display: initial;
+  color: #1E2B3D;
+}
+
+
+/*  style changes if device-widht becomes smaller than thershold value */
+@media (max-width: 1010px) {
+  #main_tabsets > li {float: left; padding-top: 2px;}
+  #messdata-mess_tabsets > li {float: left; padding-top: 2px;}
+  .title {
+    float: left; width: 100%}
+}
+@media (max-width: 875px) {
+  .subtitle {padding-left: 0px;}
+
+}
+@media (max-width: 755px) {
+  .col-sm-10 {
+  padding-left: 0px;}
+  .col-sm-1 {
+    padding-left: 0px;}
+}
