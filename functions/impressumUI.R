@@ -1,11 +1,17 @@
+## User Interface for the impressum part
+#  -> text about contact details, disclaimer and copyright declaration.
+#  -> picture of laubfrosch which turns red if clicked.
 impressumUI <- function(id) {
   tagList(
+  #pictre of laubfrosch
   uiOutput(NS(id,"laubfrosch"),style="float:right"),
+  #contact details
   h3("Kontakt"),
   h4("M. Kehl"),
   h4("mkehl.laubfrosch@gmail.com"),
   h4("Quellcode auf", tags$a(href="https://github.com/m-kehl/weather_icond2",
                              "GitHub")),
+  #disclaimer
   h3("Haftungsausschluss"),
   h4("Der Autor übernimmt keine Gewähr für die Richtigkeit, Genauigkeit,
             Aktualität, Zuverlässigkeit und Vollständigkeit der Informationen.
@@ -24,6 +30,7 @@ impressumUI <- function(id) {
                unseres Verantwortungsbereichs. Es wird jegliche Verantwortung
                für solche Webseiten abgelehnt. Der Zugriff und die Nutzung
                solcher Webseiten erfolgen auf eigene Gefahr des jeweiligen Nutzers."),
+  #copyright declaration
   h3("Urheberrechtserklärung"),
   h4("Die Urheber- und alle anderen Rechte an Inhalten, Bildern, Fotos
                oder anderen Dateien auf dieser Website, gehören ausschliesslich
