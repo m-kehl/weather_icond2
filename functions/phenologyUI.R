@@ -7,7 +7,7 @@ phenologyUI <- function(id) {
     # left hand side
     column(3, 
             br(),
-            #info-botton
+            #info-button
             column(1,
                    actionButton(NS(id,"info_pheno"), label = NULL, icon = icon("info"),
                                 style="color: black; 
@@ -45,7 +45,8 @@ phenologyUI <- function(id) {
               selected = c("Adelsheim"),
               multiple = TRUE),
             #copyright DWD
-            f_copyright_DWD()),
+            f_copyright_DWD()
+    ),
     #middle and right hand side
     column(9,
            #middle -> phenology plot
