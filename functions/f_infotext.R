@@ -1,5 +1,5 @@
 f_infotext <- function(data_kind){
-  ## function to return an information text about opensource data
+  ## function to return information text about opensource data
   # - data_kind: character; defines about what the information text should be
   #                         options: "icond2" -> forecast model ICON D2
   #                                  "mess"   -> measurement surface data
