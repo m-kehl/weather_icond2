@@ -44,7 +44,8 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
       color <- rep("blue",ncol(point_forecast))
       color[time_index] <- "cadetblue"
       barplot(point_forecast[1,], col = color, axis.lty = 1, las = 2,
-              names.arg = format(timeline,format ="%a %H:%M" ),
+              names.arg = paste0(format(timeline-60*60,format ="%a %H:%M"),
+                                " \n -",format(timeline,format ="%H:%M"),sep="\n"),
               ylab = "[mm / h]", ylim = c(0,max(2,point_forecast[1,]+0.5)))
     } else if (parameter %in% c("t_2m")){
       # plot temperature
@@ -57,7 +58,7 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
            ylab = "Temperatur [\u00B0C]", xlab = "", type = "b")
       axis.POSIXct(1,timeline,format ="%a %H:%M")
     } else if (parameter %in% c("clct")){
-      # plot temperature
+      # plot cloud cover
       color <- rep("forestgreen",ncol(point_forecast))
       color[time_index] <- "darkgreen"
       plot(timeline,point_forecast[1,2:8], col = color, pch = 16, xaxt="n",
@@ -67,7 +68,7 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
            ylab = "Bewölkung [%]", xlab = "", type = "b")
       axis.POSIXct(1,timeline,format ="%a %H:%M")
     } else if (parameter %in% c("pmsl")){
-      # plot temperature
+      # plot pressure
       color <- rep("purple",ncol(point_forecast))
       color[time_index] <- "purple4"
       plot(timeline,point_forecast[1,2:8], col = color, pch = 16, xaxt="n",
