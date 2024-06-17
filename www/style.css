@@ -51,6 +51,8 @@ a:hover {color: #32805b;}
 /*  style for leaflet plot (map) and its time slider and title */
 .map_plot {max-width: 800px;
             padding: 16px}
+.map_intro {background-color: #3dc296;
+        font-size: 20px;}
 .slider {padding-left: 16px}
 #icond2-map_title {padding-left: 16px;}
 
