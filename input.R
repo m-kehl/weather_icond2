@@ -68,7 +68,7 @@ phenology_phases <- data.frame(phase = c("Beginn der Bluete","Blattfall (Herbst)
                                          "Beginn Austrieb","Erste reife Fruechte",
                                          "Blattentfaltung","Blattverfaerbung (Herbst)",
                                          "Vollbluete"),
-                               phase_id = c(5,32,3,62,4,31,6)) %>% arrange(phenology_phases,phase)
+                               phase_id = c(5,32,3,62,4,31,6)) %>% arrange(phase)
 
 ## meteorological parameters with according names, units, axes for plot, etc
 #  parameter:      character; german name of parameter
