@@ -1,14 +1,15 @@
 f_read_mess <- function(name, mess_meta,granularity,id){
   ## function to read measurement surface data (like ie temperature, precipitation)
-  # - name:       array; names of measurement stations (characters)
-  # - mess_meta:  data.frame; meta data for measurement surface data, result of 
-  #                           f_read_mess_meta.R
+  # - name:        array; names of measurement station/s (characters)
+  # - mess_meta:   data.frame; meta data for measurement surface data, result of 
+  #                            f_read_mess_meta.R
   # - granularity: character; to define which measurement data are downloaded,
-  #                          options: "now" for today's most recent measurement data
+  #                           options: "now" for today's most recent measurement data
   #                                   "daily" for daily measurement data
   #                                   "monthly" for monthly measurement data
+  # - id:          character; namespace id
   
-  # show waiter while reading data
+  ## show waiter while reading data
   waiter_show(
     html = tagList(
       spin_fading_circles(),
@@ -31,6 +32,7 @@ f_read_mess <- function(name, mess_meta,granularity,id){
     id = c(NS(id,"mess_plot_monthly"))
   )
   
+  #read surface measurement data
   #path definitions for download source
   url_base <- "ftp://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/"
   

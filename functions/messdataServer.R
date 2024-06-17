@@ -1,16 +1,18 @@
+## Server part for the surface measurement data (according User Interface: messdataUI.R)
 messdataServer <- function(id,active) {
+  # - id:     character; namespace id
+  # - active: character; name of active tabset
+  
   moduleServer(id, function(input, output, session) {
-    
-    # update UI
+    ## update UI -> hide sincetill box
     shinyjs::hideElement("box_sincetill")
 
-    ## read and process measurement data
+    ## read and process meta and measurement data
     # read meta data
     mess_meta <- f_read_mess_meta()
     # update UI based on meta data
     updateSelectizeInput(session,"mess_name",
                          choices = base::unique(mess_meta$Stationsname),
-                         #selected = base::unique(mess_meta$Stationsname)[1],
                          options = list(maxItems = 5))
     # read measurement data
     mess_data <- reactive(f_read_mess(input$mess_name,mess_meta,sub(paste0(id,"-"),"",input$mess_tabsets),id))
@@ -55,8 +57,6 @@ messdataServer <- function(id,active) {
         # update UI
         shinyjs::hideElement("box_sincetill")
       }
-      })
-    
-    
+    })
   })
 }

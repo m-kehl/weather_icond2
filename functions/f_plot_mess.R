@@ -1,16 +1,16 @@
 f_plot_mess <- function(mess_data,granularity,parameters, title_start, timespan = c(-999,999)){
-  ## function to plot measurement surface temperature data
+  ## function to plot measurement surface data
   # - mess_data:   data.frame; data for measurement surface data, result of
   #                           f_read_mess.R
   # - granularity:  character; to define which measurement data are plotted,
   #                          options: "now" for today's most recent measurement data
   #                                   "daily" for daily measurement data
   #                                   "monthly" for monthly measurement data
-  # - parameters:  array with up to four characters; meteorological parameter/s
+  # - parameters:  array with up to two characters; meteorological parameter/s
   #                to plot
   # - title_start: character; this character is placed at the beginning of the title
   # - timespan:    array with two dates (POSIXct); since and till date between which
-  #                          measurement data are plotted
+  #                          measurement data are plotted; optional, placeholder -999 and 999
   
   ## plot preparations
   # load meta plot data for parameters
@@ -22,13 +22,13 @@ f_plot_mess <- function(mess_data,granularity,parameters, title_start, timespan 
   station_ids <- base::unique(mess_data$STATIONS_ID)
   station_names <- base::unique(mess_data$station_name)
   
-  #set to UTC
-  get_zime_zone <- Sys.getenv()
+  #set time to UTC
   Sys.setenv(TZ='GMT')
   
   ## setup for different granularities
   dwd_name <- paste0("dwd_name_",granularity)
   
+  #check whether chosen parameter exists in chosen granularity
   param_exists <- meteo_parameters$parameter[meteo_parameters[dwd_name][[1]] == "XX"]
   if (length(param_exists) > 0){
     for (ii in c(1:length(param_exists))){
@@ -36,6 +36,7 @@ f_plot_mess <- function(mess_data,granularity,parameters, title_start, timespan 
     }
   }
   
+  #set labels and spacing for different granularities
   if (granularity == "now"){
     x_label <- "Messzeit (UTC)"
     title_appendix <- format(mess_data$MESS_DATUM[1],"%d.%m.%y")
@@ -62,10 +63,13 @@ f_plot_mess <- function(mess_data,granularity,parameters, title_start, timespan 
   if (length(parameters) == 0 | nrow(mess_data) == 0){
     plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
   }else{
-    #plot (with left y-axis)
+    #set limit for y-axis
     while(more_plots){
       param <- meteo_parameters[dwd_name][[1]][meteo_parameters$parameter==parameters[1]]
+      #check whether two parameters are plotted in same plot
       if (length(parameters) > 1){
+        #check whether the two parameters have same scale -> if they have same
+        #scale, the left and right y-axis have same limits
         if (meteo_parameters$unit[meteo_parameters$parameter==parameters[1]] == meteo_parameters$unit[meteo_parameters$parameter==parameters[2]] &
             parameters[1] != "Dampfdruck" & parameters[2] != "Dampfdruck"){
           ylim_meteo <- c(min(mess_data[param],mess_data[meteo_parameters[dwd_name][[1]][meteo_parameters$parameter==parameters[2]]],
@@ -86,6 +90,7 @@ f_plot_mess <- function(mess_data,granularity,parameters, title_start, timespan 
                         max(mess_data[param], meteo_parameters$max_now[meteo_parameters$parameter==parameters[1]]
                             ,na.rm = T))
       }
+      #plot
       mess_data_plot <- mess_data[mess_data$STATIONS_ID == station_ids[count],]
       plot(mess_data_plot$MESS_DATUM + (count-1)*date_spacing,
            array(mess_data_plot[param][[1]]),
@@ -101,6 +106,8 @@ f_plot_mess <- function(mess_data,granularity,parameters, title_start, timespan 
       par(new = TRUE)
       #plot (with right y-axis)
       if (length(parameters) > 1){
+        #set new limits for y-axis if second parameter has not same scale
+        #as first parameter
         param <- meteo_parameters[dwd_name][[1]][meteo_parameters$parameter==parameters[2]]
         if (meteo_parameters$unit[meteo_parameters$parameter==parameters[1]] != meteo_parameters$unit[meteo_parameters$parameter==parameters[2]] |
             parameters[1] == "Dampfdruck" | parameters[2] == "Dampfdruck"){
@@ -128,6 +135,7 @@ f_plot_mess <- function(mess_data,granularity,parameters, title_start, timespan 
         mtext(paste0(meteo_parameters$parameter[meteo_parameters$parameter==parameters[2]]," [", 
                      meteo_parameters$unit[meteo_parameters$parameter==parameters[2]],"]"),
               side = 4, line = 3)
+        #set title if two parameters are plotted
         title(paste0(title_start,
                      meteo_parameters$parameter[meteo_parameters$parameter==parameters[1]],
                      " (",
@@ -139,6 +147,7 @@ f_plot_mess <- function(mess_data,granularity,parameters, title_start, timespan 
                      ") - ",title_appendix), adj = 0)
         par(new = TRUE)
       } else{
+        #set title if only one parameter is plotted
         title(paste0(title_start,
                      meteo_parameters$parameter[meteo_parameters$parameter==parameters[1]],
                      " (",
