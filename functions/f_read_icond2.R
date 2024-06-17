@@ -10,13 +10,13 @@ f_read_icond2 <- function(date,parameter,id){
   # - id: character; namespace id
   
   # show waiter while searching for data
-  # waiter_show(
-  #   html = tagList(
-  #     spin_fading_circles(),
-  #     "Download data from opendata.dwd.de .."
-  #   ),
-  #   id = c(NS(id,"map_out"))
-  # )
+  waiter_show(
+    html = tagList(
+      spin_fading_circles(),
+      "Download data from opendata.dwd.de .."
+    ),
+    id = c(NS(id,"map_out"))
+  )
   
   #determine size of tempdir() folder
   files<-list.files(tempdir(), full.names = TRUE, recursive = TRUE)
@@ -48,14 +48,14 @@ f_read_icond2 <- function(date,parameter,id){
                       joinbf=TRUE, dbin=TRUE, read=F, browse = F, quiet = TRUE)
   
   # show other waiter while reading data
-  # waiter_hide()
-  # waiter_show(
-  #   html = tagList(
-  #     spin_fading_circles(),
-  #     "Postprocess data for visualization.."
-  #   ),
-  #   id = c(NS(id,"map_out"))
-  # )
+  waiter_hide()
+  waiter_show(
+    html = tagList(
+      spin_fading_circles(),
+      "Postprocess data for visualization.."
+    ),
+    id = c(NS(id,"map_out"))
+  )
   
   #read
   nwp_data <- readDWD(nwp_file)

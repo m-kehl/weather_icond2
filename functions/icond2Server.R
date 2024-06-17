@@ -34,7 +34,8 @@ icond2Server <- function(id,active) {
     
     # adapt displayed layer on map according to user time input
     observe({
-      f_leaflet_layer(input$parameter,icond2_processed(),icond2_layer(),session)
+      f_leaflet_layer(input$parameter,icond2_processed(),icond2_layer(),session,id)
+      # add title to map
       if (length(input$parameter) != 0){
         if (input$parameter == "tot_prec"){
           map_text <- "Niederschlag [mm/h] - "
@@ -48,10 +49,9 @@ icond2Server <- function(id,active) {
         output$map_title <- renderText(paste0(map_text,format(as.POSIXct(time(icond2_layer(), format= ""),"CET"),
                                                               "%d.%m.%Y %H:%M")))
       }
-      
     })
     
-    # adapt legend on map if parameter input changes
+    # adapt map legend if parameter input changes
     observeEvent(input$parameter,{
       f_leaflet_legend(input$parameter,icond2_processed(),session)
     })
@@ -61,7 +61,7 @@ icond2Server <- function(id,active) {
       f_leaflet_setview(input$bundesland,session)
     })
     
-    # add markers on leaflet map according to user input
+    # add marker on leaflet map according to user input
     observe({
       f_leaflet_markers(input$point_forecast,input$free_lon,input$free_lat,input$bundesland,
                         input$map_out_click,session)
@@ -70,18 +70,24 @@ icond2Server <- function(id,active) {
     ## plot point forecast data
     observe({
       if (is.null(input$parameter)){
+        # empty plot if no input parameter is given
         output$bar_out <- renderPlot(
           plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
         )
       } else if (is.null(input$map_out_click) && input$point_forecast == "mouse"){
+        # empty plot if no mouse input value is given but "mouse" is chosen 
+        # by user
         output$bar_out <- renderPlot(
           plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
         )
       } else if ((is.na(input$free_lon) | is.na(input$free_lat)) & input$point_forecast == "free"){
+        # empty plot if faulty free_lon or free_lat is given but "free" is chosen
+        # by user
         output$bar_out <- renderPlot(
           f_barplot_icond2_placeholder(),
         )
       } else{
+        # plot
         output$bar_out <- renderPlot(
           f_barplot_icond2(point_forecast(),input$slider_time,input$parameter,
                            input$point_forecast,
@@ -98,6 +104,5 @@ icond2Server <- function(id,active) {
         shinyjs::hide("box_free_coord")
       }
     })
-    
   })
 }

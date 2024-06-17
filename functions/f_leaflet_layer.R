@@ -46,15 +46,6 @@ f_leaflet_layer <- function(parameter,icond2_processed,icond2_layer,session,id){
       iconlayer <- icond2_layer  
     }
     
-    #Show waiter while map is being prepared
-    waiter_show(
-      html = tagList(
-        spin_fading_circles(),
-        "Creating Map.."
-      ),
-      id = c(NS(id,"map_out"))
-    )
-    
     ## add layer to map
     #  load pre-existing map
     mapModifier <- leafletProxy(
