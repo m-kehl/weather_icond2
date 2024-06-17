@@ -10,6 +10,7 @@ f_leaflet_layer <- function(parameter,icond2_processed,icond2_layer,session,id){
   # - icond2_layer: SpatRaster; specific layer of icond2_processed which is to 
   #                             be plotted on the map
   # - session: Shiny Session
+  # - id: character; namespace id
   
   ## layer preparations
   # load meta data (colours)

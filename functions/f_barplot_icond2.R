@@ -1,19 +1,21 @@
 f_barplot_icond2 <- function(point_forecast,input_time,parameter,
                              type,state){
-  ## function to create barplot with icon d2 point forecast data
+  ## function to create (bar)plot with icon d2 point forecast data
   # - point_forecast: matrix; data of icon d2 point forecast
-  # - input_time:     POSIXct; date/time to focus on in barplot
+  # - input_time:     POSIXct; date/time to focus on in (bar)plot
   # - parameter:      character; icon d2 abbreviation for forecasted parameter
   #                        options: "tot_prec" for precipitation
   #                                 "t_2m"     for temperature 2m above ground
   #                                 "clct"     for cloud cover
   #                                 "pmsl"     for sea level pressure
-  # - type:           character; either "bhs" (abbreviation for Bundeshauptstadt),
-  #                              "free" (free entry of coodrinate pair) or
-  #                              "mouse" (mouse cick on map to define coordinates)
+  # - type:           character; to define with which method coordinates for 
+  #                              point forecast are selected. Options:
+  #                              - "bhs" (coordinates of federal state),
+  #                              - "free" (free entry of coodrinate pair)
+  #                              - "mouse" (mouse click on map to define coordinates)
   #                    -> needed to specify barplot title
-  # - state:          character; name of federal state in which place for point
-  #                    forecast lies
+  # - state:          character; german name of federal state
+  #                              (attention: umlaute must be written out, ie ä = ae)
   
   ##plot basics
   # title specification
@@ -25,7 +27,7 @@ f_barplot_icond2 <- function(point_forecast,input_time,parameter,
     title_help = "nach Mausklick"
   }
   
-  # define on which time barplot starts
+  # define at which time barplot starts
   converter <- f_time_converter()
   ii <- converter[[parameter]][converter$time == input_time]
   
