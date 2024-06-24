@@ -62,7 +62,7 @@ phenologyServer <- function(id,active) {
                                                      input$pflanzen,plant_meta(),
                                                      input$station_name,input$trendline,
                                                      input$mtline,input$grid))
-        output$info_regression <- renderText(f_infotext_regression(plant_data_processed()[[1]],input$trendline))
+        output$text_regression <- renderText(f_infotext_regression(plant_data_processed()[[1]],input$trendline))
         #output$plant_table <- renderTable(f_table_plants(plant_meta(),input$station_name))
         output$plant_map <- renderPlot(f_map_plants(plant_meta(),input$station_name))
         #print names of stations which are selected by user but no data is available
