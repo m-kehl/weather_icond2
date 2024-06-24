@@ -3,7 +3,7 @@ f_process_plants <- function(plant_table,phase,station_name, meta_data){
   #  (get subset of phenological data (created by f_read_plants.R) for chosen
   #   phase and station & format date)
   # - plant_table:  data.table with phenological data; produced by f_read_plants.R
-  # - phase:        integer; indicates phase-ID
+  # - phase:        integer; indicates phenological phase-ID
   # - station_name: character; name of phenological measurement station
   # - meta_data:    data.table with phenological meta data; produced by
   #                 f_read_plants_meta.R
