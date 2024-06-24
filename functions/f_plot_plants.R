@@ -6,11 +6,11 @@ f_plot_plants <- function(plant_data,plant,meta_data,station_name,regression,mtl
   #                 f_read_plants_meta.R
   # - station_name: array; name/s of measurement station/s (characters) for which
   #                 data should be plotted
-  # - regression:   character; True or False, whether regression line should be plotted
+  # - regression:   logical; True or False, whether regression line should be plotted
   #                 or not
-  # - mtline:       character, True or False, whether help lines for months should
+  # - mtline:       logical, True or False, whether help lines for months should
   #                 be plotted or not
-  # - grid:         character; True or False, whether grid should be plotted or not
+  # - grid:         logical; True or False, whether grid should be plotted or not
   
   ## plot preparations
   # load meta plot data for parameters
