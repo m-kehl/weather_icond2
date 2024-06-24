@@ -225,7 +225,9 @@ ui <- fluidPage(
             column(9,
                column(10,
                       div(class = "map_plot",plotOutput("plant_out")),
-                      textOutput("no_plant")),
+                      textOutput("no_plant"),
+                      br(),
+                      textOutput("text_regression")),
               #p("In Bearbeitung..")
                column(2,
                       br(),
@@ -236,7 +238,8 @@ ui <- fluidPage(
                       p("Hilfslinien:"),
                       checkboxInput("trendline", "lin. Regression"),
                       checkboxInput("mtline","Monatslinien"),
-                      checkboxInput("grid","Gitternetz"))),
+                      checkboxInput("grid","Gitternetz"),
+                      )),
                column(6,plotOutput("plant_map")),
                #column(6,tableOutput("plant_table"))
             ),
@@ -478,12 +481,14 @@ server <- function(input, output, session) {
     #placeholder-plot if no species or stationname is chosen in UI
     if (input$pflanzen == "" | length(input$station_name) == 0){
       output$plant_out <- renderPlot(f_plot_placeholder())
+      output$text_regression <- renderText("")
     }else{
       #plot phenology data for species chosen in UI
       output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()[[1]],
                                                    input$pflanzen,plant_meta(),
                                                    input$station_name,input$trendline,
                                                    input$mtline,input$grid))
+      output$text_regression <- renderText(f_text_regression(plant_data_processed()[[1]],input$trendline))
       output$plant_table <- renderTable(f_table_plants(plant_meta(),input$station_name))
       output$plant_map <- renderPlot(f_map_plants(plant_meta(),input$station_name))
       if (length(plant_data_processed()[[2]]) == 0){
