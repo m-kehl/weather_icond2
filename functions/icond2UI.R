@@ -2,6 +2,8 @@
 #  -> left hand side: Buttons/Input fields to select what should be plotted
 #  -> middle/right hand side: space for leaflet map/barplot
 icond2UI <- function(id) {
+  #load basic fixed data (ie coordinates of federal states)
+  source(paste0(getwd(),"/input.R"),local = TRUE)
   tagList(
     #left hand side
     column(3, 

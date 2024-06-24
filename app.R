@@ -23,6 +23,7 @@ library(rdwd)                #to access data provided by DWD (opendata.dwd.de)
 library(terra)               #to visualize Raster Data
 library(lubridate)           #to handle date and time
 library(RCurl)               #to download data provided by DWD
+library(curl)                #to read meta data
 library(dplyr)               #to handle data frames
 library(leaflet)             #to represents data on a map
 

@@ -4,6 +4,9 @@ phenologyServer <- function(id,active) {
   # - active: character; name of active tabset
   
   moduleServer(id, function(input, output, session) {
+    #load basic fixed data (ie for which plant species data is available)
+    source(paste0(getwd(),"/input.R"),local = TRUE)
+    
     ## read and process phenology data
     # read phenology meta data
     plant_meta <- reactive({
@@ -19,11 +22,11 @@ phenologyServer <- function(id,active) {
         # -> this is only done once when Shinyapp gets started
         #     and no plant species has been selected yet
         updateSelectInput(session,"bl_plant",
-                          choices = unique(plant_meta()$Bundesland))
+                          choices = base::unique(plant_meta()$Bundesland))
       }
     )
     #update UI for specific phases
-    update_pheno_phases <- reactive(phenology_phases[phenology_phases$phase_id %in% unique(plant_data()$Phase_id),])
+    update_pheno_phases <- reactive(phenology_phases[phenology_phases$phase_id %in% base::unique(plant_data()$Phase_id),])
     observe({
       updateRadioButtons(session, "phase",
                          choiceNames = update_pheno_phases()$phase,

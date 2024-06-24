@@ -3,6 +3,8 @@
 #  -> middle: space for plots
 #  -> right hand side: checkboxes to select which help lines should be shown in plot
 phenologyUI <- function(id) {
+  #load basic fixed data (ie for which plant species data is available)
+  source(paste0(getwd(),"/input.R"),local = TRUE)
   tagList(
     # left hand side
     column(3, 

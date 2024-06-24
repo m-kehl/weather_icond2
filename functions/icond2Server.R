@@ -4,6 +4,9 @@ icond2Server <- function(id,active) {
   # - active: character; name of active tabset
   
   moduleServer(id, function(input, output, session) {
+    #load basic fixed data (ie coordinates of federal states)
+    source(paste0(getwd(),"/input.R"),local = TRUE)
+    
     ## read and process icon d2 forecast data
     # read icon d2 forecast data
     icond2_data <- reactive(f_read_icond2(f_forecast_time(),input$parameter,id))
