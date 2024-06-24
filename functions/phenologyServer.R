@@ -55,12 +55,14 @@ phenologyServer <- function(id,active) {
       #placeholder-plot if no species or stationname is chosen in UI
       if (input$pflanzen == "" | length(input$station_name) == 0){
         output$plant_out <- renderPlot(f_plot_placeholder())
+        output$info_regression <- renderText("")
       }else{
         #plot phenology data for species chosen in UI
         output$plant_out <- renderPlot(f_plot_plants(plant_data_processed()[[1]],
                                                      input$pflanzen,plant_meta(),
                                                      input$station_name,input$trendline,
                                                      input$mtline,input$grid))
+        output$info_regression <- renderText(f_infotext_regression(plant_data_processed()[[1]],input$trendline))
         #output$plant_table <- renderTable(f_table_plants(plant_meta(),input$station_name))
         output$plant_map <- renderPlot(f_map_plants(plant_meta(),input$station_name))
         #print names of stations which are selected by user but no data is available

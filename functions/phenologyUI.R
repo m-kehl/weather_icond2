@@ -54,7 +54,8 @@ phenologyUI <- function(id) {
            #middle -> phenology plot
            column(10,
                   div(class = "map_plot",plotOutput(NS(id,"plant_out"))),
-                  textOutput(NS(id,"no_plant"))),
+                  textOutput(NS(id,"no_plant")),
+                  textOutput(NS(id,"info_regression"))),
            #right hand side -> checkboxes for helplines
            column(2,
                   br(),
