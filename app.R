@@ -20,12 +20,14 @@ library(shinydashboard)      #to create boxes for UI
 library(shinyjs)             #to use css style
 library(waiter)              #to show waiters while data is downloaded/processed
 library(rdwd)                #to access data provided by DWD (opendata.dwd.de)
+library(R.utils)             #neede by readDWD() when used online via shinyapp.io
 library(terra)               #to visualize Raster Data
 library(lubridate)           #to handle date and time
 library(RCurl)               #to download data provided by DWD
 library(curl)                #to read meta data
 library(dplyr)               #to handle data frames
 library(leaflet)             #to represents data on a map
+library(miceadds)
 
 ## source functions and input
 sapply(list.files(pattern="[.]R$", path=paste0(getwd(),"/functions/"), full.names=TRUE), source)
