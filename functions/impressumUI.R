@@ -6,6 +6,7 @@ impressumUI <- function(id) {
   #pictre of laubfrosch
   uiOutput(NS(id,"laubfrosch"),style="float:right"),
   #contact details
+  h2("Impressum"),
   h3("Kontakt"),
   h4("M. Kehl"),
   h4("mkehl.laubfrosch@gmail.com"),
