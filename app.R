@@ -60,12 +60,18 @@ ui <- fluidPage(
           id = "main_tabsets",
           selected = "icond2",
 
-## -- B.1 --  TabPanel 1: Impressum --------------------------------------------
+## -- B.1 --  TabPanel 1: Impressum & Datenschutz --------------------------------------------
           tabPanel("Impressum",
                    value = "impressum",
             div(class = "impressum_style",
                 impressumUI("impressum")
             )
+          ),
+          tabPanel("Datenschutz",
+                   value = "datenschutz",
+                   div(class = "impressum_style",
+                       datenschutzUI("datenschutz")
+                   )
           ),
 ## -- B.2 --  TabPanel 2: phenology  -------------------------------------------
           tabPanel("Phänologie", 
@@ -88,7 +94,7 @@ ui <- fluidPage(
   ),
   ## footer
   tags$footer(class = "footer","\u00A9 2024 - M. Kehl",br(), actionLink("link_to_impressum", "Impressum"),
-                "|", div(class = "kontakt", a(href="mailto:mkehl.laubfrosch@gmail.com","Kontakt")),
+                "|", actionLink("link_to_datenschutz", "Datenschutz"), "|", div(class = "kontakt", a(href="mailto:mkehl.laubfrosch@gmail.com","Kontakt")),
                 div(class="hidekontakt","mkehl.laubfrosch@gmail.com"))
 )
 
@@ -104,13 +110,20 @@ server <- function(input, output, session) {
     }
   })
   
-  # make link to impressum reactive
+  # make link to impressum/datenschutz reactive
   observeEvent(input$link_to_impressum, {
     updateTabItems(session, "main_tabsets", "impressum")
   })
+  observeEvent(input$link_to_datenschutz, {
+    showTab("main_tabsets","datenschutz")
+    updateTabItems(session, "main_tabsets", "datenschutz")
+  })
   
-## -- C.1 --  TabPanel 1: Impressum --------------------------------------------
+  hideTab("main_tabsets","datenschutz")
+  
+## -- C.1 --  TabPanel 1: Impressum & Datenschutz --------------------------------------------
   impressumServer("impressum")
+  datenschutzServer("datenschutz")
 ## -- C.2 --  TabPanel 2: phenology  -------------------------------------------
   phenologyServer("phenology",reactive(input$main_tabsets))
 ## -- C.3 --  TabPanel 3: measurement data ----------------------------------------------------------------
